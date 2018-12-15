@@ -21,6 +21,7 @@ public class NotesActivity extends AppCompatActivity {
     private Handler handler;
     private static final String TAG = "NotesActivity";
     private MidiDevice parentDevice;
+    private NotesActivity that = this;
 
     @Override
     protected void onDestroy() {
@@ -71,10 +72,19 @@ public class NotesActivity extends AppCompatActivity {
         super.onStart();
     }
 
+    public void printNote(final String note){
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                final TextView notesText = (TextView) findViewById(R.id.notes);
+                notesText.append(note+" ");
+            }
+        });
+    }
+
     private void openDevice(MidiDeviceInfo deviceInfo, MidiManager midiManager) {
         final TextView statusText = (TextView) findViewById(R.id.status);
         final TextView portsText = (TextView) findViewById(R.id.ports);
-        final TextView notesText = (TextView) findViewById(R.id.notes);
         final TextView devicesText = (TextView) findViewById(R.id.devices);
 
         devicesText.setText("Devices: " + deviceInfo.getId() + " Manifacturer: " + deviceInfo.getProperties().getString(MidiDeviceInfo.PROPERTY_MANUFACTURER));
@@ -99,7 +109,7 @@ public class NotesActivity extends AppCompatActivity {
 
                                     final MidiOutputPort outputPort = device.openOutputPort(portInfo.getPortNumber());
 
-                                    outputPort.connect(new MidiNotesReceiver());
+                                    outputPort.connect(new MidiNotesReceiver(that));
                                     break;
                                 }
                             }
