@@ -20,26 +20,44 @@ public class NotesActivity extends AppCompatActivity {
 
     private Handler handler;
     private static final String TAG = "NotesActivity";
+    private MidiDevice parentDevice;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        this.handler = new Handler();
+    protected void onDestroy() {
+        Log.i(TAG,"Closing device: ");
+        try {
+            if(this.parentDevice != null){
+                Log.i(TAG,"Device to close : "+ parentDevice.getInfo().getId());
+                this.parentDevice.close();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        super.onDestroy();
+    }
 
-        super.onCreate(savedInstanceState);
+    @Override
+    protected void onStart() {
+        Log.i(TAG,"Starting application: ");
+        this.handler = new Handler();
 
         setContentView(R.layout.activity_notes);
         Context context = getApplicationContext();
 
         final MidiManager midiManager = (MidiManager) context.getSystemService(Context.MIDI_SERVICE);
-        final TextView devicesText = (TextView) findViewById(R.id.devices);
+
         final TextView deviceStatus = (TextView) findViewById(R.id.status);
 
+        for(MidiDeviceInfo info : midiManager.getDevices()){
+            openDevice(info, midiManager);
+            break;
+        }
+
+        final TextView devicesText = (TextView) findViewById(R.id.devices);
 
         midiManager.registerDeviceCallback(new MidiManager.DeviceCallback() {
             @Override
             public void onDeviceAdded(final MidiDeviceInfo device) {
-                devicesText.setText("Devices: " + device.getId() + " Manifacturer: " + device.getProperties().getString(MidiDeviceInfo.PROPERTY_MANUFACTURER));
-
                 openDevice(device, midiManager);
             }
 
@@ -49,12 +67,17 @@ public class NotesActivity extends AppCompatActivity {
                 deviceStatus.setText("Device disconnected");
             }
         }, handler);
+
+        super.onStart();
     }
 
     private void openDevice(MidiDeviceInfo deviceInfo, MidiManager midiManager) {
         final TextView statusText = (TextView) findViewById(R.id.status);
         final TextView portsText = (TextView) findViewById(R.id.ports);
         final TextView notesText = (TextView) findViewById(R.id.notes);
+        final TextView devicesText = (TextView) findViewById(R.id.devices);
+
+        devicesText.setText("Devices: " + deviceInfo.getId() + " Manifacturer: " + deviceInfo.getProperties().getString(MidiDeviceInfo.PROPERTY_MANUFACTURER));
 
         midiManager.openDevice(deviceInfo, new MidiManager.OnDeviceOpenedListener() {
                     @Override
@@ -62,6 +85,7 @@ public class NotesActivity extends AppCompatActivity {
                         if (device == null) {
                             statusText.setText("Device ERR");
                         } else {
+                            parentDevice = device;
                             statusText.setText("Device opened");
 
                             MidiDeviceInfo.PortInfo[] portInfos = device.getInfo().getPorts();
@@ -75,34 +99,6 @@ public class NotesActivity extends AppCompatActivity {
 
                                     final MidiOutputPort outputPort = device.openOutputPort(portInfo.getPortNumber());
 
-
-                                    class MyReceiver extends MidiReceiver {
-                                        public void onSend(final byte[] data, final int offset,
-                                                           final int count, long timestamp) throws IOException {
-                                            Log.i(TAG, "Received info "+ data.length + " length");
-                                            Log.i(TAG, "Received info "+ count + " count");
-                                            Log.i(TAG, "Received info "+ offset+ " offset");
-
-                                            handler.post(new Runnable() {
-                                                @Override
-                                                public void run() {
-                                                    int _offset = offset;
-                                                    StringBuilder sb = new StringBuilder();
-                                                    for (int i = 0; i < _offset; i++) {
-                                                        byte currentByte = data[_offset];
-                                                        final int currentInt = currentByte & 0xFF;
-
-                                                        if(currentInt < 0xF0){
-                                                            sb.append(String.format("%2b\n", currentByte));
-                                                            _offset++;
-                                                        }
-                                                    }
-
-                                                    notesText.setText("Notes: " + sb.toString());
-                                                }
-                                            });
-                                        }
-                                    }
                                     outputPort.connect(new MidiNotesReceiver());
                                     break;
                                 }

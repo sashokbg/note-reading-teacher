@@ -46,23 +46,30 @@ public class MidiNotesReceiver extends MidiReceiver {
     public void onSend(byte[] data, int offset, int count, long timestamp)
             throws IOException {
 
+        Log.i(TAG,"------ New Message 2 ------");
+        Log.i(TAG,"Size: " + count);
+        Log.i(TAG,"Offset: " + offset);
+        Log.i(TAG,"Type: " + format(data[offset]));
+
         for (int i = 0; i < count; i++) {
-            final byte currentByte = data[offset];
+            final int currentByte = data[offset] & 0xFF;
 
-            if (currentByte >= 0xF) {
-                Log.i(TAG,"MIDI: Status byte detected");
-
-                byte channelByte = data[offset+1];
-                int channel = channelByte&7;
-
-                Log.i(TAG,"MIDI: Status byte channel " + channel);
+            if(currentByte >= 0x80 && currentByte < 0x90){
+                Log.i(TAG,"Note Off: " + format(data[offset]));
+                Log.i(TAG,"Note Value: " + format(data[offset+1]));
+                Log.i(TAG,"Velocity: " + format(data[offset+2]));
             }
-            else {
-                Log.i(TAG,"MIDI: Data byte detected");
 
+            if(currentByte >= 0x90 && currentByte < 0xA0){
+                Log.i(TAG,"Note On: " + format(data[offset]));
+                Log.i(TAG,"Note Value: " + format(data[offset+1]));
+                Log.i(TAG,"Velocity: " + format(data[offset+2]));
             }
             ++offset;
         }
     }
 
+    private String format(byte b){
+        return String.format("0x%02X", (b & 0xFF));
+    }
 }
