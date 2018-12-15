@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.TextView;
@@ -38,7 +39,7 @@ public class NotesActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onStart() {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         Log.i(TAG,"Starting application: ");
         this.handler = new Handler();
 
@@ -69,7 +70,8 @@ public class NotesActivity extends AppCompatActivity {
             }
         }, handler);
 
-        super.onStart();
+
+        super.onCreate(savedInstanceState);
     }
 
     public void printNote(final String note){
@@ -86,6 +88,8 @@ public class NotesActivity extends AppCompatActivity {
         final TextView statusText = (TextView) findViewById(R.id.status);
         final TextView portsText = (TextView) findViewById(R.id.ports);
         final TextView devicesText = (TextView) findViewById(R.id.devices);
+
+        Log.i(TAG,"Opening device: ");
 
         devicesText.setText("Devices: " + deviceInfo.getId() + " Manifacturer: " + deviceInfo.getProperties().getString(MidiDeviceInfo.PROPERTY_MANUFACTURER));
 

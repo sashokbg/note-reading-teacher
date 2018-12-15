@@ -29,6 +29,6 @@ public class Note {
 
     @Override
     public String toString() {
-        return "Note: ♩ "+this.notePitch.getLabel()+this.getOctave();
+        return this.notePitch.getLabel()+this.getOctave();
     }
 }

@@ -8,60 +8,51 @@
 
     <!-- This FrameLayout insets its children based on system windows using
          android:fitsSystemWindows. -->
-    <FrameLayout
+    <LinearLayout
+        android:id="@+id/fullscreen_content_controls"
+        style="?metaButtonBarStyle"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fitsSystemWindows="true">
+        android:layout_height="383dp"
+        android:layout_gravity="top|center"
+        android:background="@color/black_overlay"
+        android:orientation="vertical"
+        tools:ignore="UselessParent">
 
-        <LinearLayout
-            android:id="@+id/fullscreen_content_controls"
-            style="?metaButtonBarStyle"
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/devices"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="top|center"
-            android:background="@color/black_overlay"
-            android:orientation="vertical"
-            tools:ignore="UselessParent">
+            android:ems="10"
+            android:text=""
+            android:visibility="visible"
+            tools:text="" />
 
-            <TextView
-                android:id="@+id/devices"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:text=""
-                android:visibility="visible"
-                tools:text="" />
+        <TextView
+            android:id="@+id/status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:text=""
+            android:visibility="visible"
+            tools:text="" />
 
-            <TextView
-                android:id="@+id/status"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:text=""
-                android:visibility="visible"
-                tools:text="" />
+        <TextView
+            android:id="@+id/ports"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:text=""
+            android:visibility="visible"
+            tools:text="" />
 
-            <TextView
-                android:id="@+id/ports"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:text=""
-                android:visibility="visible"
-                tools:text="" />
+        <TextView
+            android:id="@+id/notes"
+            android:layout_width="match_parent"
+            android:layout_height="329dp"
+            android:ems="10"
+            android:scrollbars="vertical"
+            android:visibility="visible" />
 
-            <TextView
-                android:id="@+id/notes"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:text=""
-                android:visibility="visible"
-                tools:text="" />
-
-        </LinearLayout>
-    </FrameLayout>
-
-
+    </LinearLayout>
 
 </FrameLayout>

@@ -1,9 +1,7 @@
 package bg.alex.notereadingteacher;
 
-import android.app.Activity;
 import android.media.midi.MidiReceiver;
 import android.util.Log;
-import android.widget.TextView;
 
 import bg.alex.notereadingteacher.notes.Note;
 
@@ -31,13 +29,14 @@ public class MidiNotesReceiver extends MidiReceiver {
                 Log.i(TAG,"Note Value: " + data[offset+1]);
                 Log.i(TAG,"Velocity: " + data[offset+2]);
                 activity.printNote(new Note(data[offset+1]).toString());
+                break;
             }
 
             if(currentByte >= 0x80 && currentByte < 0x90){
                 Log.i(TAG,"Note Off: " + format(data[offset]));
                 Log.i(TAG,"Note Value: " + data[offset+1]);
                 Log.i(TAG,"Velocity: " + data[offset+2]);
-                activity.printNote(new Note(data[offset+1]).toString());
+                break;
             }
             ++offset;
         }
