@@ -1,28 +1,29 @@
 package bg.alex.notereadingteacher.notes;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class Note {
-    static Map<Integer, String> notes = new HashMap<>();
+    private NotePitch notePitch;
+    private int octave;
 
-    static{
-        notes.put(0,"C");
-        notes.put(1,"#C");
-        notes.put(2,"D");
-        notes.put(3,"#D");
-        notes.put(4,"E");
-        notes.put(5,"F");
-        notes.put(6,"#F");
-        notes.put(7,"G");
-        notes.put(8,"#G");
-        notes.put(9,"A");
-        notes.put(10,"#A");
-        notes.put(11,"B");
+    public Note(int pitchCode, int octave) {
+        int relativePitchCode = pitchCode % 12;
+
+        this.notePitch = NotePitch.fromCode(relativePitchCode);
+        this.octave = octave;
     }
 
-    public static String getNote(int code){
-        int relativeCode = (code) % 12;
-        return notes.get(relativeCode);
+    public NotePitch getNotePitch() {
+        return notePitch;
+    }
+
+    public void setNotePitch(NotePitch notePitch) {
+        this.notePitch = notePitch;
+    }
+
+    public int getOctave() {
+        return octave;
+    }
+
+    public void setOctave(int octave) {
+        this.octave = octave;
     }
 }

@@ -13,10 +13,10 @@ public class NoteTest {
         int noteCode = 0; //C
 
         //when
-        String note = Note.getNote(noteCode);
+        Note note = new Note(noteCode, 0);
 
         //then
-        assertThat(note).isEqualTo("C");
+        assertThat(note.getNotePitch()).isEqualTo(NotePitch.C);
     }
 
     @Test
@@ -25,10 +25,10 @@ public class NoteTest {
         int noteCode = 21; //A
 
         //when
-        String note = Note.getNote(noteCode);
+        Note note = new Note(noteCode, 0);
 
         //then
-        assertThat(note).isEqualTo("A");
+        assertThat(note.getNotePitch()).isEqualTo(NotePitch.A);
     }
 
     @Test
@@ -37,10 +37,10 @@ public class NoteTest {
         int noteCode = 22; //A#
 
         //when
-        String note = Note.getNote(noteCode);
+        Note note = new Note(noteCode, 0);
 
         //then
-        assertThat(note).isEqualTo("#A");
+        assertThat(note.getNotePitch()).isEqualTo(NotePitch.A_SHARP);
     }
 
     @Test
@@ -49,9 +49,9 @@ public class NoteTest {
         int noteCode = 57; //A
 
         //when
-        String note = Note.getNote(noteCode);
+        Note note = new Note(noteCode, 0);
 
         //then
-        assertThat(note).isEqualTo("A");
+        assertThat(note.getNotePitch()).isEqualTo(NotePitch.A);
     }
 }
