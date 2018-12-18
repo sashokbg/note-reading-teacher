@@ -11,6 +11,11 @@ public class Note {
         this.octave = (pitchCode/12)-1; //scientifically octaves start from -1
     }
 
+    public Note(NotePitch relatibePitch, int octave) {
+        this.notePitch = relatibePitch;
+        this.octave = octave;
+    }
+
     public NotePitch getNotePitch() {
         return notePitch;
     }
@@ -30,5 +35,9 @@ public class Note {
     @Override
     public String toString() {
         return this.notePitch.getLabel()+this.getOctave();
+    }
+
+    public int getPosition() {
+        return notePitch.getPosition();
     }
 }

@@ -28,7 +28,7 @@ public class MidiNotesReceiver extends MidiReceiver {
                 Log.i(TAG,"Note On: " + format(data[offset]));
                 Log.i(TAG,"Note Value: " + data[offset+1]);
                 Log.i(TAG,"Velocity: " + data[offset+2]);
-                activity.printNote(new Note(data[offset+1]).toString());
+                activity.printNote(new Note(data[offset+1]));
                 break;
             }
 

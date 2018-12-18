@@ -5,17 +5,21 @@ import android.media.midi.MidiDevice;
 import android.media.midi.MidiDeviceInfo;
 import android.media.midi.MidiManager;
 import android.media.midi.MidiOutputPort;
-import android.media.midi.MidiReceiver;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.io.IOException;
+
+import bg.alex.notereadingteacher.notes.Note;
+import bg.alex.notereadingteacher.notes.NotePitch;
 
 public class NotesActivity extends AppCompatActivity {
 
@@ -23,13 +27,14 @@ public class NotesActivity extends AppCompatActivity {
     private static final String TAG = "NotesActivity";
     private MidiDevice parentDevice;
     private NotesActivity that = this;
+    private ImageView noteImage;
 
     @Override
     protected void onDestroy() {
-        Log.i(TAG,"Closing device: ");
+        Log.i(TAG, "Closing device: ");
         try {
-            if(this.parentDevice != null){
-                Log.i(TAG,"Device to close : "+ parentDevice.getInfo().getId());
+            if (this.parentDevice != null) {
+                Log.i(TAG, "Device to close : " + parentDevice.getInfo().getId());
                 this.parentDevice.close();
             }
         } catch (IOException e) {
@@ -40,7 +45,7 @@ public class NotesActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        Log.i(TAG,"Starting application: ");
+        Log.i(TAG, "Starting application: ");
         this.handler = new Handler();
 
         setContentView(R.layout.activity_notes);
@@ -50,7 +55,7 @@ public class NotesActivity extends AppCompatActivity {
 
         final TextView deviceStatus = (TextView) findViewById(R.id.status);
 
-        for(MidiDeviceInfo info : midiManager.getDevices()){
+        for (MidiDeviceInfo info : midiManager.getDevices()) {
             openDevice(info, midiManager);
             break;
         }
@@ -74,12 +79,33 @@ public class NotesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
     }
 
-    public void printNote(final String note){
+    @Override
+    protected void onStart() {
+//        printNote(new Note(NotePitch.C, 0));
+////        printNote(new Note(NotePitch.D, 0));
+//        printNote(new Note(NotePitch.E, 0));
+////        printNote(new Note(NotePitch.F, 0));
+//        printNote(new Note(NotePitch.G, 0));
+//        printNote(new Note(NotePitch.B, 0));
+        super.onStart();
+    }
+
+    public void printNote(final Note note) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                final TextView notesText = (TextView) findViewById(R.id.notes);
-                notesText.append(note+" ");
+                if(noteImage == null){
+                    noteImage = new ImageView(that);
+                    noteImage.setImageResource(R.drawable.note);
+                    noteImage.setX(400);
+                    ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(95, 75);
+                    noteImage.setLayoutParams(params);
+                    
+
+                    ((RelativeLayout) findViewById(R.id.staff_container)).addView(noteImage);
+                }
+
+                noteImage.setY((330 - (note.getPosition() * 27)));
             }
         });
     }
@@ -89,7 +115,7 @@ public class NotesActivity extends AppCompatActivity {
         final TextView portsText = (TextView) findViewById(R.id.ports);
         final TextView devicesText = (TextView) findViewById(R.id.devices);
 
-        Log.i(TAG,"Opening device: ");
+        Log.i(TAG, "Opening device: ");
 
         devicesText.setText("Devices: " + deviceInfo.getId() + " Manifacturer: " + deviceInfo.getProperties().getString(MidiDeviceInfo.PROPERTY_MANUFACTURER));
 
