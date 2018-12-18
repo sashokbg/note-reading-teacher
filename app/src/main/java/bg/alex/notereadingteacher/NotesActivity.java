@@ -23,6 +23,8 @@ import bg.alex.notereadingteacher.notes.NotePitch;
 
 public class NotesActivity extends AppCompatActivity {
 
+    public static final int NOTE_HEIGHT = 34;
+    public static final int LINE_HEIGHT = 5;
     private Handler handler;
     private static final String TAG = "NotesActivity";
     private MidiDevice parentDevice;
@@ -81,12 +83,14 @@ public class NotesActivity extends AppCompatActivity {
 
     @Override
     protected void onStart() {
-//        printNote(new Note(NotePitch.C, 0));
-////        printNote(new Note(NotePitch.D, 0));
-//        printNote(new Note(NotePitch.E, 0));
-////        printNote(new Note(NotePitch.F, 0));
-//        printNote(new Note(NotePitch.G, 0));
-//        printNote(new Note(NotePitch.B, 0));
+//        printNote(new Note(NotePitch.D, 4));
+//////        printNote(new Note(NotePitch.D, 0));
+//        printNote(new Note(NotePitch.F, 4));
+//////        printNote(new Note(NotePitch.F, 0));
+//        printNote(new Note(NotePitch.A, 4));
+////        printNote(new Note(NotePitch.B, 4));
+//        printNote(new Note(NotePitch.C, 5));
+//        printNote(new Note(NotePitch.E, 5));
         super.onStart();
     }
 
@@ -94,18 +98,22 @@ public class NotesActivity extends AppCompatActivity {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                ((TextView)findViewById(R.id.notes)).setText(note.toString());
+
                 if(noteImage == null){
                     noteImage = new ImageView(that);
                     noteImage.setImageResource(R.drawable.note);
                     noteImage.setX(400);
-                    ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(95, 75);
+                    ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(58, NOTE_HEIGHT);
                     noteImage.setLayoutParams(params);
-                    
+
 
                     ((RelativeLayout) findViewById(R.id.staff_container)).addView(noteImage);
                 }
 
-                noteImage.setY((330 - (note.getPosition() * 27)));
+                int octaveHeight = (17+5)*7;
+
+                noteImage.setY((289 - ((note.getPosition() * (NOTE_HEIGHT/2+ LINE_HEIGHT))+(note.getOctave()-4)*octaveHeight)));
             }
         });
     }
