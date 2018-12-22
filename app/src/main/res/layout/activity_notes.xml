@@ -64,8 +64,8 @@
 
             <ImageView
                 android:id="@+id/staff"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="794px"
+                android:layout_height="750px"
                 android:src="@drawable/grand_staff" />
         </RelativeLayout>
 

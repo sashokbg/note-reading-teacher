@@ -3,6 +3,7 @@ package bg.alex.notereadingteacher;
 import android.media.midi.MidiReceiver;
 import android.util.Log;
 
+import bg.alex.notereadingteacher.notes.Clef;
 import bg.alex.notereadingteacher.notes.Note;
 
 public class MidiNotesReceiver extends MidiReceiver {
@@ -28,7 +29,7 @@ public class MidiNotesReceiver extends MidiReceiver {
                 Log.i(TAG,"Note On: " + format(data[offset]));
                 Log.i(TAG,"Note Value: " + data[offset+1]);
                 Log.i(TAG,"Velocity: " + data[offset+2]);
-                activity.printNote(new Note(data[offset+1]));
+                activity.printNote(new Note(data[offset+1]), Clef.G);
                 break;
             }
 

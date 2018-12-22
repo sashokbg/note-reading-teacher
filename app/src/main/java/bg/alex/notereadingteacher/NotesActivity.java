@@ -18,13 +18,15 @@ import android.widget.TextView;
 
 import java.io.IOException;
 
+import bg.alex.notereadingteacher.notes.Clef;
 import bg.alex.notereadingteacher.notes.Note;
 import bg.alex.notereadingteacher.notes.NotePitch;
 
 public class NotesActivity extends AppCompatActivity {
 
-    public static final int NOTE_HEIGHT = 34;
-    public static final int LINE_HEIGHT = 5;
+    public static final int NOTE_HEIGHT = 40;
+    public static final int NOTE_WIDTH = 67;
+    public static int OFFSET = 260;
     private Handler handler;
     private static final String TAG = "NotesActivity";
     private MidiDevice parentDevice;
@@ -83,18 +85,17 @@ public class NotesActivity extends AppCompatActivity {
 
     @Override
     protected void onStart() {
-//        printNote(new Note(NotePitch.D, 4));
-//////        printNote(new Note(NotePitch.D, 0));
-//        printNote(new Note(NotePitch.F, 4));
-//////        printNote(new Note(NotePitch.F, 0));
-//        printNote(new Note(NotePitch.A, 4));
-////        printNote(new Note(NotePitch.B, 4));
 //        printNote(new Note(NotePitch.C, 5));
-//        printNote(new Note(NotePitch.E, 5));
+//        printNote(new Note(NotePitch.C, 4), "G");
+//        printNote(new Note(NotePitch.B, 3), "G");
+//        printNote(new Note(NotePitch.C, 4), "F");
+//        printNote(new Note(NotePitch.B, 3), "F");
+//        printNote(new Note(NotePitch.C, 2));
+//        printNote(new Note(NotePitch.C, 1));
         super.onStart();
     }
 
-    public void printNote(final Note note) {
+    public void printNote(final Note note, final Clef clef) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -104,16 +105,21 @@ public class NotesActivity extends AppCompatActivity {
                     noteImage = new ImageView(that);
                     noteImage.setImageResource(R.drawable.note);
                     noteImage.setX(400);
-                    ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(58, NOTE_HEIGHT);
+                    ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(NOTE_WIDTH, NOTE_HEIGHT);
                     noteImage.setLayoutParams(params);
 
 
                     ((RelativeLayout) findViewById(R.id.staff_container)).addView(noteImage);
                 }
 
-                int octaveHeight = (17+5)*7;
+                int octaveHeight = NOTE_HEIGHT/2*7;
 
-                noteImage.setY((289 - ((note.getPosition() * (NOTE_HEIGHT/2+ LINE_HEIGHT))+(note.getOctave()-4)*octaveHeight)));
+                if(clef == Clef.G){
+                    OFFSET = 260;
+                } else if(clef == Clef.F){
+                    OFFSET = 380;
+                }
+                noteImage.setY(OFFSET - ((note.getPosition() * (NOTE_HEIGHT/2))+(note.getOctave()-4)*octaveHeight));
             }
         });
     }
