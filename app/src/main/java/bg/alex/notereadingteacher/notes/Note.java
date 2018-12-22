@@ -10,7 +10,7 @@ public class Note {
         int relativePitchCode = pitchCode % 12;
 
         this.notePitch = NotePitch.fromCode(relativePitchCode);
-        this.octave = (pitchCode/12)-1; //scientifically octaves start from -1
+        this.octave = (pitchCode / 12) - 1; //scientifically octaves start from -1
     }
 
     public Note(NotePitch relativePitch, int octave) {
@@ -36,7 +36,7 @@ public class Note {
 
     @Override
     public String toString() {
-        return this.notePitch.getLabel()+this.getOctave();
+        return this.notePitch.getLabel() + this.getOctave();
     }
 
     public int getPosition() {
@@ -56,5 +56,13 @@ public class Note {
     public int hashCode() {
 
         return Objects.hash(notePitch, octave);
+    }
+
+    public boolean isSharp() {
+        return notePitch.equals(NotePitch.C_SHARP) ||
+                notePitch.equals(NotePitch.D_SHARP) ||
+                notePitch.equals(NotePitch.F_SHARP) ||
+                notePitch.equals(NotePitch.G_SHARP) ||
+                notePitch.equals(NotePitch.A_SHARP);
     }
 }
