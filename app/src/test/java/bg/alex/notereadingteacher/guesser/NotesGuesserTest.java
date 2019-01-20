@@ -14,7 +14,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class NotesGuesserTest {
-    private static final int C5_PITCH = 72;
+    private static final int C6_PITCH = 84;
     private static final int C3_PITCH = 36;
 
     @Test
@@ -39,10 +39,10 @@ public class NotesGuesserTest {
     }
 
     @Test(expected = RuntimeException.class)
-    public void should_not_generate_note_above_72(){
+    public void should_not_generate_note_above_84(){
         Random mockRandom = Mockito.mock(Random.class);
 
-        when(mockRandom.nextInt(anyInt())).thenReturn(C5_PITCH+1);
+        when(mockRandom.nextInt(anyInt())).thenReturn(C6_PITCH+1);
 
         NotesGuesser notesGuesser = new NotesGuesser(mockRandom);
         notesGuesser.randomNote();
