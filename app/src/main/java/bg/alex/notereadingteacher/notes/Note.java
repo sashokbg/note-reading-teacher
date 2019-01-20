@@ -6,11 +6,11 @@ public class Note {
     private NotePitch notePitch;
     private int octave;
 
-    public Note(int pitchCode) {
-        int relativePitchCode = pitchCode % 12;
+    public Note(int absolutePitch) {
+        int relativePitch = absolutePitch % 12;
 
-        this.notePitch = NotePitch.fromCode(relativePitchCode);
-        this.octave = (pitchCode / 12) - 1; //scientifically octaves start from -1
+        this.notePitch = NotePitch.fromCode(relativePitch);
+        this.octave = (absolutePitch / 12) - 1; //scientifically octaves start from -1
     }
 
     public Note(NotePitch relativePitch, int octave) {
@@ -54,7 +54,6 @@ public class Note {
 
     @Override
     public int hashCode() {
-
         return Objects.hash(notePitch, octave);
     }
 

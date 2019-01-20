@@ -22,7 +22,6 @@ import bg.alex.notereadingteacher.guesser.NoteGuess;
 import bg.alex.notereadingteacher.guesser.NotesGuesser;
 import bg.alex.notereadingteacher.notes.Clef;
 import bg.alex.notereadingteacher.notes.Note;
-import bg.alex.notereadingteacher.notes.NotePitch;
 
 public class NotesActivity extends AppCompatActivity {
 
@@ -34,13 +33,11 @@ public class NotesActivity extends AppCompatActivity {
     private MidiDevice parentDevice;
     private NotesActivity that = this;
     private ImageView noteImage;
-    private boolean stopped = false;
     private NotesGuesser notesGuesser;
     private NoteGuess noteGuess;
 
     @Override
     protected void onDestroy() {
-        this.stopped = true;
         Log.i(TAG, "Closing device: ");
         try {
             if (this.parentDevice != null) {
@@ -98,7 +95,7 @@ public class NotesActivity extends AppCompatActivity {
 
     public void generateRandomNote(){
         noteGuess = notesGuesser.randomNote();
-        printNote(noteGuess);
+        printNoteGuess(noteGuess);
     }
 
     public void guessNote(final Note note){
@@ -107,14 +104,14 @@ public class NotesActivity extends AppCompatActivity {
             public void run() {
                 if(noteGuess.getNote().equals(note)){
                     noteGuess = notesGuesser.randomNote();
-                    printNote(noteGuess);
+                    printNoteGuess(noteGuess);
                 }
             }
         });
 
     }
 
-    public void printNote(final NoteGuess noteGuess) {
+    public void printNoteGuess(final NoteGuess noteGuess) {
         runOnUiThread(new Runnable() {
             Note note = noteGuess.getNote();
             Clef clef = noteGuess.getClef();
