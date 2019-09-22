@@ -49,6 +49,14 @@ public class Note implements Comparable<Note> {
         return notePitch.getPosition();
     }
 
+    public boolean isSharp() {
+        return notePitch.equals(NotePitch.C_SHARP) ||
+                notePitch.equals(NotePitch.D_SHARP) ||
+                notePitch.equals(NotePitch.F_SHARP) ||
+                notePitch.equals(NotePitch.G_SHARP) ||
+                notePitch.equals(NotePitch.A_SHARP);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -61,14 +69,6 @@ public class Note implements Comparable<Note> {
     @Override
     public int hashCode() {
         return Objects.hash(notePitch, octave);
-    }
-
-    public boolean isSharp() {
-        return notePitch.equals(NotePitch.C_SHARP) ||
-                notePitch.equals(NotePitch.D_SHARP) ||
-                notePitch.equals(NotePitch.F_SHARP) ||
-                notePitch.equals(NotePitch.G_SHARP) ||
-                notePitch.equals(NotePitch.A_SHARP);
     }
 
     public boolean isGreaterThan(Note otherNote){
