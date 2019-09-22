@@ -3,4 +3,8 @@
 
     <string name="next_note">Next</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="midi_devices">Devices: %1$d Manufacturer: %2$s</string>
+    <string name="midi_devices_error">Device ERR</string>
+    <string name="midi_devices_ok">Device opened</string>
+    <string name="midi_devices_ports">Ports: %1$d - %2$d</string>
 </resources>

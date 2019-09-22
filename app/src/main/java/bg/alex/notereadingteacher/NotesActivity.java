@@ -129,16 +129,21 @@ public class NotesActivity extends AppCompatActivity {
 
         Log.i(TAG, "Opening device: ");
 
-        devicesText.setText("Devices: " + deviceInfo.getId() + " Manifacturer: " + deviceInfo.getProperties().getString(MidiDeviceInfo.PROPERTY_MANUFACTURER));
+        int deviceId = deviceInfo.getId();
+        String deviceManufacturer = deviceInfo.getProperties().getString(MidiDeviceInfo.PROPERTY_MANUFACTURER);
+
+        Log.i(TAG, "Device: "+deviceId+" "+deviceManufacturer);
+
+        devicesText.setText(getString(R.string.midi_devices, deviceId, deviceManufacturer));
 
         midiManager.openDevice(deviceInfo, new MidiManager.OnDeviceOpenedListener() {
                     @Override
                     public void onDeviceOpened(MidiDevice device) {
                         if (device == null) {
-                            statusText.setText("Device ERR");
+                            statusText.setText(R.string.midi_devices_error);
                         } else {
                             parentDevice = device;
-                            statusText.setText("Device opened");
+                            statusText.setText(R.string.midi_devices_ok);
 
                             MidiDeviceInfo.PortInfo[] portInfos = device.getInfo().getPorts();
 
@@ -147,7 +152,7 @@ public class NotesActivity extends AppCompatActivity {
                                 Log.i(TAG, "Cycling port " + portInfo.getPortNumber());
                                 if (portInfo.getType() == MidiDeviceInfo.PortInfo.TYPE_OUTPUT) {
                                     Log.i(TAG, "Found OUTPUT port");
-                                    portsText.setText("Ports: " + portInfo.getType() + " - " + portInfo.getPortNumber());
+                                    portsText.setText(getString(R.string.midi_devices_ports, portInfo.getType(), portInfo.getPortNumber()));
 
                                     final MidiOutputPort outputPort = device.openOutputPort(portInfo.getPortNumber());
 
