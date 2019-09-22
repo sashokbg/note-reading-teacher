@@ -1,8 +1,10 @@
 package bg.alex.notereadingteacher.notes;
 
+import android.support.annotation.NonNull;
+
 import java.util.Objects;
 
-public class Note {
+public class Note implements Comparable<Note> {
     private NotePitch notePitch;
     private int octave;
 
@@ -39,6 +41,10 @@ public class Note {
         return this.notePitch.getLabel() + this.getOctave();
     }
 
+    /**
+     * Note position relative to the staff.
+     * Ex: C and #C have the same position on the staff so they both have position 0
+     */
     public int getPosition() {
         return notePitch.getPosition();
     }
@@ -63,5 +69,22 @@ public class Note {
                 notePitch.equals(NotePitch.F_SHARP) ||
                 notePitch.equals(NotePitch.G_SHARP) ||
                 notePitch.equals(NotePitch.A_SHARP);
+    }
+
+    public boolean isGreaterThan(Note otherNote){
+        return compareTo(otherNote) > 0;
+    }
+
+    @Override
+    public int compareTo(@NonNull Note otherNote) {
+        if(otherNote.getOctave() > this.getOctave()){
+            return -1;
+        }
+        else if(otherNote.getOctave() < this.getOctave()){
+            return 1;
+        }
+        else {
+            return this.getNotePitch().compareTo(otherNote.getNotePitch());
+        }
     }
 }

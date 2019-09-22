@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#0099cc"
+    android:background="@color/background_gray"
     tools:context=".NotesActivity"
     android:keepScreenOn="true">
 
@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="383dp"
         android:layout_gravity="top|center"
-        android:background="@color/black_overlay"
+        android:background="@color/background_gray"
         android:orientation="vertical"
         tools:ignore="UselessParent">
 
@@ -55,8 +55,16 @@
             android:visibility="visible"
             tools:text="" />
 
-        <RelativeLayout
-            xmlns:android="http://schemas.android.com/apk/res/android"
+        <Button
+            android:id="@+id/next_note"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:background="@android:color/white"
+            android:text="@string/next_note"
+            android:layout_marginBottom="10dp"
+            tools:text="" />
+
+        <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/staff_container"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -64,10 +72,10 @@
 
             <ImageView
                 android:id="@+id/staff"
-                android:layout_width="794px"
+                android:layout_width="1298px"
                 android:layout_height="750px"
                 android:src="@drawable/grand_staff" />
-        </RelativeLayout>
+        </FrameLayout>
 
     </LinearLayout>
 

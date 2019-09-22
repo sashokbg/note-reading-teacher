@@ -41,7 +41,7 @@ public class NotesGuesser {
 
         if(note.getOctave() > 3){
             clef = Clef.G;
-        } else {
+        } else { //<= 3
             clef = Clef.F;
         }
 

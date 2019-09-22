@@ -80,4 +80,28 @@ public class NoteTest {
         assertThat(note.getOctave()).isEqualTo(4);
         assertThat(note.getNotePitch()).isEqualTo(NotePitch.C);
     }
+
+    @Test
+    public void compareNotes(){
+        Note note1 = new Note(NotePitch.C, 4);
+        Note note2 = new Note(NotePitch.D, 3);
+
+        assertThat(note1).isGreaterThan(note2);
+    }
+
+    @Test
+    public void compareNotesInSameOctave(){
+        Note note1 = new Note(NotePitch.C_SHARP, 4);
+        Note note2 = new Note(NotePitch.B, 4);
+
+        assertThat(note2).isGreaterThan(note1);
+    }
+
+    @Test
+    public void compareSharpNotes(){
+        Note note1 = new Note(NotePitch.C_SHARP, 4);
+        Note note2 = new Note(NotePitch.C, 4);
+
+        assertThat(note1).isGreaterThan(note2);
+    }
 }

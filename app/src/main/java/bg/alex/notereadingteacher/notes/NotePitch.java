@@ -42,6 +42,10 @@ public enum NotePitch {
         return label;
     }
 
+    /**
+     * Note position relative to the staff.
+     * Ex: C and #C have the same position on the staff so they both have position 0
+     */
     public int getPosition() {
         return position;
     }

@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Note Reading Teacher</string>
 
-    <string name="dummy_button">Dummy Button</string>
+    <string name="next_note">Next</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
 </resources>

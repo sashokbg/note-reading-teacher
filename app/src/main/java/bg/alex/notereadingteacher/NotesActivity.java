@@ -11,7 +11,9 @@ import android.os.Looper;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -22,19 +24,17 @@ import bg.alex.notereadingteacher.guesser.NoteGuess;
 import bg.alex.notereadingteacher.guesser.NotesGuesser;
 import bg.alex.notereadingteacher.notes.Clef;
 import bg.alex.notereadingteacher.notes.Note;
+import bg.alex.notereadingteacher.notes.NotePitch;
+import bg.alex.notereadingteacher.printer.NotesPrinter;
 
 public class NotesActivity extends AppCompatActivity {
-
-    public static final int NOTE_HEIGHT = 40;
-    public static final int NOTE_WIDTH = 67;
-    public static int OFFSET = 260;
     private Handler handler;
     private static final String TAG = "NotesActivity";
     private MidiDevice parentDevice;
     private NotesActivity that = this;
-    private ImageView noteImage;
     private NotesGuesser notesGuesser;
     private NoteGuess noteGuess;
+    private NotesPrinter printer;
 
     @Override
     protected void onDestroy() {
@@ -89,59 +89,38 @@ public class NotesActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         notesGuesser = new NotesGuesser();
+        printer = new NotesPrinter(this);
+
         generateRandomNote();
+
+        final Button button = (Button) findViewById(R.id.next_note);
+        button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                generateRandomNote();
+            }
+        });
+
         super.onStart();
     }
 
-    public void generateRandomNote(){
+    public void generateRandomNote() {
         noteGuess = notesGuesser.randomNote();
-        printNoteGuess(noteGuess);
+        printer.printNoteGuess(noteGuess);
     }
 
-    public void guessNote(final Note note){
+    public void guessNote(final Note note) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                if(noteGuess.getNote().equals(note)){
+                if (noteGuess.getNote().equals(note)) {
                     noteGuess = notesGuesser.randomNote();
-                    printNoteGuess(noteGuess);
+                    printer.printNoteGuess(noteGuess);
                 }
             }
         });
 
     }
 
-    public void printNoteGuess(final NoteGuess noteGuess) {
-        runOnUiThread(new Runnable() {
-            Note note = noteGuess.getNote();
-            Clef clef = noteGuess.getClef();
-
-            @Override
-            public void run() {
-                ((TextView) findViewById(R.id.notes)).setText(note.toString());
-
-                if (noteImage == null) {
-                    noteImage = new ImageView(that);
-                    noteImage.setImageResource(R.drawable.note);
-                    noteImage.setX(400);
-                    ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(NOTE_WIDTH, NOTE_HEIGHT);
-                    noteImage.setLayoutParams(params);
-
-
-                    ((RelativeLayout) findViewById(R.id.staff_container)).addView(noteImage);
-                }
-
-                int octaveHeight = NOTE_HEIGHT / 2 * 7;
-
-                if (clef == Clef.G) {
-                    OFFSET = 260;
-                } else if (clef == Clef.F) {
-                    OFFSET = 380;
-                }
-                noteImage.setY(OFFSET - ((note.getPosition() * (NOTE_HEIGHT / 2)) + (note.getOctave() - 4) * octaveHeight));
-            }
-        });
-    }
 
     private void openDevice(MidiDeviceInfo deviceInfo, MidiManager midiManager) {
         final TextView statusText = (TextView) findViewById(R.id.status);
