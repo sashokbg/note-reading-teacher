@@ -9,6 +9,19 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+        <service android:name=".MidiService"
+
+            >
+
+        </service>
+
+        <activity android:name=".ChooseModeActivity"
+            android:label="@string/title_choose_mode"
+            android:theme="@style/FullscreenTheme"
+            >
+
+        </activity>
+
 
         <activity
             android:name=".NotesActivity"

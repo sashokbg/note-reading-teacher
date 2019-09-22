@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Note Reading Teacher</string>
+    <string name="title_choose_mode">Note Reading Teacher - Mode</string>
 
     <string name="next_note">Next</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
