@@ -1,8 +1,9 @@
-package bg.alex.notereadingteacher;
+package bg.alex.notereadingteacher.midi;
 
 import android.media.midi.MidiReceiver;
 import android.util.Log;
 
+import bg.alex.notereadingteacher.NotesActivity;
 import bg.alex.notereadingteacher.notes.Note;
 
 public class MidiNotesReceiver extends MidiReceiver {

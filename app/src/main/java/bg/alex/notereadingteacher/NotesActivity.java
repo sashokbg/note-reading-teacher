@@ -1,25 +1,16 @@
 package bg.alex.notereadingteacher;
 
-import android.content.Context;
 import android.content.Intent;
-import android.media.midi.MidiDevice;
-import android.media.midi.MidiDeviceInfo;
-import android.media.midi.MidiManager;
-import android.media.midi.MidiOutputPort;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
-
-import java.io.IOException;
 
 import bg.alex.notereadingteacher.guesser.NoteGuess;
 import bg.alex.notereadingteacher.guesser.NotesGuesser;
+import bg.alex.notereadingteacher.midi.MidiHandler;
 import bg.alex.notereadingteacher.notes.Note;
 import bg.alex.notereadingteacher.printer.NotesPrinter;
 
@@ -31,33 +22,31 @@ public class NotesActivity extends AppCompatActivity {
     private NotesGuesser notesGuesser;
     private NoteGuess noteGuess;
     private NotesPrinter printer;
+    private MidiHandler midiHandler;
 
     @Override
     protected void onDestroy() {
-
+        midiHandler.removeDevice();
         super.onDestroy();
     }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        Intent i= new Intent(this, MidiService.class);
+        Intent i = new Intent(this, MidiHandler.class);
         startService(i);
 
         Log.i(TAG, "Starting application: ");
 
+        midiHandler = new MidiHandler(this);
+        midiHandler.registerMidiHandler();
 
         setContentView(R.layout.activity_notes);
-
-
-
-
-
-
         super.onCreate(savedInstanceState);
     }
 
     @Override
     protected void onStart() {
+        midiHandler.openConnectedDevice();
         notesGuesser = new NotesGuesser();
         printer = new NotesPrinter(this);
 
@@ -88,7 +77,5 @@ public class NotesActivity extends AppCompatActivity {
                 }
             }
         });
-
     }
-
 }
