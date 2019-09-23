@@ -72,9 +72,11 @@
 
             <ImageView
                 android:id="@+id/staff"
-                android:layout_width="1298px"
-                android:layout_height="750px"
-                android:src="@drawable/grand_staff" />
+                android:scaleType="fitXY"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/staff_g" />
+
         </FrameLayout>
 
     </LinearLayout>

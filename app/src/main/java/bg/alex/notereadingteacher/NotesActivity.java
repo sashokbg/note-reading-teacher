@@ -12,13 +12,13 @@ import bg.alex.notereadingteacher.guesser.NoteGuess;
 import bg.alex.notereadingteacher.guesser.NotesGuesser;
 import bg.alex.notereadingteacher.midi.MidiHandler;
 import bg.alex.notereadingteacher.notes.Note;
+import bg.alex.notereadingteacher.printer.AdvancedNotesPrinter;
 import bg.alex.notereadingteacher.printer.NotesPrinter;
 
 public class NotesActivity extends AppCompatActivity {
 
     private static final String TAG = "NotesActivity";
 
-    private NotesActivity that = this;
     private NotesGuesser notesGuesser;
     private NoteGuess noteGuess;
     private NotesPrinter printer;
@@ -48,7 +48,7 @@ public class NotesActivity extends AppCompatActivity {
     protected void onStart() {
         midiHandler.openConnectedDevice();
         notesGuesser = new NotesGuesser();
-        printer = new NotesPrinter(this);
+        printer = new AdvancedNotesPrinter(this);
 
         generateRandomNote();
 

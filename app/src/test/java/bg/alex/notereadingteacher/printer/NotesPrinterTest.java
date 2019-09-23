@@ -29,7 +29,7 @@ public class NotesPrinterTest {
         when(mockActivity.findViewById(R.id.staff_container)).thenReturn(staff);
         when(mockActivity.findViewById(R.id.notes)).thenReturn(new TextView(mMockContext));
 
-        NotesPrinter notesPrinter = new NotesPrinter(mockActivity);
+        BasicNotesPrinter notesPrinter = new BasicNotesPrinter(mockActivity);
 
         notesPrinter.printNoteGuess(new NoteGuess(new Note(NotePitch.C, 5), Clef.G));
     }
