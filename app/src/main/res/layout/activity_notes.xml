@@ -20,6 +20,15 @@
         tools:ignore="UselessParent">
 
         <TextView
+            android:id="@+id/game_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:text=""
+            android:visibility="visible"
+            tools:text="" />
+
+        <TextView
             android:id="@+id/devices"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

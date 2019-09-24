@@ -7,10 +7,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import bg.alex.notereadingteacher.guesser.NoteGuess;
 import bg.alex.notereadingteacher.guesser.NotesGuesser;
 import bg.alex.notereadingteacher.midi.MidiHandler;
+import bg.alex.notereadingteacher.notes.Clef;
 import bg.alex.notereadingteacher.notes.Note;
 import bg.alex.notereadingteacher.printer.AdvancedNotesPrinter;
 import bg.alex.notereadingteacher.printer.NotesPrinter;
@@ -32,6 +34,16 @@ public class NotesActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_notes);
+
+        Intent intent = getIntent();
+
+        TextView gameType = (TextView) findViewById(R.id.game_type);
+        String intentMessage = intent.getStringExtra(HomeActivity.GAME_TYPE);
+        gameType.setText(intentMessage);
+
+
         Intent i = new Intent(this, MidiHandler.class);
         startService(i);
 
@@ -40,14 +52,12 @@ public class NotesActivity extends AppCompatActivity {
         midiHandler = new MidiHandler(this);
         midiHandler.registerMidiHandler();
 
-        setContentView(R.layout.activity_notes);
-        super.onCreate(savedInstanceState);
     }
 
     @Override
     protected void onStart() {
         midiHandler.openConnectedDevice();
-        notesGuesser = new NotesGuesser();
+        notesGuesser = new NotesGuesser(Clef.G);
         printer = new AdvancedNotesPrinter(this);
 
         generateRandomNote();

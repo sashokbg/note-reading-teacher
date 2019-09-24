@@ -20,6 +20,11 @@ public class Note implements Comparable<Note> {
         this.octave = octave;
     }
 
+    public int getAbsolutePitch() {
+        // octaves start at -1 so octave + 1
+        return ((octave + 1) * 12) + notePitch.getPitchCode();
+    }
+
     public NotePitch getNotePitch() {
         return notePitch;
     }

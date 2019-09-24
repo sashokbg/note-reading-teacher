@@ -104,4 +104,13 @@ public class NoteTest {
 
         assertThat(note1).isGreaterThan(note2);
     }
+
+    @Test
+    public void convertNoteToAbsoultePitch() {
+        Note note = new Note(NotePitch.A, 3);
+
+        int absolutePitch = note.getAbsolutePitch();
+
+        assertThat(absolutePitch).isEqualTo(57);
+    }
 }

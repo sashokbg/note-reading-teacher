@@ -8,43 +8,43 @@ import bg.alex.notereadingteacher.notes.NotePitch;
 
 public class NotesGuesser {
     private static final String TAG = "NotesGuesser";
-    public static final int C_2_PITCH = 36;
-    public static final int C_6_PITCH = 84;
     private Random random;
+    private Note minNote;
+    private Note maxNote;
+    private Clef clef;
 
-    public NotesGuesser(Random random) {
+
+    NotesGuesser(Random random) {
         this.random = random;
     }
 
-    public NotesGuesser(){
+    public NotesGuesser(Clef clef){
+        this.clef = clef;
+
+        if(clef.equals(Clef.F)){
+            minNote = new Note(NotePitch.C, 2);
+            maxNote = new Note(NotePitch.F, 5);
+        } else if(clef.equals(Clef.G)) {
+            minNote = new Note(NotePitch.F, 3);
+            maxNote = new Note(NotePitch.F, 6);
+        }
         random = new Random();
     }
 
     public NoteGuess randomNote() {
         int pitchCode = 0;
 
-        while(pitchCode < C_2_PITCH){
-            pitchCode = random.nextInt(C_6_PITCH +1);
-        }
-
-        if(pitchCode > C_6_PITCH){
-            throw new RuntimeException("This random does not work well !");
-        }
-
         Note note = new Note(pitchCode);
 
+        while (minNote.isGreaterThan(note)){
+            pitchCode = random.nextInt(maxNote.getAbsolutePitch());
+            note = new Note(pitchCode);
+        }
+
         if(note.isSharp()){
-            note = new Note(NotePitch.fromCode(note.getNotePitch().getPitchCode()-1), note.getOctave());
+            note = new Note(NotePitch.fromCode(note.getNotePitch().getPitchCode()+1), note.getOctave());
         }
 
-        Clef clef;
-
-        if(note.getOctave() > 3){
-            clef = Clef.G;
-        } else { //<= 3
-            clef = Clef.F;
-        }
-
-        return new NoteGuess(note, clef);
+        return new NoteGuess(note, this.clef);
     }
 }

@@ -5,6 +5,7 @@ import org.mockito.Mockito;
 
 import java.util.Random;
 
+import bg.alex.notereadingteacher.notes.Clef;
 import bg.alex.notereadingteacher.notes.NotePitch;
 
 import static com.google.common.truth.Truth.assertThat;
@@ -19,7 +20,7 @@ public class NotesGuesserTest {
 
     @Test
     public void shoul_generate_a_random_note(){
-        NotesGuesser notesGuesser = new NotesGuesser();
+        NotesGuesser notesGuesser = new NotesGuesser(Clef.G);
 
         NoteGuess noteGuess = notesGuesser.randomNote();
 
