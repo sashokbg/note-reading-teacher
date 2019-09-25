@@ -8,4 +8,7 @@
     <string name="midi_devices_error">Device ERR</string>
     <string name="midi_devices_ok">Device opened</string>
     <string name="midi_devices_ports">Ports: %1$d - %2$d</string>
+    <string name="home_title">HOME PAGE</string>
+    <string name="settings">Settings</string>
+    <string name="profile">Profile</string>
 </resources>
