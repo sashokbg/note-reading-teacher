@@ -1,11 +1,13 @@
 package bg.alex.notereadingteacher.guesser;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
 import java.util.Random;
 
 import bg.alex.notereadingteacher.notes.Clef;
+import bg.alex.notereadingteacher.notes.Note;
 import bg.alex.notereadingteacher.notes.NotePitch;
 
 import static com.google.common.truth.Truth.assertThat;
@@ -15,8 +17,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class NotesGuesserTest {
-    private static final int C6_PITCH = 84;
-    private static final int C3_PITCH = 36;
+    private Random mockRandom;
 
     @Test
     public void shoul_generate_a_random_note(){
@@ -27,38 +28,44 @@ public class NotesGuesserTest {
         assertThat(noteGuess).isNotNull();
     }
 
-    @Test
-    public void should_not_generate_note_below_C3(){
-        Random mockRandom = Mockito.mock(Random.class);
-
-        when(mockRandom.nextInt(anyInt())).thenReturn(10, 15, C3_PITCH);
-
-        NotesGuesser notesGuesser = new NotesGuesser(mockRandom);
-        notesGuesser.randomNote();
-
-        verify(mockRandom, times(3)).nextInt(anyInt());
+    @Before
+    public void setup() {
+        this.mockRandom = Mockito.mock(Random.class);
     }
 
-    @Test(expected = RuntimeException.class)
-    public void should_not_generate_note_above_84(){
-        Random mockRandom = Mockito.mock(Random.class);
+    @Test
+    public void should_not_generate_note_below_F3_when_key_G(){
+        Note f3 = new Note(NotePitch.F, 3);
+        when(mockRandom.nextInt(anyInt())).thenReturn(10, 20, f3.getAbsolutePitch() - 1, f3.getAbsolutePitch());
 
-        when(mockRandom.nextInt(anyInt())).thenReturn(C6_PITCH+1);
-
-        NotesGuesser notesGuesser = new NotesGuesser(mockRandom);
+        NotesGuesser notesGuesser = new NotesGuesser(Clef.G, mockRandom);
         notesGuesser.randomNote();
+
+        verify(mockRandom, times(5)).nextInt(anyInt());
+    }
+
+    @Test
+    public void should_not_generate_note_above_F6_when_G(){
+        Note f7 = new Note(NotePitch.F, 7);
+
+        when(mockRandom.nextInt(anyInt())).thenReturn(f7.getAbsolutePitch());
+
+        NotesGuesser notesGuesser = new NotesGuesser(Clef.G, mockRandom);
+        NoteGuess noteGuess = notesGuesser.randomNote();
+
+        assertThat(noteGuess.getNote()).isEqualTo(new Note(NotePitch.F, 6));
     }
 
     @Test
     public void should_not_generate_sharps(){
-        Random mockRandom = Mockito.mock(Random.class);
+        Note cSharp = new Note(NotePitch.C_SHARP, 5);
 
-        when(mockRandom.nextInt(anyInt())).thenReturn(C3_PITCH+1);
+        when(mockRandom.nextInt(anyInt())).thenReturn(cSharp.getAbsolutePitch());
 
-        NotesGuesser notesGuesser = new NotesGuesser(mockRandom);
+        NotesGuesser notesGuesser = new NotesGuesser(Clef.G, mockRandom);
         NoteGuess noteGuess = notesGuesser.randomNote();
 
         assertThat(noteGuess.getNote().getNotePitch()).isNotEqualTo(NotePitch.C_SHARP);
-        assertThat(noteGuess.getNote().getNotePitch()).isEqualTo(NotePitch.C);
+        assertThat(noteGuess.getNote().getNotePitch()).isEqualTo(NotePitch.D);
     }
 }

@@ -1,5 +1,7 @@
 package bg.alex.notereadingteacher.guesser;
 
+import android.util.Log;
+
 import java.util.Random;
 
 import bg.alex.notereadingteacher.notes.Clef;
@@ -13,14 +15,20 @@ public class NotesGuesser {
     private Note maxNote;
     private Clef clef;
 
-
-    NotesGuesser(Random random) {
+    NotesGuesser(Clef clef, Random random) {
         this.random = random;
+        this.clef = clef;
+        setNotesRange(clef);
     }
 
     public NotesGuesser(Clef clef){
         this.clef = clef;
 
+        setNotesRange(clef);
+        random = new Random();
+    }
+
+    private void setNotesRange(Clef clef) {
         if(clef.equals(Clef.F)){
             minNote = new Note(NotePitch.C, 2);
             maxNote = new Note(NotePitch.F, 5);
@@ -28,7 +36,6 @@ public class NotesGuesser {
             minNote = new Note(NotePitch.F, 3);
             maxNote = new Note(NotePitch.F, 6);
         }
-        random = new Random();
     }
 
     public NoteGuess randomNote() {
@@ -39,6 +46,11 @@ public class NotesGuesser {
         while (minNote.isGreaterThan(note)){
             pitchCode = random.nextInt(maxNote.getAbsolutePitch());
             note = new Note(pitchCode);
+        }
+
+        if(note.isGreaterThan(maxNote)) {
+            Log.e(TAG, "A max note higher than the expected has been generated !");
+            note = maxNote;
         }
 
         if(note.isSharp()){
