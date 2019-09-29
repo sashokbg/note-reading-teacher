@@ -2,8 +2,10 @@ package bg.alex.notereadingteacher;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.view.ActionMode;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -35,6 +37,7 @@ public class NotesActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_notes);
 
         Intent intent = getIntent();
@@ -43,15 +46,17 @@ public class NotesActivity extends AppCompatActivity {
         String intentMessage = intent.getStringExtra(HomeActivity.GAME_TYPE);
         gameType.setText(intentMessage);
 
-
-        Intent i = new Intent(this, MidiHandler.class);
-        startService(i);
-
         Log.i(TAG, "Starting application: ");
 
         midiHandler = new MidiHandler(this);
         midiHandler.registerMidiHandler();
+    }
 
+    @Override
+    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+
+        generateRandomNote();
     }
 
     @Override
@@ -59,8 +64,6 @@ public class NotesActivity extends AppCompatActivity {
         midiHandler.openConnectedDevice();
         notesGuesser = new NotesGuesser(Clef.G);
         printer = new AdvancedNotesPrinter(this);
-
-        generateRandomNote();
 
         final Button button = (Button) findViewById(R.id.next_note);
         button.setOnClickListener(new View.OnClickListener() {

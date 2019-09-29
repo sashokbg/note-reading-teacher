@@ -1,9 +1,13 @@
 package bg.alex.notereadingteacher.printer;
 
 import android.app.Activity;
+import android.support.constraint.ConstraintLayout;
+import android.text.Layout;
+import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import bg.alex.notereadingteacher.R;
@@ -19,12 +23,12 @@ public class AdvancedNotesPrinter implements NotesPrinter {
 
     private TextView debug;
     private ImageView noteImage;
-    private FrameLayout staff;
+    private ConstraintLayout staff;
     private Activity activity;
 
     public AdvancedNotesPrinter(Activity activity) {
-        this.staff = ((FrameLayout) activity.findViewById(R.id.staff_container));
-        this.debug = ((TextView) activity.findViewById(R.id.notes));
+        this.staff = ((ConstraintLayout) activity.findViewById(R.id.notes_layout));
+        this.debug = ((TextView) activity.findViewById(R.id.note_debug));
         this.activity = activity;
     }
 

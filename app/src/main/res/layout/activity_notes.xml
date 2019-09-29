@@ -1,93 +1,110 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+
+    android:id="@+id/notes_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background_gray"
-    tools:context=".NotesActivity"
-    android:keepScreenOn="true">
+    android:background="@color/colorPrimary"
+    android:keepScreenOn="true"
 
-    <!-- This FrameLayout insets its children based on system windows using
-         android:fitsSystemWindows. -->
-    <LinearLayout
-        android:id="@+id/fullscreen_content_controls"
-        style="?metaButtonBarStyle"
+    tools:context=".NotesActivity">
+
+    <TextView
+        android:id="@+id/note_debug"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        app:layout_constraintBottom_toTopOf="@+id/staff"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline_top"
+        tools:text="" />
+
+    <TextView
+        android:id="@+id/game_type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline_top"
+        tools:text="" />
+
+    <Button
+        android:id="@+id/next_note"
+        android:layout_width="60dp"
+        android:layout_height="40dp"
+        android:background="@android:color/white"
+        android:text="@string/next_note"
+        app:layout_constraintBottom_toTopOf="@+id/staff"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.05"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline_top"
+        tools:text="" />
+
+    <ImageView
+        android:id="@+id/staff"
+        android:background="@color/white"
         android:layout_width="match_parent"
-        android:layout_height="383dp"
-        android:layout_gravity="top|center"
-        android:background="@color/background_gray"
-        android:orientation="vertical"
-        tools:ignore="UselessParent">
+        android:layout_height="256dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/staff_g"
+        app:layout_constraintBottom_toTopOf="@+id/guideline_bottom"
+        app:layout_constraintTop_toTopOf="@+id/guideline_top"
+        tools:layout_editor_absoluteX="0dp" />
 
-        <TextView
-            android:id="@+id/game_type"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:text=""
-            android:visibility="visible"
-            tools:text="" />
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline_top"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.1"
+        />
 
-        <TextView
-            android:id="@+id/devices"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:text=""
-            android:visibility="visible"
-            tools:text="" />
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.9"
+        />
 
-        <TextView
-            android:id="@+id/status"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:text=""
-            android:visibility="visible"
-            tools:text="" />
+    <TextView
+        android:id="@+id/ports"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:text=""
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline_bottom"
+        />
 
-        <TextView
-            android:id="@+id/ports"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:text=""
-            android:visibility="visible"
-            tools:text="" />
+    <TextView
+        android:id="@+id/status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ports"
+        />
 
-        <TextView
-            android:id="@+id/notes"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:text=""
-            android:visibility="visible"
-            tools:text="" />
+    <TextView
+        android:id="@+id/devices"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/status"
+        />
 
-        <Button
-            android:id="@+id/next_note"
-            android:layout_width="60dp"
-            android:layout_height="40dp"
-            android:background="@android:color/white"
-            android:text="@string/next_note"
-            android:layout_marginBottom="10dp"
-            tools:text="" />
-
-        <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/staff_container"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@color/white">
-
-            <ImageView
-                android:id="@+id/staff"
-                android:scaleType="fitXY"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:src="@drawable/staff_g" />
-
-        </FrameLayout>
-
-    </LinearLayout>
-
-</FrameLayout>
+</android.support.constraint.ConstraintLayout>
