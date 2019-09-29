@@ -15,8 +15,8 @@ public class HomeActivity extends Activity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        setContentView(R.layout.home_activity);
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.home_activity);
     }
 
     public void startGameInG(View view) {

@@ -1,6 +1,6 @@
 package bg.alex.notereadingteacher.midi;
 
-import android.content.Context;
+import android.content.res.Resources;
 import android.media.midi.MidiDevice;
 import android.media.midi.MidiDeviceInfo;
 import android.media.midi.MidiManager;
@@ -8,23 +8,32 @@ import android.media.midi.MidiOutputPort;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 
 import java.io.IOException;
 
-import bg.alex.notereadingteacher.NotesActivity;
 import bg.alex.notereadingteacher.R;
 
 public class MidiHandler {
 
     private static final String TAG = "MidiHandler";
     private MidiDevice parentDevice;
-    private final NotesActivity activity;
+    private final MidiAware midiAware;
     private final MidiManager midiManager;
+    private View view;
+    private final TextView deviceStatus;
+    private final TextView devicesText;
 
-    public MidiHandler(final NotesActivity activity) {
-        this.activity = activity;
-        this.midiManager = (MidiManager) activity.getSystemService(Context.MIDI_SERVICE);
+    public MidiHandler(final MidiAware midiAware, MidiManager midiManager, View view) {
+        this.midiAware = midiAware;
+        this.midiManager = midiManager;
+        this.view = view;
+        this.deviceStatus = (TextView) view.findViewById(R.id.status);
+        this.devicesText = (TextView) view.findViewById(R.id.devices);
+
+        devicesText.setText(view.getContext().getString(R.string.midi_devices, 0, "N/A"));
+        deviceStatus.setText(R.string.midi_devices_disconnected);
     }
 
     public void removeDevice() {
@@ -51,11 +60,8 @@ public class MidiHandler {
 
             @Override
             public void onDeviceRemoved(MidiDeviceInfo device) {
-                final TextView deviceStatus = (TextView) activity.findViewById(R.id.status);
-                final TextView devicesText = (TextView) activity.findViewById(R.id.devices);
-
-                devicesText.setText("Devices: ");
-                deviceStatus.setText("Device disconnected");
+                devicesText.setText(R.string.midi_devices);
+                deviceStatus.setText(R.string.midi_devices_disconnected);
 
                 removeDevice();
             }
@@ -69,10 +75,10 @@ public class MidiHandler {
         }
     }
 
-    private void openDevice(MidiDeviceInfo deviceInfo, MidiManager midiManager) {
-        final TextView statusText = (TextView) activity.findViewById(R.id.status);
-        final TextView portsText = (TextView) activity.findViewById(R.id.ports);
-        final TextView devicesText = (TextView) activity.findViewById(R.id.devices);
+    private void openDevice(MidiDeviceInfo deviceInfo, final MidiManager midiManager) {
+        final TextView statusText = (TextView) view.findViewById(R.id.status);
+        final TextView portsText = (TextView) view.findViewById(R.id.ports);
+        final TextView devicesText = (TextView) view.findViewById(R.id.devices);
 
         Log.i(TAG, "Opening device: ");
 
@@ -81,7 +87,7 @@ public class MidiHandler {
 
         Log.i(TAG, "Device: "+deviceId+" "+deviceManufacturer);
 
-        devicesText.setText(activity.getString(R.string.midi_devices, deviceId, deviceManufacturer));
+        devicesText.setText(view.getContext().getString(R.string.midi_devices, deviceId, deviceManufacturer));
 
         midiManager.openDevice(deviceInfo, new MidiManager.OnDeviceOpenedListener() {
                     @Override
@@ -99,11 +105,15 @@ public class MidiHandler {
                                 Log.i(TAG, "Cycling port " + portInfo.getPortNumber());
                                 if (portInfo.getType() == MidiDeviceInfo.PortInfo.TYPE_OUTPUT) {
                                     Log.i(TAG, "Found OUTPUT port");
-                                    portsText.setText(activity.getString(R.string.midi_devices_ports, portInfo.getType(), portInfo.getPortNumber()));
+
+                                    String string = view.getContext().getString(R.string.midi_devices_ports, portInfo.getType(), portInfo.getPortNumber());
+                                    portsText.setText(string);
 
                                     final MidiOutputPort outputPort = device.openOutputPort(portInfo.getPortNumber());
 
-                                    outputPort.connect(new MidiNotesReceiver(activity));
+                                    if(midiAware != null){
+                                        midiAware.onDeviceOpened(outputPort);
+                                    }
                                     break;
                                 }
                             }

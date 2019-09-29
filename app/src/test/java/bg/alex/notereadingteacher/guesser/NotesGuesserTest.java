@@ -38,7 +38,7 @@ public class NotesGuesserTest {
         Note f3 = new Note(NotePitch.F, 3);
         when(mockRandom.nextInt(anyInt())).thenReturn(10, 20, f3.getAbsolutePitch() - 1, f3.getAbsolutePitch());
 
-        NotesGuesser notesGuesser = new NotesGuesser(Clef.G, mockRandom);
+        NotesGuesser notesGuesser = new NotesGuesser(Clef.G, mockRandom, activity);
         notesGuesser.randomNote();
 
         verify(mockRandom, times(5)).nextInt(anyInt());
@@ -50,7 +50,7 @@ public class NotesGuesserTest {
 
         when(mockRandom.nextInt(anyInt())).thenReturn(f7.getAbsolutePitch());
 
-        NotesGuesser notesGuesser = new NotesGuesser(Clef.G, mockRandom);
+        NotesGuesser notesGuesser = new NotesGuesser(Clef.G, mockRandom, activity);
         NoteGuess noteGuess = notesGuesser.randomNote();
 
         assertThat(noteGuess.getNote()).isEqualTo(new Note(NotePitch.F, 6));
@@ -62,7 +62,7 @@ public class NotesGuesserTest {
 
         when(mockRandom.nextInt(anyInt())).thenReturn(cSharp.getAbsolutePitch());
 
-        NotesGuesser notesGuesser = new NotesGuesser(Clef.G, mockRandom);
+        NotesGuesser notesGuesser = new NotesGuesser(Clef.G, mockRandom, activity);
         NoteGuess noteGuess = notesGuesser.randomNote();
 
         assertThat(noteGuess.getNote().getNotePitch()).isNotEqualTo(NotePitch.C_SHARP);

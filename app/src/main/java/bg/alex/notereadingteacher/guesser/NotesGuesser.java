@@ -1,5 +1,6 @@
 package bg.alex.notereadingteacher.guesser;
 
+import android.app.Activity;
 import android.util.Log;
 
 import java.util.Random;

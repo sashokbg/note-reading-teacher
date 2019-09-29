@@ -7,6 +7,7 @@
     <string name="midi_devices">Devices: %1$d Manufacturer: %2$s</string>
     <string name="midi_devices_error">Device ERR</string>
     <string name="midi_devices_ok">Device opened</string>
+    <string name="midi_devices_disconnected">Device disconnected</string>
     <string name="midi_devices_ports">Ports: %1$d - %2$d</string>
     <string name="home_title">HOME PAGE</string>
     <string name="settings">Settings</string>
