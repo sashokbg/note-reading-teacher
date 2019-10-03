@@ -30,7 +30,7 @@ public class MidiHandler {
         this.midiManager = midiManager;
         this.view = view;
         this.deviceStatus = (TextView) view.findViewById(R.id.status);
-        this.devicesText = (TextView) view.findViewById(R.id.devices);
+        this.devicesText = (TextView) view.findViewById(R.id.device_name);
 
         devicesText.setText(view.getContext().getString(R.string.midi_devices, 0, "N/A"));
         deviceStatus.setText(R.string.midi_devices_disconnected);
@@ -78,7 +78,7 @@ public class MidiHandler {
     private void openDevice(MidiDeviceInfo deviceInfo, final MidiManager midiManager) {
         final TextView statusText = (TextView) view.findViewById(R.id.status);
         final TextView portsText = (TextView) view.findViewById(R.id.ports);
-        final TextView devicesText = (TextView) view.findViewById(R.id.devices);
+        final TextView devicesText = (TextView) view.findViewById(R.id.device_name);
 
         Log.i(TAG, "Opening device: ");
 

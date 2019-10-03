@@ -6,14 +6,11 @@ import android.content.Context;
 import android.media.midi.MidiManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.constraint.ConstraintLayout;
-import android.transition.Fade;
-import android.transition.Scene;
-import android.transition.Transition;
 import android.transition.TransitionManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import bg.alex.notereadingteacher.midi.MidiAware;
 import bg.alex.notereadingteacher.midi.MidiHandler;
@@ -24,6 +21,7 @@ public class MidiStatusFragment extends Fragment implements View.OnClickListener
     private View view;
     private ViewGroup fragment;
     private boolean clicked = true;
+    private TextView deviceName;
 
     @Override
     public void onDestroyView() {
@@ -43,6 +41,7 @@ public class MidiStatusFragment extends Fragment implements View.OnClickListener
         view = inflater.inflate(R.layout.midi_status_fragment, container, false);
         view.setOnClickListener(this);
 
+
         if (!(activity instanceof MidiAware)) {
             midiHandler = new MidiHandler(null, midiManager, view);
         } else {
@@ -58,6 +57,10 @@ public class MidiStatusFragment extends Fragment implements View.OnClickListener
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         fragment = (ViewGroup ) view.findViewById(R.id.midi_status_fragment);
+        deviceName = (TextView) view.findViewById(R.id.device_name);
+
+        fragment.removeView(deviceName);
+
         super.onViewCreated(view, savedInstanceState);
     }
 
@@ -69,16 +72,15 @@ public class MidiStatusFragment extends Fragment implements View.OnClickListener
 
     @Override
     public void onClick(View view) {
-        TransitionManager.beginDelayedTransition(fragment);
 
         if(clicked) {
-            ConstraintLayout.LayoutParams originalLayoutParams = (ConstraintLayout.LayoutParams) fragment.getLayoutParams();
-            originalLayoutParams.goneTopMargin = 60;
-            fragment.setLayoutParams(originalLayoutParams);
+            TransitionManager.beginDelayedTransition(fragment);
+            fragment.addView(deviceName);
+            deviceName.setVisibility(View.VISIBLE);
         } else {
-            ConstraintLayout.LayoutParams originalLayoutParams = (ConstraintLayout.LayoutParams) fragment.getLayoutParams();
-            originalLayoutParams.goneTopMargin = 0;
-            fragment.setLayoutParams(originalLayoutParams);
+            deviceName.setVisibility(View.INVISIBLE);
+            TransitionManager.beginDelayedTransition(fragment);
+            fragment.removeView(deviceName);
         }
 
         clicked = !clicked;
