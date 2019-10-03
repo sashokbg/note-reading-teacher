@@ -36,7 +36,7 @@ public class NotesActivity extends Activity implements MidiAware {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_notes);
+        setContentView(R.layout.notes_activity);
 
         Intent intent = getIntent();
 
