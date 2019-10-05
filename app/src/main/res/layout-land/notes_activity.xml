@@ -9,7 +9,7 @@
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
     android:keepScreenOn="true"
-    android:orientation="vertical"
+    android:orientation="horizontal"
 
     tools:context=".NotesActivity">
 
@@ -67,17 +67,12 @@
         android:src="@drawable/staff_g"
         android:background="@color/white"
         android:layout_width="wrap_content"
-        android:layout_height="@dimen/staff_height_vertical"
+        android:layout_height="@dimen/staff_height_landscape"
 
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
 
-        android:scrollX="-120dp"
-
         app:layout_constraintStart_toStartOf="parent"
-
-        android:scaleType="centerCrop"
-
         />
 
     <ImageView
@@ -85,15 +80,13 @@
         android:src="@drawable/e4"
 
         android:layout_width="wrap_content"
-        android:layout_height="@dimen/staff_height_vertical"
+        android:layout_height="@dimen/staff_height_landscape"
 
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
 
         app:layout_constraintTop_toTopOf="@+id/staff"
         app:layout_constraintBottom_toBottomOf="@+id/staff"
-
-        android:adjustViewBounds="true"
         />
 
     <fragment

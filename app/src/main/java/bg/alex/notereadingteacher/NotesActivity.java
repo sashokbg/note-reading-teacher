@@ -28,11 +28,6 @@ public class NotesActivity extends Activity implements MidiAware {
     private NotesPrinter printer;
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
-
-    @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -51,11 +46,6 @@ public class NotesActivity extends Activity implements MidiAware {
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
 
-        generateRandomNote();
-    }
-
-    @Override
-    protected void onStart() {
         notesGuesser = new NotesGuesser(Clef.G);
         printer = new AdvancedNotesPrinter(this);
 
@@ -66,6 +56,11 @@ public class NotesActivity extends Activity implements MidiAware {
             }
         });
 
+        generateRandomNote();
+    }
+
+    @Override
+    protected void onStart() {
         super.onStart();
     }
 
