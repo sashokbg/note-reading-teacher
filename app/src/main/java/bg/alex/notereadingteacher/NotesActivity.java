@@ -49,8 +49,8 @@ public class NotesActivity extends Activity implements MidiAware {
         notesGuesser = new NotesGuesser(Clef.G);
         printer = new AdvancedNotesPrinter(this);
 
-        final Button button = (Button) findViewById(R.id.next_note);
-        button.setOnClickListener(new View.OnClickListener() {
+        final Button nextNoteButton = (Button) findViewById(R.id.next_note);
+        nextNoteButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 generateRandomNote();
             }
@@ -59,23 +59,12 @@ public class NotesActivity extends Activity implements MidiAware {
         generateRandomNote();
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-    }
-
-    public void generateRandomNote() {
-        noteGuess = notesGuesser.randomNote();
-        printer.printNoteGuess(noteGuess);
-    }
-
     public void guessNote(final Note note) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 if (noteGuess.getNote().equals(note)) {
-                    noteGuess = notesGuesser.randomNote();
-                    printer.printNoteGuess(noteGuess);
+                    generateRandomNote();
                 }
             }
         });
@@ -86,5 +75,10 @@ public class NotesActivity extends Activity implements MidiAware {
         Log.i(TAG, "Midi device has been connected");
 
         midiOutputPort.connect(new MidiNotesReceiver(this));
+    }
+
+    public void generateRandomNote() {
+        noteGuess = notesGuesser.randomNote();
+        printer.printNoteGuess(noteGuess);
     }
 }
