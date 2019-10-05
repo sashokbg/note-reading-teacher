@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import bg.alex.notereadingteacher.guesser.NoteGuess;
@@ -26,18 +27,13 @@ public class NotesActivity extends Activity implements MidiAware {
     private NotesGuesser notesGuesser;
     private NoteGuess noteGuess;
     private NotesPrinter printer;
+    private ImageView staff;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.notes_activity);
-
-        Intent intent = getIntent();
-
-        TextView gameType = (TextView) findViewById(R.id.game_type);
-        String intentMessage = intent.getStringExtra(HomeActivity.GAME_TYPE);
-        gameType.setText(intentMessage);
 
         Log.i(TAG, "Starting application: ");
     }
@@ -46,8 +42,9 @@ public class NotesActivity extends Activity implements MidiAware {
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
 
-        notesGuesser = new NotesGuesser(Clef.G);
         printer = new AdvancedNotesPrinter(this);
+
+        staff = (ImageView) findViewById(R.id.staff);
 
         final Button nextNoteButton = (Button) findViewById(R.id.next_note);
         nextNoteButton.setOnClickListener(new View.OnClickListener() {
@@ -55,6 +52,20 @@ public class NotesActivity extends Activity implements MidiAware {
                 generateRandomNote();
             }
         });
+
+        Intent intent = getIntent();
+
+        TextView gameType = (TextView) findViewById(R.id.game_type);
+        String intentMessage = intent.getStringExtra(HomeActivity.GAME_TYPE);
+        gameType.setText(intentMessage);
+
+        if(intentMessage.equals("Game in F")) {
+            staff.setImageResource(R.drawable.staff_f);
+            notesGuesser = new NotesGuesser(Clef.F);
+        } else {
+            staff.setImageResource(R.drawable.staff_g);
+            notesGuesser = new NotesGuesser(Clef.G);
+        }
 
         generateRandomNote();
     }

@@ -36,12 +36,12 @@ public class NotesGuesserTest {
     @Test
     public void should_not_generate_note_below_F3_when_key_G(){
         Note f3 = new Note(NotePitch.F, 3);
-        when(mockRandom.nextInt(anyInt())).thenReturn(10, 20, f3.getAbsolutePitch() - 1, f3.getAbsolutePitch());
+        when(mockRandom.nextInt(anyInt())).thenReturn(1, 2, f3.getAbsolutePitch() - 1, f3.getAbsolutePitch());
 
-        NotesGuesser notesGuesser = new NotesGuesser(Clef.G, mockRandom, activity);
+        NotesGuesser notesGuesser = new NotesGuesser(Clef.G, mockRandom);
         notesGuesser.randomNote();
 
-        verify(mockRandom, times(5)).nextInt(anyInt());
+        verify(mockRandom, times(4)).nextInt(anyInt());
     }
 
     @Test
@@ -50,7 +50,7 @@ public class NotesGuesserTest {
 
         when(mockRandom.nextInt(anyInt())).thenReturn(f7.getAbsolutePitch());
 
-        NotesGuesser notesGuesser = new NotesGuesser(Clef.G, mockRandom, activity);
+        NotesGuesser notesGuesser = new NotesGuesser(Clef.G, mockRandom);
         NoteGuess noteGuess = notesGuesser.randomNote();
 
         assertThat(noteGuess.getNote()).isEqualTo(new Note(NotePitch.F, 6));
@@ -62,7 +62,7 @@ public class NotesGuesserTest {
 
         when(mockRandom.nextInt(anyInt())).thenReturn(cSharp.getAbsolutePitch());
 
-        NotesGuesser notesGuesser = new NotesGuesser(Clef.G, mockRandom, activity);
+        NotesGuesser notesGuesser = new NotesGuesser(Clef.G, mockRandom);
         NoteGuess noteGuess = notesGuesser.randomNote();
 
         assertThat(noteGuess.getNote().getNotePitch()).isNotEqualTo(NotePitch.C_SHARP);

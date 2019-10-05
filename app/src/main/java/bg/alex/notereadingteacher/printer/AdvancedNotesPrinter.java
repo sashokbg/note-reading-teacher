@@ -1,29 +1,23 @@
 package bg.alex.notereadingteacher.printer;
 
 import android.app.Activity;
-import android.support.constraint.ConstraintLayout;
-import android.view.ViewGroup.LayoutParams;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import bg.alex.notereadingteacher.R;
-import bg.alex.notereadingteacher.guesser.NoteGuess;
-import bg.alex.notereadingteacher.notes.Note;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-public class AdvancedNotesPrinter implements NotesPrinter {
-    private static int OFFSET = 260;
+import bg.alex.notereadingteacher.R;
+import bg.alex.notereadingteacher.guesser.NoteGuess;
+import bg.alex.notereadingteacher.notes.Note;
 
+public class AdvancedNotesPrinter implements NotesPrinter {
     private TextView debug;
     private ImageView currentNote;
-    private ConstraintLayout staff;
     private Activity activity;
 
     public AdvancedNotesPrinter(Activity activity) {
-        this.staff = ((ConstraintLayout) activity.findViewById(R.id.notes_layout));
         this.debug = ((TextView) activity.findViewById(R.id.note_debug));
         this.activity = activity;
     }

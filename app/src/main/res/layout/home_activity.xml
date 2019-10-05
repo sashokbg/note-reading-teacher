@@ -14,7 +14,7 @@
         android:id="@+id/button_main3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="startGameInG"
+        android:onClick="startGameInF"
         android:text="Play Key of F"
         app:layout_constraintBottom_toTopOf="@+id/guideline_bottom"
         app:layout_constraintEnd_toStartOf="@+id/guideline_center"
