@@ -9,38 +9,38 @@
     >
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/status_image_connected"
         android:src="@drawable/green_tick"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@id/status" />
+
+    <ImageView
+        android:id="@+id/status_image_discconnected"
+        android:src="@drawable/red_cross"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toEndOf="@id/status" />
 
     <TextView
         android:id="@+id/status"
         android:layout_width="@dimen/status_button_size"
         android:layout_height="wrap_content"
-        android:text="MIDI Status    Connected"
-        android:visibility="visible"
+        android:text="@string/midi_device_status_disconnected"
         app:layout_constraintStart_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/ports"
+        android:id="@+id/device_infos"
         android:layout_width="@dimen/status_button_size"
         android:layout_height="wrap_content"
-        android:text="Ports: 0-4"
+        android:text="@string/midi_device_infos"
         android:visibility="visible"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/status" />
-
-    <TextView
-        android:id="@+id/device_name"
-        android:layout_width="@dimen/status_button_size"
-        android:layout_height="wrap_content"
-        android:text="Device Name: Casio"
-        android:visibility="visible"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ports" />
+        app:layout_constraintTop_toBottomOf="@+id/status" />
 
 
 </android.support.constraint.ConstraintLayout>

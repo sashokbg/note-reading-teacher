@@ -3,13 +3,14 @@
     <string name="title_choose_mode">Note Reading Teacher - Mode</string>
 
     <string name="next_note">Next</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
-    <string name="midi_devices">Devices: %1$d Manufacturer: %2$s</string>
-    <string name="midi_devices_error">Device ERR</string>
-    <string name="midi_devices_ok">Device opened</string>
-    <string name="midi_devices_disconnected">Device disconnected</string>
-    <string name="midi_devices_ports">Ports: %1$d - %2$d</string>
-    <string name="home_title">HOME PAGE</string>
+
+    <string name="midi_device_status_connected">Device connected</string>
+    <string name="midi_device_status_disconnected">Device disconnected</string>
+    <string name="midi_device_status_error">Communication Error</string>
+
+
+    <string name="midi_device_infos">DeviceId: %1$d\nManufacturer: %2$s\nPorts: %3$d - %4$d</string>
+
     <string name="settings">Settings</string>
     <string name="profile">Profile</string>
 </resources>

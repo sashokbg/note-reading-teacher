@@ -10,6 +10,7 @@ import android.transition.TransitionManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import bg.alex.notereadingteacher.midi.MidiAware;
@@ -18,10 +19,10 @@ import bg.alex.notereadingteacher.midi.MidiHandler;
 public class MidiStatusFragment extends Fragment implements View.OnClickListener {
 
     private MidiHandler midiHandler;
-    private View view;
     private ViewGroup fragment;
     private boolean clicked = true;
-    private TextView deviceName;
+
+    private TextView deviceInfos;
 
     @Override
     public void onDestroyView() {
@@ -38,14 +39,14 @@ public class MidiStatusFragment extends Fragment implements View.OnClickListener
         MidiManager midiManager = (MidiManager) activity.getSystemService(Context.MIDI_SERVICE);
 
 
-        view = inflater.inflate(R.layout.midi_status_fragment, container, false);
+        View view = inflater.inflate(R.layout.midi_status_fragment, container, false);
         view.setOnClickListener(this);
 
 
-        if (!(activity instanceof MidiAware)) {
-            midiHandler = new MidiHandler(null, midiManager, view);
-        } else {
+        if (activity instanceof MidiAware) {
             midiHandler = new MidiHandler((MidiAware) activity, midiManager, view);
+        } else {
+            midiHandler = new MidiHandler(null, midiManager, view);
         }
 
         midiHandler.registerMidiHandler();
@@ -57,9 +58,9 @@ public class MidiStatusFragment extends Fragment implements View.OnClickListener
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         fragment = (ViewGroup ) view.findViewById(R.id.midi_status_fragment);
-        deviceName = (TextView) view.findViewById(R.id.device_name);
+        deviceInfos = (TextView) view.findViewById(R.id.device_infos);
 
-        fragment.removeView(deviceName);
+        deviceInfos.setVisibility(View.GONE);
 
         super.onViewCreated(view, savedInstanceState);
     }
@@ -73,14 +74,11 @@ public class MidiStatusFragment extends Fragment implements View.OnClickListener
     @Override
     public void onClick(View view) {
 
+        TransitionManager.beginDelayedTransition(fragment);
         if(clicked) {
-            TransitionManager.beginDelayedTransition(fragment);
-            fragment.addView(deviceName);
-            deviceName.setVisibility(View.VISIBLE);
+            deviceInfos.setVisibility(View.VISIBLE);
         } else {
-            deviceName.setVisibility(View.INVISIBLE);
-            TransitionManager.beginDelayedTransition(fragment);
-            fragment.removeView(deviceName);
+            deviceInfos.setVisibility(View.GONE);
         }
 
         clicked = !clicked;
