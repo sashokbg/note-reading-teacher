@@ -19,8 +19,14 @@ import static org.mockito.Mockito.when;
 public class NotesGuesserTest {
     private Random mockRandom;
 
+    @Before
+    public void setup() {
+        this.mockRandom = Mockito.mock(Random.class);
+    }
+
+
     @Test
-    public void shoul_generate_a_random_note(){
+    public void should_generate_a_random_note_in_G(){
         NotesGuesser notesGuesser = new NotesGuesser(Clef.G);
 
         NoteGuess noteGuess = notesGuesser.randomNote();
@@ -28,15 +34,42 @@ public class NotesGuesserTest {
         assertThat(noteGuess).isNotNull();
     }
 
-    @Before
-    public void setup() {
-        this.mockRandom = Mockito.mock(Random.class);
+    @Test
+    public void should_generate_a_random_note_in_F(){
+        NotesGuesser notesGuesser = new NotesGuesser(Clef.F);
+
+        NoteGuess noteGuess = notesGuesser.randomNote();
+
+        assertThat(noteGuess).isNotNull();
     }
 
     @Test
-    public void should_not_generate_note_below_F3_when_key_G(){
-        Note f3 = new Note(NotePitch.F, 3);
-        when(mockRandom.nextInt(anyInt())).thenReturn(1, 2, f3.getAbsolutePitch() - 1, f3.getAbsolutePitch());
+    public void should_not_generate_note_below_E2_when_key_F(){
+        Note e2 = new Note(NotePitch.E, 2);
+        when(mockRandom.nextInt(anyInt())).thenReturn(1, 2, e2.getAbsolutePitch() - 1, e2.getAbsolutePitch());
+
+        NotesGuesser notesGuesser = new NotesGuesser(Clef.F, mockRandom);
+        notesGuesser.randomNote();
+
+        verify(mockRandom, times(4)).nextInt(anyInt());
+    }
+
+    @Test
+    public void should_not_generate_note_above_E5_when_key_F(){
+        Note e6 = new Note(NotePitch.E, 6);
+
+        when(mockRandom.nextInt(anyInt())).thenReturn(e6.getAbsolutePitch());
+
+        NotesGuesser notesGuesser = new NotesGuesser(Clef.F, mockRandom);
+        NoteGuess noteGuess = notesGuesser.randomNote();
+
+        assertThat(noteGuess.getNote()).isEqualTo(new Note(NotePitch.E, 5));
+    }
+
+    @Test
+    public void should_not_generate_note_below_E3_when_key_G(){
+        Note e3 = new Note(NotePitch.E, 3);
+        when(mockRandom.nextInt(anyInt())).thenReturn(1, 2, e3.getAbsolutePitch() - 1, e3.getAbsolutePitch());
 
         NotesGuesser notesGuesser = new NotesGuesser(Clef.G, mockRandom);
         notesGuesser.randomNote();
@@ -45,15 +78,15 @@ public class NotesGuesserTest {
     }
 
     @Test
-    public void should_not_generate_note_above_F6_when_G(){
-        Note f7 = new Note(NotePitch.F, 7);
+    public void should_not_generate_note_above_E6_when_G(){
+        Note e7 = new Note(NotePitch.E, 7);
 
-        when(mockRandom.nextInt(anyInt())).thenReturn(f7.getAbsolutePitch());
+        when(mockRandom.nextInt(anyInt())).thenReturn(e7.getAbsolutePitch());
 
         NotesGuesser notesGuesser = new NotesGuesser(Clef.G, mockRandom);
         NoteGuess noteGuess = notesGuesser.randomNote();
 
-        assertThat(noteGuess.getNote()).isEqualTo(new Note(NotePitch.F, 6));
+        assertThat(noteGuess.getNote()).isEqualTo(new Note(NotePitch.E, 6));
     }
 
     @Test

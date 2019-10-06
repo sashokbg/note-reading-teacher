@@ -1,6 +1,8 @@
 package bg.alex.notereadingteacher.printer;
 
 import android.app.Activity;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.widget.ImageView;
 import android.widget.TextView;
 
