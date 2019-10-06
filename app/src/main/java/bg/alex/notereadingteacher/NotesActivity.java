@@ -42,7 +42,7 @@ public class NotesActivity extends Activity implements MidiAware {
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
 
-        printer = new AdvancedNotesPrinter(this);
+        printer = new AdvancedNotesPrinter(Clef.F, this);
 
         staff = (ImageView) findViewById(R.id.staff);
 
@@ -71,12 +71,9 @@ public class NotesActivity extends Activity implements MidiAware {
     }
 
     public void guessNote(final Note note) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (noteGuess.getNote().equals(note)) {
-                    generateRandomNote();
-                }
+        runOnUiThread(() -> {
+            if (noteGuess.getNote().equals(note)) {
+                generateRandomNote();
             }
         });
     }

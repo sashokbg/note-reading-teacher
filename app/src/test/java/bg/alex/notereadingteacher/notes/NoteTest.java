@@ -95,4 +95,34 @@ public class NoteTest {
 
         assertThat(absolutePitch).isEqualTo(57);
     }
+
+    @Test
+    public void should_create_next_whole_note_from_E_to_F() {
+        Note noteF = new Note(NotePitch.E, 3);
+
+        Note nextNote = noteF.nextWholeNote();
+
+        assertThat(nextNote.getNotePitch()).isEqualTo(NotePitch.F);
+        assertThat(nextNote.getOctave()).isEqualTo(3);
+    }
+
+    @Test
+    public void should_create_next_whole_note_from_F_to_G() {
+        Note noteF = new Note(NotePitch.F, 3);
+
+        Note nextNote = noteF.nextWholeNote();
+
+        assertThat(nextNote.getNotePitch()).isEqualTo(NotePitch.G);
+        assertThat(nextNote.getOctave()).isEqualTo(3);
+    }
+
+    @Test
+    public void should_create_next_whole_note_from_B_to_C_in_upper_octave() {
+        Note noteF = new Note(NotePitch.B, 3);
+
+        Note nextNote = noteF.nextWholeNote();
+
+        assertThat(nextNote.getNotePitch()).isEqualTo(NotePitch.C);
+        assertThat(nextNote.getOctave()).isEqualTo(4);
+    }
 }
