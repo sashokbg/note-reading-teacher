@@ -6,7 +6,6 @@ import android.media.midi.MidiOutputPort;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -42,29 +41,25 @@ public class NotesActivity extends Activity implements MidiAware {
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
 
-        printer = new AdvancedNotesPrinter(Clef.F, this);
+        staff = findViewById(R.id.staff);
 
-        staff = (ImageView) findViewById(R.id.staff);
-
-        final Button nextNoteButton = (Button) findViewById(R.id.next_note);
-        nextNoteButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                generateRandomNote();
-            }
-        });
+        final Button nextNoteButton = findViewById(R.id.next_note);
+        nextNoteButton.setOnClickListener(v -> generateRandomNote());
 
         Intent intent = getIntent();
 
-        TextView gameType = (TextView) findViewById(R.id.game_type);
+        TextView gameType = findViewById(R.id.game_type);
         String intentMessage = intent.getStringExtra(HomeActivity.GAME_TYPE);
         gameType.setText(intentMessage);
 
         if(intentMessage.equals("Game in F")) {
             staff.setImageResource(R.drawable.staff_f);
             notesGuesser = new NotesGuesser(Clef.F);
+            printer = new AdvancedNotesPrinter(Clef.F, this);
         } else {
             staff.setImageResource(R.drawable.staff_g);
             notesGuesser = new NotesGuesser(Clef.G);
+            printer = new AdvancedNotesPrinter(Clef.G, this);
         }
 
         generateRandomNote();

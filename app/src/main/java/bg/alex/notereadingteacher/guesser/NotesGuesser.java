@@ -30,11 +30,11 @@ public class NotesGuesser {
 
     private void setNotesRange(Clef clef) {
         if(clef.equals(Clef.F)){
-            minNote = new Note(NotePitch.E, 2);
-            maxNote = new Note(NotePitch.E, 5);
+            minNote = new Note(NotePitch.A, 1);
+            maxNote = new Note(NotePitch.A, 4);
         } else if(clef.equals(Clef.G)) {
-            minNote = new Note(NotePitch.E, 3);
-            maxNote = new Note(NotePitch.E, 6);
+            minNote = new Note(NotePitch.F, 3);
+            maxNote = new Note(NotePitch.F, 6);
         }
     }
 

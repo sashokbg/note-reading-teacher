@@ -46,8 +46,8 @@ public class AdvancedNotesPrinterTest {
     }
 
     @Test
-    public void should_print_note_1_when_F2_in_keyF() {
-        Note note = new Note(NotePitch.F, 2);
+    public void should_print_note_1_when_A1_in_keyF() {
+        Note note = new Note(NotePitch.A, 1);
         NotesPrinter printer = new AdvancedNotesPrinter(Clef.F, activity);
 
         // when
@@ -58,8 +58,8 @@ public class AdvancedNotesPrinterTest {
     }
 
     @Test
-    public void should_print_note_2_when_G2_in_keyF() {
-        Note note = new Note(NotePitch.G, 2);
+    public void should_print_note_2_when_B1_in_keyF() {
+        Note note = new Note(NotePitch.B, 1);
         NotesPrinter printer = new AdvancedNotesPrinter(Clef.F, activity);
 
         // when
@@ -70,8 +70,8 @@ public class AdvancedNotesPrinterTest {
     }
 
     @Test
-    public void should_print_note_5_when_C3_in_keyF() {
-        Note note = new Note(NotePitch.C, 3);
+    public void should_print_note_5_when_E2_in_keyF() {
+        Note note = new Note(NotePitch.E, 2);
         NotesPrinter printer = new AdvancedNotesPrinter(Clef.F, activity);
 
         // when
@@ -82,8 +82,20 @@ public class AdvancedNotesPrinterTest {
     }
 
     @Test
-    public void should_print_note_22_when_F5_in_keyF() {
-        Note note = new Note(NotePitch.F, 5);
+    public void should_print_note_18_when_D4_in_keyF() {
+        Note note = new Note(NotePitch.D, 4);
+        NotesPrinter printer = new AdvancedNotesPrinter(Clef.F, activity);
+
+        // when
+        printer.printNoteGuess(new NoteGuess(note, Clef.F));
+
+        // then
+        verify(currentNoteView, times(1)).setImageResource(R.drawable.note_18);
+    }
+
+    @Test
+    public void should_print_note_22_when_A4_in_keyF() {
+        Note note = new Note(NotePitch.A, 4);
         NotesPrinter printer = new AdvancedNotesPrinter(Clef.F, activity);
 
         // when

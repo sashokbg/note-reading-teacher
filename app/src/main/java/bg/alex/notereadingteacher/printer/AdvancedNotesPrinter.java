@@ -34,7 +34,7 @@ public class AdvancedNotesPrinter implements NotesPrinter {
         Note baseNote;
 
         if (clef == Clef.F) {
-            baseNote = new Note(NotePitch.F, 2);
+            baseNote = new Note(NotePitch.A, 1);
         } else if (clef == Clef.G){
             baseNote = new Note(NotePitch.F, 3);
         } else {
