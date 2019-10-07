@@ -1,7 +1,9 @@
 package bg.alex.notereadingteacher.printer;
 
+import java.util.List;
+
 import bg.alex.notereadingteacher.guesser.NoteGuess;
 
 public interface NotesPrinter {
-    void printNoteGuess(final NoteGuess noteGuess);
+    void printNoteGuesses(final List<NoteGuess> noteGuess);
 }

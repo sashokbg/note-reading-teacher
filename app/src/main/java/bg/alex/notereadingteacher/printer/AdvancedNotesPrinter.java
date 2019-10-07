@@ -1,6 +1,10 @@
 package bg.alex.notereadingteacher.printer;
 
 import android.app.Activity;
+import android.support.constraint.ConstraintLayout;
+import android.support.constraint.ConstraintSet;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -9,6 +13,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.List;
 
 import bg.alex.notereadingteacher.R;
 import bg.alex.notereadingteacher.guesser.NoteGuess;
@@ -17,14 +22,11 @@ import bg.alex.notereadingteacher.notes.Note;
 import bg.alex.notereadingteacher.notes.NotePitch;
 
 public class AdvancedNotesPrinter implements NotesPrinter {
-    private TextView debug;
-    private ImageView currentNoteView;
     private Activity activity;
     private Clef clef;
     private NumberFormat formatter;
 
     public AdvancedNotesPrinter(Clef clef, Activity activity) {
-        this.debug = activity.findViewById(R.id.note_debug);
         this.activity = activity;
         this.clef = clef;
         this.formatter = new DecimalFormat("00");
@@ -52,15 +54,48 @@ public class AdvancedNotesPrinter implements NotesPrinter {
     }
 
     @Override
-    public void printNoteGuess(final NoteGuess noteGuess) {
-        activity.runOnUiThread(new Runnable() {
+    public void printNoteGuesses(final List<NoteGuess> noteGuesses) {
+        activity.runOnUiThread(() -> {
+            ImageView previousNoteView = null;
+            ConstraintLayout constraintLayout = activity.findViewById(R.id.notes_layout);
 
-            Note note = noteGuess.getNote();
+            View noteToRemove;
+            do {
+                noteToRemove = constraintLayout.findViewWithTag("note");
+                constraintLayout.removeView(noteToRemove);
+            } while (noteToRemove != null);
 
-            @Override
-            public void run() {
-                currentNoteView = activity.findViewById(R.id.current_note);
-                debug.setText(note.toString());
+
+            for (int i = 0; i < noteGuesses.size(); i++) {
+                NoteGuess noteGuess = noteGuesses.get(i);
+                Note note = noteGuess.getNote();
+
+                ImageView noteView = new ImageView(activity);
+                noteView.setId(View.generateViewId());
+                noteView.setTag("note");
+
+                ConstraintLayout.LayoutParams constraintLayoutParams = new ConstraintLayout.LayoutParams(
+                        new ViewGroup.LayoutParams(
+                        ViewGroup.LayoutParams.WRAP_CONTENT,
+                        0));
+
+                noteView.setLayoutParams(constraintLayoutParams);
+                constraintLayout.addView(noteView);
+
+                ConstraintSet constraintSet = new ConstraintSet();
+                constraintSet.clone(constraintLayout);
+
+                constraintSet.connect(noteView.getId(), ConstraintSet.TOP, R.id.staff, ConstraintSet.TOP);
+                constraintSet.connect(noteView.getId(), ConstraintSet.BOTTOM, R.id.staff, ConstraintSet.BOTTOM);
+                if(i == 0) {
+                    constraintSet.connect(noteView.getId(), ConstraintSet.LEFT, constraintLayout.getId(), ConstraintSet.LEFT);
+                    constraintSet.connect(noteView.getId(), ConstraintSet.RIGHT, constraintLayout.getId(), ConstraintSet.RIGHT);
+                    constraintSet.setHorizontalBias(noteView.getId(), 0.3f);
+                } else {
+                    constraintSet.connect(noteView.getId(), ConstraintSet.LEFT, previousNoteView.getId(), ConstraintSet.RIGHT);
+                }
+
+                constraintSet.applyTo(constraintLayout);
 
                 Class<R.drawable> clazz1 = R.drawable.class;
                 Class<ImageView> clazz2 = ImageView.class;
@@ -70,10 +105,12 @@ public class AdvancedNotesPrinter implements NotesPrinter {
                     Field field = clazz1.getDeclaredField(getImageNameForNote(note, clef));
                     Method method = clazz2.getDeclaredMethod("setImageResource", int.class);
 
-                    method.invoke(currentNoteView, field.get(currentNoteView));
+                    method.invoke(noteView, field.get(noteView));
                 } catch (NoSuchFieldException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
                     e.printStackTrace();
                 }
+
+                previousNoteView = noteView;
             }
         });
     }

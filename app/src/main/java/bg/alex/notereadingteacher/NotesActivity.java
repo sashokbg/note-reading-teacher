@@ -10,6 +10,9 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import bg.alex.notereadingteacher.guesser.NoteGuess;
 import bg.alex.notereadingteacher.guesser.NotesGuesser;
 import bg.alex.notereadingteacher.midi.MidiAware;
@@ -24,15 +27,19 @@ public class NotesActivity extends Activity implements MidiAware {
     private static final String TAG = "NotesActivity";
 
     private NotesGuesser notesGuesser;
-    private NoteGuess noteGuess;
+    private List<NoteGuess> noteGuessList;
+    private int currentNoteGuess = 0;
     private NotesPrinter printer;
     private ImageView staff;
+    private TextView debug;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.notes_activity);
+
+        this.debug = findViewById(R.id.note_debug);
 
         Log.i(TAG, "Starting application: ");
     }
@@ -67,8 +74,11 @@ public class NotesActivity extends Activity implements MidiAware {
 
     public void guessNote(final Note note) {
         runOnUiThread(() -> {
-            if (noteGuess.getNote().equals(note)) {
+            if(currentNoteGuess == noteGuessList.size() - 1) {
                 generateRandomNote();
+            } else if (noteGuessList.get(currentNoteGuess).getNote().equals(note)) {
+                currentNoteGuess++;
+                debug.setText(noteGuessList.get(currentNoteGuess).getNote().toString());
             }
         });
     }
@@ -81,7 +91,16 @@ public class NotesActivity extends Activity implements MidiAware {
     }
 
     public void generateRandomNote() {
-        noteGuess = notesGuesser.randomNote();
-        printer.printNoteGuess(noteGuess);
+        noteGuessList = new ArrayList<>();
+        currentNoteGuess = 0;
+        noteGuessList.add(notesGuesser.randomNote());
+        noteGuessList.add(notesGuesser.randomNote());
+        noteGuessList.add(notesGuesser.randomNote());
+        noteGuessList.add(notesGuesser.randomNote());
+        noteGuessList.add(notesGuesser.randomNote());
+
+        debug.setText(noteGuessList.get(currentNoteGuess).getNote().toString());
+
+        printer.printNoteGuesses(noteGuessList);
     }
 }

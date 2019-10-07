@@ -51,7 +51,7 @@ public class AdvancedNotesPrinterTest {
         NotesPrinter printer = new AdvancedNotesPrinter(Clef.F, activity);
 
         // when
-        printer.printNoteGuess(new NoteGuess(note, Clef.F));
+        printer.printNoteGuesses(new NoteGuess(note, Clef.F));
 
         // then
         verify(currentNoteView, times(1)).setImageResource(R.drawable.note_01);
@@ -63,7 +63,7 @@ public class AdvancedNotesPrinterTest {
         NotesPrinter printer = new AdvancedNotesPrinter(Clef.F, activity);
 
         // when
-        printer.printNoteGuess(new NoteGuess(note, Clef.F));
+        printer.printNoteGuesses(new NoteGuess(note, Clef.F));
 
         // then
         verify(currentNoteView, times(1)).setImageResource(R.drawable.note_02);
@@ -75,7 +75,7 @@ public class AdvancedNotesPrinterTest {
         NotesPrinter printer = new AdvancedNotesPrinter(Clef.F, activity);
 
         // when
-        printer.printNoteGuess(new NoteGuess(note, Clef.F));
+        printer.printNoteGuesses(new NoteGuess(note, Clef.F));
 
         // then
         verify(currentNoteView, times(1)).setImageResource(R.drawable.note_05);
@@ -87,7 +87,7 @@ public class AdvancedNotesPrinterTest {
         NotesPrinter printer = new AdvancedNotesPrinter(Clef.F, activity);
 
         // when
-        printer.printNoteGuess(new NoteGuess(note, Clef.F));
+        printer.printNoteGuesses(new NoteGuess(note, Clef.F));
 
         // then
         verify(currentNoteView, times(1)).setImageResource(R.drawable.note_18);
@@ -99,7 +99,7 @@ public class AdvancedNotesPrinterTest {
         NotesPrinter printer = new AdvancedNotesPrinter(Clef.F, activity);
 
         // when
-        printer.printNoteGuess(new NoteGuess(note, Clef.F));
+        printer.printNoteGuesses(new NoteGuess(note, Clef.F));
 
         // then
         verify(currentNoteView, times(1)).setImageResource(R.drawable.note_22);
@@ -111,7 +111,7 @@ public class AdvancedNotesPrinterTest {
         NotesPrinter printer = new AdvancedNotesPrinter(Clef.G, activity);
 
         // when
-        printer.printNoteGuess(new NoteGuess(note, Clef.G));
+        printer.printNoteGuesses(new NoteGuess(note, Clef.G));
 
         // then
         verify(currentNoteView, times(1)).setImageResource(R.drawable.note_01);
@@ -123,7 +123,7 @@ public class AdvancedNotesPrinterTest {
         NotesPrinter printer = new AdvancedNotesPrinter(Clef.G, activity);
 
         // when
-        printer.printNoteGuess(new NoteGuess(note, Clef.G));
+        printer.printNoteGuesses(new NoteGuess(note, Clef.G));
 
         // then
         verify(currentNoteView, times(1)).setImageResource(R.drawable.note_05);
@@ -135,7 +135,7 @@ public class AdvancedNotesPrinterTest {
         NotesPrinter printer = new AdvancedNotesPrinter(Clef.G, activity);
 
         // when
-        printer.printNoteGuess(new NoteGuess(note, Clef.G));
+        printer.printNoteGuesses(new NoteGuess(note, Clef.G));
 
         // then
         verify(currentNoteView, times(1)).setImageResource(R.drawable.note_22);
