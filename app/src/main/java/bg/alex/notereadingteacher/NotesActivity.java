@@ -93,11 +93,11 @@ public class NotesActivity extends Activity implements MidiAware {
     public void generateRandomNote() {
         noteGuessList = new ArrayList<>();
         currentNoteGuess = 0;
-        noteGuessList.add(notesGuesser.randomNote());
-        noteGuessList.add(notesGuesser.randomNote());
-        noteGuessList.add(notesGuesser.randomNote());
-        noteGuessList.add(notesGuesser.randomNote());
-        noteGuessList.add(notesGuesser.randomNote());
+
+        int numberOfNoteGuesses = 8;
+        for(int i = 0; i< numberOfNoteGuesses; i++) {
+            noteGuessList.add(notesGuesser.randomNote());
+        }
 
         debug.setText(noteGuessList.get(currentNoteGuess).getNote().toString());
 

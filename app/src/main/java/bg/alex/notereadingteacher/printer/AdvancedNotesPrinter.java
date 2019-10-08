@@ -6,7 +6,6 @@ import android.support.constraint.ConstraintSet;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -26,10 +25,17 @@ public class AdvancedNotesPrinter implements NotesPrinter {
     private Clef clef;
     private NumberFormat formatter;
 
+    private NoteImageFactory notesImageFactory;
+
     public AdvancedNotesPrinter(Clef clef, Activity activity) {
         this.activity = activity;
         this.clef = clef;
+        this.notesImageFactory = new NoteImageFactory(activity);
         this.formatter = new DecimalFormat("00");
+    }
+
+    public void setClef(Clef clef) {
+        this.clef = clef;
     }
 
     private String getImageNameForNote(Note note, Clef clef) {
@@ -53,6 +59,23 @@ public class AdvancedNotesPrinter implements NotesPrinter {
         return "note_" + formatter.format(noteCounter);
     }
 
+    public void applyNoteImageTo(ImageView noteView, NoteGuess noteGuess) {
+        Note note = noteGuess.getNote();
+
+        Class<R.drawable> clazz1 = R.drawable.class;
+        Class<ImageView> clazz2 = ImageView.class;
+
+        try {
+
+            Field field = clazz1.getDeclaredField(getImageNameForNote(note, clef));
+            Method method = clazz2.getDeclaredMethod("setImageResource", int.class);
+
+            method.invoke(noteView, field.get(noteView));
+        } catch (NoSuchFieldException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public void printNoteGuesses(final List<NoteGuess> noteGuesses) {
         activity.runOnUiThread(() -> {
@@ -68,11 +91,15 @@ public class AdvancedNotesPrinter implements NotesPrinter {
 
             for (int i = 0; i < noteGuesses.size(); i++) {
                 NoteGuess noteGuess = noteGuesses.get(i);
-                Note note = noteGuess.getNote();
 
-                ImageView noteView = new ImageView(activity);
-                noteView.setId(View.generateViewId());
-                noteView.setTag("note");
+
+                ImageView noteView = notesImageFactory.createImageView();
+                if(i%4 == 0) {
+                    noteView.setPadding(100, 0, 0, 0);
+                } else {
+                    noteView.setPadding(4, 0, 0, 0);
+                }
+                noteView.setAdjustViewBounds(true);
 
                 ConstraintLayout.LayoutParams constraintLayoutParams = new ConstraintLayout.LayoutParams(
                         new ViewGroup.LayoutParams(
@@ -90,25 +117,14 @@ public class AdvancedNotesPrinter implements NotesPrinter {
                 if(i == 0) {
                     constraintSet.connect(noteView.getId(), ConstraintSet.LEFT, constraintLayout.getId(), ConstraintSet.LEFT);
                     constraintSet.connect(noteView.getId(), ConstraintSet.RIGHT, constraintLayout.getId(), ConstraintSet.RIGHT);
-                    constraintSet.setHorizontalBias(noteView.getId(), 0.3f);
+                    constraintSet.setHorizontalBias(noteView.getId(), 0.15f);
                 } else {
                     constraintSet.connect(noteView.getId(), ConstraintSet.LEFT, previousNoteView.getId(), ConstraintSet.RIGHT);
                 }
 
                 constraintSet.applyTo(constraintLayout);
 
-                Class<R.drawable> clazz1 = R.drawable.class;
-                Class<ImageView> clazz2 = ImageView.class;
-
-                try {
-
-                    Field field = clazz1.getDeclaredField(getImageNameForNote(note, clef));
-                    Method method = clazz2.getDeclaredMethod("setImageResource", int.class);
-
-                    method.invoke(noteView, field.get(noteView));
-                } catch (NoSuchFieldException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-                    e.printStackTrace();
-                }
+                applyNoteImageTo(noteView, noteGuess);
 
                 previousNoteView = noteView;
             }

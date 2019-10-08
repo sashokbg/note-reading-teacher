@@ -76,18 +76,16 @@
         app:layout_constraintStart_toStartOf="parent"
         />
 
-    <ImageView
-        android:id="@+id/current_note"
-        android:src="@drawable/note_07"
-
-        android:layout_width="wrap_content"
+    <View
+        android:id="@+id/line_separator"
+        android:layout_width="1dp"
         android:layout_height="0dp"
+        android:background="@android:color/black"
 
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-
-        app:layout_constraintTop_toTopOf="@+id/staff"
-        app:layout_constraintBottom_toBottomOf="@+id/staff"
+        app:layout_constraintTop_toTopOf="@id/staff"
+        app:layout_constraintBottom_toBottomOf="@id/staff"
+        app:layout_constraintLeft_toLeftOf="@id/staff"
+        app:layout_constraintRight_toRightOf="@id/staff"
         />
 
     <fragment

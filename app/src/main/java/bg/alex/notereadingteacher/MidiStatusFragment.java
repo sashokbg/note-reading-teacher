@@ -10,7 +10,6 @@ import android.transition.TransitionManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import bg.alex.notereadingteacher.midi.MidiAware;
@@ -57,8 +56,8 @@ public class MidiStatusFragment extends Fragment implements View.OnClickListener
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        fragment = (ViewGroup ) view.findViewById(R.id.midi_status_fragment);
-        deviceInfos = (TextView) view.findViewById(R.id.device_infos);
+        fragment = view.findViewById(R.id.midi_status_fragment);
+        deviceInfos = view.findViewById(R.id.device_infos);
 
         deviceInfos.setVisibility(View.GONE);
 
