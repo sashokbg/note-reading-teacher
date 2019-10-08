@@ -25,12 +25,9 @@ public class AdvancedNotesPrinter implements NotesPrinter {
     private Clef clef;
     private NumberFormat formatter;
 
-    private NoteImageFactory notesImageFactory;
-
     public AdvancedNotesPrinter(Clef clef, Activity activity) {
         this.activity = activity;
         this.clef = clef;
-        this.notesImageFactory = new NoteImageFactory(activity);
         this.formatter = new DecimalFormat("00");
     }
 
@@ -91,9 +88,11 @@ public class AdvancedNotesPrinter implements NotesPrinter {
 
             for (int i = 0; i < noteGuesses.size(); i++) {
                 NoteGuess noteGuess = noteGuesses.get(i);
+                
+                ImageView noteView = new ImageView(activity);
+                noteView.setId(View.generateViewId());
+                noteView.setTag("note");
 
-
-                ImageView noteView = notesImageFactory.createImageView();
                 if(i%4 == 0) {
                     noteView.setPadding(100, 0, 0, 0);
                 } else {
