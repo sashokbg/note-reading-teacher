@@ -12,6 +12,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 import bg.alex.notereadingteacher.R;
@@ -24,11 +25,16 @@ public class AdvancedNotesPrinter implements NotesPrinter {
     private Activity activity;
     private Clef clef;
     private NumberFormat formatter;
+    private View indicator;
+    private ConstraintLayout constraintLayout;
+    private List<ImageView> imageViews;
 
     public AdvancedNotesPrinter(Clef clef, Activity activity) {
         this.activity = activity;
         this.clef = clef;
         this.formatter = new DecimalFormat("00");
+        this.constraintLayout = activity.findViewById(R.id.notes_layout);
+        this.imageViews = new ArrayList<>();
     }
 
     public void setClef(Clef clef) {
@@ -40,7 +46,7 @@ public class AdvancedNotesPrinter implements NotesPrinter {
 
         if (clef == Clef.F) {
             baseNote = new Note(NotePitch.A, 1);
-        } else if (clef == Clef.G){
+        } else if (clef == Clef.G) {
             baseNote = new Note(NotePitch.F, 3);
         } else {
             throw new RuntimeException("Unsupported clef " + clef);
@@ -74,10 +80,32 @@ public class AdvancedNotesPrinter implements NotesPrinter {
     }
 
     @Override
+    public void printNoteIndicator(int noteGuess) {
+        activity.runOnUiThread(() -> {
+            indicator = activity.findViewById(R.id.indicator);
+            ImageView currentNoteView = imageViews.get(noteGuess);
+
+            ConstraintLayout.LayoutParams constraintLayoutParams = new ConstraintLayout.LayoutParams(
+                    indicator.getLayoutParams());
+
+            indicator.setLayoutParams(constraintLayoutParams);
+
+            ConstraintSet constraintSet = new ConstraintSet();
+            constraintSet.clone(constraintLayout);
+
+            constraintSet.connect(indicator.getId(), ConstraintSet.TOP, currentNoteView.getId(), ConstraintSet.BOTTOM);
+            constraintSet.connect(indicator.getId(), ConstraintSet.LEFT, currentNoteView.getId(), ConstraintSet.LEFT);
+            constraintSet.connect(indicator.getId(), ConstraintSet.RIGHT, currentNoteView.getId(), ConstraintSet.RIGHT);
+
+            constraintSet.applyTo(constraintLayout);
+        });
+    }
+
+    @Override
     public void printNoteGuesses(final List<NoteGuess> noteGuesses) {
         activity.runOnUiThread(() -> {
             ImageView previousNoteView = null;
-            ConstraintLayout constraintLayout = activity.findViewById(R.id.notes_layout);
+            imageViews = new ArrayList<>();
 
             View noteToRemove;
             do {
@@ -88,43 +116,43 @@ public class AdvancedNotesPrinter implements NotesPrinter {
 
             for (int i = 0; i < noteGuesses.size(); i++) {
                 NoteGuess noteGuess = noteGuesses.get(i);
-                
+
                 ImageView noteView = new ImageView(activity);
                 noteView.setId(View.generateViewId());
                 noteView.setTag("note");
+                imageViews.add(noteView);
 
-                if(i%4 == 0) {
-                    noteView.setPadding(100, 0, 0, 0);
-                } else {
-                    noteView.setPadding(4, 0, 0, 0);
-                }
                 noteView.setAdjustViewBounds(true);
 
                 ConstraintLayout.LayoutParams constraintLayoutParams = new ConstraintLayout.LayoutParams(
                         new ViewGroup.LayoutParams(
-                        ViewGroup.LayoutParams.WRAP_CONTENT,
-                        0));
+                                ViewGroup.LayoutParams.WRAP_CONTENT,
+                                0));
 
                 noteView.setLayoutParams(constraintLayoutParams);
                 constraintLayout.addView(noteView);
 
                 ConstraintSet constraintSet = new ConstraintSet();
                 constraintSet.clone(constraintLayout);
+                noteView.setPadding(4, 0, 0, 0);
 
                 constraintSet.connect(noteView.getId(), ConstraintSet.TOP, R.id.staff, ConstraintSet.TOP);
                 constraintSet.connect(noteView.getId(), ConstraintSet.BOTTOM, R.id.staff, ConstraintSet.BOTTOM);
-                if(i == 0) {
-                    constraintSet.connect(noteView.getId(), ConstraintSet.LEFT, constraintLayout.getId(), ConstraintSet.LEFT);
-                    constraintSet.connect(noteView.getId(), ConstraintSet.RIGHT, constraintLayout.getId(), ConstraintSet.RIGHT);
-                    constraintSet.setHorizontalBias(noteView.getId(), 0.15f);
+                if (i == 0) {
+                    constraintSet.connect(noteView.getId(), ConstraintSet.LEFT, R.id.staff, ConstraintSet.LEFT);
+                    constraintSet.connect(noteView.getId(), ConstraintSet.RIGHT, R.id.staff, ConstraintSet.RIGHT);
+                    constraintSet.setHorizontalBias(noteView.getId(), 0.22f);
                 } else {
-                    constraintSet.connect(noteView.getId(), ConstraintSet.LEFT, previousNoteView.getId(), ConstraintSet.RIGHT);
+                    if (i % 4 == 0) {
+                        constraintSet.connect(noteView.getId(), ConstraintSet.LEFT, R.id.line_separator, ConstraintSet.RIGHT);
+                    } else {
+                        constraintSet.connect(noteView.getId(), ConstraintSet.LEFT, previousNoteView.getId(), ConstraintSet.RIGHT);
+                    }
+
                 }
 
                 constraintSet.applyTo(constraintLayout);
-
                 applyNoteImageTo(noteView, noteGuess);
-
                 previousNoteView = noteView;
             }
         });

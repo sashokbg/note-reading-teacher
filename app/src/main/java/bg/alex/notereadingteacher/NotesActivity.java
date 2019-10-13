@@ -6,7 +6,7 @@ import android.media.midi.MidiOutputPort;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
-import android.widget.Button;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -32,6 +32,7 @@ public class NotesActivity extends Activity implements MidiAware {
     private NotesPrinter printer;
     private ImageView staff;
     private TextView debug;
+    private static final int MAX_NUMBER_OF_NOTES = 8;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -49,10 +50,6 @@ public class NotesActivity extends Activity implements MidiAware {
         super.onPostCreate(savedInstanceState);
 
         staff = findViewById(R.id.staff);
-
-        final Button nextNoteButton = findViewById(R.id.next_note);
-        nextNoteButton.setOnClickListener(v -> generateRandomNote());
-
         Intent intent = getIntent();
 
         TextView gameType = findViewById(R.id.game_type);
@@ -69,16 +66,15 @@ public class NotesActivity extends Activity implements MidiAware {
             printer = new AdvancedNotesPrinter(Clef.G, this);
         }
 
-        generateRandomNote();
+        nextLine(null);
     }
 
     public void guessNote(final Note note) {
         runOnUiThread(() -> {
             if(currentNoteGuess == noteGuessList.size() - 1) {
-                generateRandomNote();
+                nextLine(null);
             } else if (noteGuessList.get(currentNoteGuess).getNote().equals(note)) {
-                currentNoteGuess++;
-                debug.setText(noteGuessList.get(currentNoteGuess).getNote().toString());
+                nextNote(null);
             }
         });
     }
@@ -90,17 +86,26 @@ public class NotesActivity extends Activity implements MidiAware {
         midiOutputPort.connect(new MidiNotesReceiver(this));
     }
 
-    public void generateRandomNote() {
+    public void nextNote(View view) {
+        currentNoteGuess++;
+        if(currentNoteGuess >= MAX_NUMBER_OF_NOTES) {
+            nextLine(view);
+        } else {
+            debug.setText(noteGuessList.get(currentNoteGuess).getNote().toString());
+            printer.printNoteIndicator(currentNoteGuess);
+        }
+    }
+
+    public void nextLine(View view) {
         noteGuessList = new ArrayList<>();
         currentNoteGuess = 0;
 
-        int numberOfNoteGuesses = 8;
-        for(int i = 0; i< numberOfNoteGuesses; i++) {
+        for(int i = 0; i< MAX_NUMBER_OF_NOTES; i++) {
             noteGuessList.add(notesGuesser.randomNote());
         }
 
         debug.setText(noteGuessList.get(currentNoteGuess).getNote().toString());
-
         printer.printNoteGuesses(noteGuessList);
+        printer.printNoteIndicator(currentNoteGuess);
     }
 }

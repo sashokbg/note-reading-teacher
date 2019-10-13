@@ -2,7 +2,8 @@
     <string name="app_name">Note Reading Teacher</string>
     <string name="title_choose_mode">Note Reading Teacher - Mode</string>
 
-    <string name="next_note">Next</string>
+    <string name="next_note">Next ♪</string>
+    <string name="next_line">Next ♪♪</string>
 
     <string name="midi_device_status_connected">Device connected</string>
     <string name="midi_device_status_disconnected">Device disconnected</string>

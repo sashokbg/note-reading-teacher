@@ -57,9 +57,24 @@
 
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        android:onClick="nextNote"
 
-        app:layout_constraintHorizontal_bias="0.05"
-        tools:text="" />
+        app:layout_constraintHorizontal_bias="0.05" />
+
+    <Button
+        android:id="@+id/next_line"
+        android:layout_width="60dp"
+        android:layout_height="40dp"
+        android:background="@android:color/white"
+        android:text="@string/next_line"
+        app:layout_constraintBottom_toTopOf="@+id/staff"
+        app:layout_constraintTop_toTopOf="parent"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/next_note"
+        android:onClick="nextLine"
+
+        app:layout_constraintHorizontal_bias="0.05" />
 
     <ImageView
         android:id="@+id/staff"
@@ -86,6 +101,16 @@
         app:layout_constraintBottom_toBottomOf="@id/staff"
         app:layout_constraintLeft_toLeftOf="@id/staff"
         app:layout_constraintRight_toRightOf="@id/staff"
+        />
+
+    <View
+        android:id="@+id/indicator"
+        android:layout_width="8dp"
+        android:layout_height="20dp"
+        android:background="@android:color/black"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/staff"
         />
 
     <fragment

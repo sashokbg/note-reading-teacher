@@ -6,4 +6,6 @@ import bg.alex.notereadingteacher.guesser.NoteGuess;
 
 public interface NotesPrinter {
     void printNoteGuesses(final List<NoteGuess> noteGuess);
+
+    void printNoteIndicator(int noteGuess);
 }
