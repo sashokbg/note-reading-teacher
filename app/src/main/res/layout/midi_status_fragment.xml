@@ -11,16 +11,16 @@
     <ImageView
         android:id="@+id/status_image_connected"
         android:src="@drawable/green_tick"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toEndOf="@id/status" />
 
     <ImageView
-        android:id="@+id/status_image_discconnected"
+        android:id="@+id/status_image_disconnected"
         android:src="@drawable/red_cross"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toEndOf="@id/status" />
 

@@ -2,11 +2,14 @@ package bg.alex.notereadingteacher;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.media.midi.MidiOutputPort;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.transition.TransitionManager;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -33,6 +36,7 @@ public class NotesActivity extends Activity implements MidiAware {
     private ImageView staff;
     private TextView debug;
     private static final int MAX_NUMBER_OF_NOTES = 8;
+    private ViewGroup viewGroup;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -48,6 +52,7 @@ public class NotesActivity extends Activity implements MidiAware {
     @Override
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
+        this.viewGroup = findViewById(R.id.notes_layout);
 
         staff = findViewById(R.id.staff);
         Intent intent = getIntent();
@@ -92,8 +97,15 @@ public class NotesActivity extends Activity implements MidiAware {
             nextLine(view);
         } else {
             debug.setText(noteGuessList.get(currentNoteGuess).getNote().toString());
+            TransitionManager.beginDelayedTransition(viewGroup);
             printer.printNoteIndicator(currentNoteGuess);
         }
+
+//        ColorDrawable colorDrawable = new ColorDrawable(getColor(R.color.mistake_color));
+//        viewGroup.setBackground(colorDrawable);
+//
+//        colorDrawable = new ColorDrawable(getColor(R.color.colorPrimary));
+//        viewGroup.setBackground(colorDrawable);
     }
 
     public void nextLine(View view) {

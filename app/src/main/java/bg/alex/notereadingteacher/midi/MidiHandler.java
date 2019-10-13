@@ -36,7 +36,7 @@ public class MidiHandler {
         this.view = view;
         this.deviceStatus = (TextView) view.findViewById(R.id.status);
         this.deviceInfos = (TextView) view.findViewById(R.id.device_infos);
-        this.statusImageDisconnected = (ImageView) view.findViewById(R.id.status_image_discconnected);
+        this.statusImageDisconnected = (ImageView) view.findViewById(R.id.status_image_disconnected);
         this.statusImageConnected = (ImageView) view.findViewById(R.id.status_image_connected);
 
         String deviceInfos = getDefaultDeviceInfos(view);

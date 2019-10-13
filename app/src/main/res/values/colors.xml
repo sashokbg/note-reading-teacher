@@ -6,4 +6,5 @@
 
     <color name="background_gray">#E1E1E1E1</color>
     <color name="background_darker_gray">#CCCCCC</color>
+    <color name="mistake_color">#FF3434</color>
 </resources>
