@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.support.constraint.ConstraintLayout;
 import android.support.constraint.ConstraintSet;
 import android.transition.TransitionManager;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -21,8 +22,11 @@ import bg.alex.notereadingteacher.guesser.NoteGuess;
 import bg.alex.notereadingteacher.guesser.NotesGuesser;
 import bg.alex.notereadingteacher.notes.Clef;
 import bg.alex.notereadingteacher.notes.Note;
+import bg.alex.notereadingteacher.notes.NotePitch;
 
 public class AdvancedNotesPrinter implements NotesPrinter {
+    private static final String TAG = "AdvancedNotesPrinter";
+
     private Activity activity;
     private Clef clef;
     private NumberFormat formatter;
@@ -47,16 +51,15 @@ public class AdvancedNotesPrinter implements NotesPrinter {
             note = note.previousWholeNote();
         }
 
-
         Note baseNote;
         Note maxNote;
 
         if (clef == Clef.F) {
-            baseNote = NotesGuesser.MIN_NOTE_F;
-            maxNote = NotesGuesser.MAX_NOTE_F;
+            baseNote = new Note(NotePitch.A, 1);
+            maxNote = new Note(NotePitch.G, 4);
         } else if (clef == Clef.G) {
-            baseNote = NotesGuesser.MIN_NOTE_G;
-            maxNote = NotesGuesser.MAX_NOTE_G;
+            baseNote = new Note(NotePitch.F, 3);
+            maxNote = new Note(NotePitch.E, 6);
         } else {
             throw new RuntimeException("Unsupported clef " + clef);
         }
@@ -76,7 +79,10 @@ public class AdvancedNotesPrinter implements NotesPrinter {
             baseNote = baseNote.nextWholeNote();
         }
 
-        return "note_" + formatter.format(noteCounter);
+        String noteImage = "note_" + formatter.format(noteCounter);
+        Log.i(TAG, "Resolved note image : "+ noteImage + " for note " + note);
+
+        return noteImage;
     }
 
     public void applyNoteImageTo(ImageView noteView, NoteGuess noteGuess) {
