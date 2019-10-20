@@ -8,4 +8,8 @@ public interface NotesPrinter {
     void printNoteGuesses(final List<NoteGuess> noteGuess);
 
     void printNoteIndicator(int noteGuess);
+
+    void removeMistakes();
+
+    void printMistake(NoteGuess noteGuess, int currentNoteGuess);
 }

@@ -55,10 +55,19 @@ public class Note implements Comparable<Note> {
     }
 
     public Note nextWholeNote() {
-        if (this.notePitch == NotePitch.E || this.notePitch == NotePitch.B) {
+        if (this.notePitch == NotePitch.E || this.notePitch == NotePitch.B || isSharp()) {
             return new Note(this.getAbsolutePitch() + 1);
         } else {
             return new Note(this.getAbsolutePitch() + 2);
+        }
+    }
+
+
+    public Note previousWholeNote() {
+        if(this.notePitch == NotePitch.F || this.notePitch == NotePitch.C || isSharp()) {
+            return new Note(this.getAbsolutePitch() - 1);
+        } else {
+            return new Note(this.getAbsolutePitch() - 2);
         }
     }
 

@@ -97,6 +97,42 @@ public class NoteTest {
     }
 
     @Test
+    public void should_create_previous_whole_note_from_D_sharp() {
+        Note noteDSharp = new Note(NotePitch.D_SHARP, 3);
+
+        Note previousNote = noteDSharp.previousWholeNote();
+
+        assertThat(previousNote).isEqualTo(new Note(NotePitch.D, 3));
+    }
+
+    @Test
+    public void should_create_previous_whole_note_from_D() {
+        Note noteDSharp = new Note(NotePitch.D, 3);
+
+        Note previousNote = noteDSharp.previousWholeNote();
+
+        assertThat(previousNote).isEqualTo(new Note(NotePitch.C, 3));
+    }
+
+    @Test
+    public void should_create_previous_whole_note_from_F() {
+        Note noteDSharp = new Note(NotePitch.F, 3);
+
+        Note previousNote = noteDSharp.previousWholeNote();
+
+        assertThat(previousNote).isEqualTo(new Note(NotePitch.E, 3));
+    }
+
+    @Test
+    public void should_create_previous_whole_note_from_C() {
+        Note noteDSharp = new Note(NotePitch.C, 3);
+
+        Note previousNote = noteDSharp.previousWholeNote();
+
+        assertThat(previousNote).isEqualTo(new Note(NotePitch.B, 2));
+    }
+
+    @Test
     public void should_create_next_whole_note_from_E_to_F() {
         Note noteF = new Note(NotePitch.E, 3);
 
@@ -104,6 +140,15 @@ public class NoteTest {
 
         assertThat(nextNote.getNotePitch()).isEqualTo(NotePitch.F);
         assertThat(nextNote.getOctave()).isEqualTo(3);
+    }
+
+    @Test
+    public void should_create_next_whole_note_from_FSharp_to_G() {
+        Note noteF = new Note(NotePitch.F_SHARP, 3);
+
+        Note nextNote = noteF.nextWholeNote();
+
+        assertThat(nextNote).isEqualTo(new Note(NotePitch.G, 3));
     }
 
     @Test

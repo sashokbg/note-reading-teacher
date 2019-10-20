@@ -3,6 +3,7 @@ package bg.alex.notereadingteacher.printer;
 import android.app.Activity;
 import android.support.constraint.ConstraintLayout;
 import android.support.constraint.ConstraintSet;
+import android.transition.TransitionManager;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -17,9 +18,9 @@ import java.util.List;
 
 import bg.alex.notereadingteacher.R;
 import bg.alex.notereadingteacher.guesser.NoteGuess;
+import bg.alex.notereadingteacher.guesser.NotesGuesser;
 import bg.alex.notereadingteacher.notes.Clef;
 import bg.alex.notereadingteacher.notes.Note;
-import bg.alex.notereadingteacher.notes.NotePitch;
 
 public class AdvancedNotesPrinter implements NotesPrinter {
     private Activity activity;
@@ -27,14 +28,14 @@ public class AdvancedNotesPrinter implements NotesPrinter {
     private NumberFormat formatter;
     private View indicator;
     private ConstraintLayout constraintLayout;
-    private List<ImageView> imageViews;
+    private List<ImageView> notesToGuess;
 
     public AdvancedNotesPrinter(Clef clef, Activity activity) {
         this.activity = activity;
         this.clef = clef;
         this.formatter = new DecimalFormat("00");
         this.constraintLayout = activity.findViewById(R.id.notes_layout);
-        this.imageViews = new ArrayList<>();
+        this.notesToGuess = new ArrayList<>();
     }
 
     public void setClef(Clef clef) {
@@ -42,14 +43,30 @@ public class AdvancedNotesPrinter implements NotesPrinter {
     }
 
     private String getImageNameForNote(Note note, Clef clef) {
+        if(note.isSharp()) {
+            note = note.previousWholeNote();
+        }
+
+
         Note baseNote;
+        Note maxNote;
 
         if (clef == Clef.F) {
-            baseNote = new Note(NotePitch.A, 1);
+            baseNote = NotesGuesser.MIN_NOTE_F;
+            maxNote = NotesGuesser.MAX_NOTE_F;
         } else if (clef == Clef.G) {
-            baseNote = new Note(NotePitch.F, 3);
+            baseNote = NotesGuesser.MIN_NOTE_G;
+            maxNote = NotesGuesser.MAX_NOTE_G;
         } else {
             throw new RuntimeException("Unsupported clef " + clef);
+        }
+
+        if(baseNote.isGreaterThan(note)) {
+            note = baseNote;
+        }
+
+        if(note.isGreaterThan(maxNote)) {
+            note = maxNote;
         }
 
         int noteCounter = 1;
@@ -80,10 +97,59 @@ public class AdvancedNotesPrinter implements NotesPrinter {
     }
 
     @Override
+    public void removeMistakes() {
+        activity.runOnUiThread(() -> {
+            ImageView noteToRemove;
+            do {
+                noteToRemove = constraintLayout.findViewWithTag("note-mistake");
+                TransitionManager.beginDelayedTransition(constraintLayout);
+                constraintLayout.removeView(noteToRemove);
+            } while (noteToRemove != null);
+        });
+    }
+
+    @Override
+    public void printMistake(NoteGuess noteGuess, int currentNoteGuess) {
+        activity.runOnUiThread(() -> {
+            ImageView mistakeNote = new ImageView(activity);
+            mistakeNote.setImageAlpha(128);
+            ImageView currentNoteView = notesToGuess.get(currentNoteGuess);
+
+            mistakeNote.setId(View.generateViewId());
+            mistakeNote.setTag("note-mistake");
+
+            constraintLayout.addView(mistakeNote);
+
+            mistakeNote.setAdjustViewBounds(true);
+
+            ConstraintLayout.LayoutParams constraintLayoutParams = new ConstraintLayout.LayoutParams(
+                    new ViewGroup.LayoutParams(
+                            ViewGroup.LayoutParams.WRAP_CONTENT,
+                            0));
+
+            mistakeNote.setLayoutParams(constraintLayoutParams);
+
+            ConstraintSet constraintSet = new ConstraintSet();
+            constraintSet.clone(constraintLayout);
+            mistakeNote.setPadding(4, 0, 0, 0);
+
+            constraintSet.connect(mistakeNote.getId(), ConstraintSet.TOP, R.id.staff, ConstraintSet.TOP);
+            constraintSet.connect(mistakeNote.getId(), ConstraintSet.BOTTOM, R.id.staff, ConstraintSet.BOTTOM);
+            constraintSet.connect(mistakeNote.getId(), ConstraintSet.LEFT, currentNoteView.getId(), ConstraintSet.LEFT);
+            constraintSet.connect(mistakeNote.getId(), ConstraintSet.RIGHT, currentNoteView.getId(), ConstraintSet.RIGHT);
+
+            constraintSet.applyTo(constraintLayout);
+            applyNoteImageTo(mistakeNote, noteGuess);
+        });
+    }
+
+    @Override
     public void printNoteIndicator(int noteGuess) {
         activity.runOnUiThread(() -> {
+            TransitionManager.beginDelayedTransition(constraintLayout);
+
             indicator = activity.findViewById(R.id.indicator);
-            ImageView currentNoteView = imageViews.get(noteGuess);
+            ImageView currentNoteView = notesToGuess.get(noteGuess);
 
             ConstraintLayout.LayoutParams constraintLayoutParams = new ConstraintLayout.LayoutParams(
                     indicator.getLayoutParams());
@@ -105,7 +171,7 @@ public class AdvancedNotesPrinter implements NotesPrinter {
     public void printNoteGuesses(final List<NoteGuess> noteGuesses) {
         activity.runOnUiThread(() -> {
             ImageView previousNoteView = null;
-            imageViews = new ArrayList<>();
+            notesToGuess = new ArrayList<>();
 
             View noteToRemove;
             do {
@@ -120,7 +186,7 @@ public class AdvancedNotesPrinter implements NotesPrinter {
                 ImageView noteView = new ImageView(activity);
                 noteView.setId(View.generateViewId());
                 noteView.setTag("note");
-                imageViews.add(noteView);
+                notesToGuess.add(noteView);
 
                 noteView.setAdjustViewBounds(true);
 

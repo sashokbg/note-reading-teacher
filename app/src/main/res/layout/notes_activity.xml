@@ -57,7 +57,7 @@
 
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:onClick="nextNote"
+        android:onClick="advanceToNextNote"
 
         app:layout_constraintHorizontal_bias="0.05" />
 
@@ -72,7 +72,7 @@
 
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/next_note"
-        android:onClick="nextLine"
+        android:onClick="advanceToNextLine"
 
         app:layout_constraintHorizontal_bias="0.05" />
 

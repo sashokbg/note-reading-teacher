@@ -14,6 +14,10 @@ public class NotesGuesser {
     private Note minNote;
     private Note maxNote;
     private Clef clef;
+    public static Note MIN_NOTE_F = new Note(NotePitch.E, 2);
+    public static Note MAX_NOTE_F = new Note(NotePitch.E, 4);
+    public static Note MIN_NOTE_G = new Note(NotePitch.A, 3);
+    public static Note MAX_NOTE_G = new Note(NotePitch.C, 6);
 
     NotesGuesser(Clef clef, Random random) {
         this.random = random;
@@ -30,11 +34,11 @@ public class NotesGuesser {
 
     private void setNotesRange(Clef clef) {
         if(clef.equals(Clef.F)){
-            minNote = new Note(NotePitch.E, 2);
-            maxNote = new Note(NotePitch.E, 4);
+            minNote = MIN_NOTE_F;
+            maxNote = MAX_NOTE_F;
         } else if(clef.equals(Clef.G)) {
-            minNote = new Note(NotePitch.A, 3);
-            maxNote = new Note(NotePitch.C, 6);
+            minNote = MIN_NOTE_G;
+            maxNote = MAX_NOTE_G;
         }
     }
 
