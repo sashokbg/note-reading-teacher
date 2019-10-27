@@ -1,6 +1,8 @@
 package bg.alex.notereadingteacher.printer;
 
 import android.app.Activity;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.support.constraint.ConstraintLayout;
 import android.support.constraint.ConstraintSet;
 import android.transition.TransitionManager;
@@ -136,7 +138,7 @@ public class AdvancedNotesPrinter implements NotesPrinter {
 
             ConstraintSet constraintSet = new ConstraintSet();
             constraintSet.clone(constraintLayout);
-            mistakeNote.setPadding(4, 0, 0, 0);
+            mistakeNote.setPadding(0, 0, 0, 4);
 
             constraintSet.connect(mistakeNote.getId(), ConstraintSet.TOP, R.id.staff, ConstraintSet.TOP);
             constraintSet.connect(mistakeNote.getId(), ConstraintSet.BOTTOM, R.id.staff, ConstraintSet.BOTTOM);
@@ -175,16 +177,37 @@ public class AdvancedNotesPrinter implements NotesPrinter {
     public void printNoteGuesses(final List<NoteGuess> noteGuesses) {
         activity.runOnUiThread(() -> {
             ImageView previousNoteView = null;
+            ImageView divider = null;
             notesToGuess = new ArrayList<>();
 
-            View noteToRemove;
+            View noteToRemove, dividerToRemove;
             do {
                 noteToRemove = constraintLayout.findViewWithTag("note");
+                dividerToRemove = constraintLayout.findViewWithTag("divider");
                 constraintLayout.removeView(noteToRemove);
+                constraintLayout.removeView(dividerToRemove);
             } while (noteToRemove != null);
 
 
+
+
             for (int i = 0; i < noteGuesses.size(); i++) {
+
+                if(i%4 == 0 && (i != 0)) {
+                    divider = new ImageView(activity);
+                    divider.setId(View.generateViewId());
+                    divider.setImageResource(R.drawable.divider);
+                    divider.setTag("divider");
+
+                    ConstraintLayout.LayoutParams csp = new ConstraintLayout.LayoutParams(
+                            new ViewGroup.LayoutParams(
+                                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                                    0));
+
+                    divider.setLayoutParams(csp);
+                    constraintLayout.addView(divider);
+                }
+
                 NoteGuess noteGuess = noteGuesses.get(i);
 
                 ImageView noteView = new ImageView(activity);
@@ -209,10 +232,15 @@ public class AdvancedNotesPrinter implements NotesPrinter {
                 constraintSet.connect(noteView.getId(), ConstraintSet.TOP, R.id.staff, ConstraintSet.TOP);
                 constraintSet.connect(noteView.getId(), ConstraintSet.BOTTOM, R.id.staff, ConstraintSet.BOTTOM);
                 if (i == 0) {
-                    constraintSet.connect(noteView.getId(), ConstraintSet.LEFT, R.id.sol_key, ConstraintSet.RIGHT);
+                    constraintSet.connect(noteView.getId(), ConstraintSet.LEFT, R.id.key, ConstraintSet.RIGHT);
                 } else {
                     if (i % 4 == 0) {
-                        constraintSet.connect(noteView.getId(), ConstraintSet.LEFT, R.id.line_separator, ConstraintSet.RIGHT);
+                        constraintSet.connect(divider.getId(), ConstraintSet.TOP, R.id.staff, ConstraintSet.TOP);
+                        constraintSet.connect(divider.getId(), ConstraintSet.BOTTOM, R.id.staff, ConstraintSet.BOTTOM);
+
+                        constraintSet.connect(divider.getId(), ConstraintSet.LEFT, previousNoteView.getId(), ConstraintSet.RIGHT);
+
+                        constraintSet.connect(noteView.getId(), ConstraintSet.LEFT, divider.getId(), ConstraintSet.RIGHT);
                     } else {
                         constraintSet.connect(noteView.getId(), ConstraintSet.LEFT, previousNoteView.getId(), ConstraintSet.RIGHT);
                     }

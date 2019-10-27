@@ -79,59 +79,61 @@
 
     <ImageView
         android:id="@+id/staff"
-        android:src="@drawable/staff_g"
-        android:background="@color/white"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
+        android:background="@color/white"
 
-        app:layout_constraintDimensionRatio="5:1"
+        android:scaleType="fitXY"
 
-        app:layout_constraintTop_toTopOf="parent"
+        android:src="@drawable/staff"
         app:layout_constraintBottom_toBottomOf="parent"
 
-        app:layout_constraintStart_toStartOf="parent"
-        />
-
-    <ImageView
-        android:id="@+id/sol_key"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:src="@drawable/sol_key"
-
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintDimensionRatio="4:1"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.25"
-        app:layout_constraintTop_toTopOf="@id/staff"
-        app:layout_constraintBottom_toBottomOf="@id/staff"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
 
-        android:adjustViewBounds="true"
         />
 
 <!--    <ImageView-->
-<!--        android:id="@+id/current_note"-->
-<!--        android:src="@drawable/note_12"-->
-
+<!--        android:id="@+id/divider"-->
 <!--        android:layout_width="wrap_content"-->
 <!--        android:layout_height="0dp"-->
 
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="@id/staff"-->
+<!--        app:layout_constraintBottom_toBottomOf="@id/staff"-->
+<!--        app:layout_constraintEnd_toEndOf="@id/staff"-->
+<!--        app:layout_constraintStart_toEndOf="@id/key"-->
+<!--        android:src="@drawable/divider"-->
 
-<!--        app:layout_constraintTop_toTopOf="@+id/staff"-->
-<!--        app:layout_constraintBottom_toBottomOf="@+id/staff"-->
 <!--        />-->
 
-    <View
-        android:id="@+id/line_separator"
-        android:layout_width="1dp"
-        android:layout_height="0dp"
-        android:background="@android:color/black"
+<!--    <ImageView-->
+<!--        android:id="@+id/current_note"-->
+<!--        android:layout_width="wrap_content"-->
 
-        app:layout_constraintTop_toTopOf="@id/staff"
+<!--        android:layout_height="0dp"-->
+
+<!--        android:src="@drawable/note_15"-->
+<!--        app:layout_constraintBottom_toBottomOf="@+id/staff"-->
+
+<!--        app:layout_constraintStart_toEndOf="@id/line_separator"-->
+<!--        app:layout_constraintTop_toTopOf="@+id/staff" />-->
+
+    <ImageView
+        android:id="@+id/key"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+
+        android:adjustViewBounds="true"
+        android:src="@drawable/sol_key"
         app:layout_constraintBottom_toBottomOf="@id/staff"
-        app:layout_constraintLeft_toLeftOf="@id/staff"
-        app:layout_constraintRight_toRightOf="@id/staff"
-        />
+        app:layout_constraintTop_toTopOf="@id/staff"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+
+        app:layout_constraintHorizontal_bias="0.02" />
 
     <ImageView
         android:id="@+id/indicator"

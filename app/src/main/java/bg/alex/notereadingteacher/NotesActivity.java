@@ -57,13 +57,15 @@ public class NotesActivity extends Activity implements MidiAware {
         TextView gameType = findViewById(R.id.game_type);
         String intentMessage = intent.getStringExtra(HomeActivity.GAME_TYPE);
         gameType.setText(intentMessage);
+        staff.setImageResource(R.drawable.staff);
+        ImageView key = findViewById(R.id.key);
 
         if(intentMessage.equals("Game in F")) {
-            staff.setImageResource(R.drawable.staff_f);
+            key.setImageResource(R.drawable.fa_key);
             notesGuesser = new NotesGuesser(Clef.F);
             printer = new AdvancedNotesPrinter(Clef.F, this);
         } else {
-            staff.setImageResource(R.drawable.staff_g);
+            key.setImageResource(R.drawable.sol_key);
             notesGuesser = new NotesGuesser(Clef.G);
             printer = new AdvancedNotesPrinter(Clef.G, this);
         }
