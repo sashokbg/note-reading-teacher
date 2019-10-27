@@ -19,7 +19,6 @@ import java.util.List;
 
 import bg.alex.notereadingteacher.R;
 import bg.alex.notereadingteacher.guesser.NoteGuess;
-import bg.alex.notereadingteacher.guesser.NotesGuesser;
 import bg.alex.notereadingteacher.notes.Clef;
 import bg.alex.notereadingteacher.notes.Note;
 import bg.alex.notereadingteacher.notes.NotePitch;
@@ -106,11 +105,11 @@ public class AdvancedNotesPrinter implements NotesPrinter {
     public void removeMistakes() {
         activity.runOnUiThread(() -> {
             ImageView noteToRemove;
-            do {
-                noteToRemove = constraintLayout.findViewWithTag("note-mistake");
+
+            while ((noteToRemove = constraintLayout.findViewWithTag("note-mistake")) != null ){
                 TransitionManager.beginDelayedTransition(constraintLayout);
                 constraintLayout.removeView(noteToRemove);
-            } while (noteToRemove != null);
+            }
         });
     }
 
@@ -152,7 +151,6 @@ public class AdvancedNotesPrinter implements NotesPrinter {
     @Override
     public void printNoteIndicator(int noteGuess) {
         activity.runOnUiThread(() -> {
-            TransitionManager.beginDelayedTransition(constraintLayout);
 
             indicator = activity.findViewById(R.id.indicator);
             ImageView currentNoteView = notesToGuess.get(noteGuess);
@@ -211,9 +209,7 @@ public class AdvancedNotesPrinter implements NotesPrinter {
                 constraintSet.connect(noteView.getId(), ConstraintSet.TOP, R.id.staff, ConstraintSet.TOP);
                 constraintSet.connect(noteView.getId(), ConstraintSet.BOTTOM, R.id.staff, ConstraintSet.BOTTOM);
                 if (i == 0) {
-                    constraintSet.connect(noteView.getId(), ConstraintSet.LEFT, R.id.staff, ConstraintSet.LEFT);
-                    constraintSet.connect(noteView.getId(), ConstraintSet.RIGHT, R.id.staff, ConstraintSet.RIGHT);
-                    constraintSet.setHorizontalBias(noteView.getId(), 0.22f);
+                    constraintSet.connect(noteView.getId(), ConstraintSet.LEFT, R.id.sol_key, ConstraintSet.RIGHT);
                 } else {
                     if (i % 4 == 0) {
                         constraintSet.connect(noteView.getId(), ConstraintSet.LEFT, R.id.line_separator, ConstraintSet.RIGHT);

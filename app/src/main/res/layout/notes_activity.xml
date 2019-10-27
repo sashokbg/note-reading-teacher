@@ -7,8 +7,9 @@
     android:id="@+id/notes_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimary"
+    android:background="@drawable/background"
     android:keepScreenOn="true"
+    android:screenOrientation="landscape"
 
     tools:context=".NotesActivity">
 
@@ -83,13 +84,42 @@
         android:layout_width="wrap_content"
         android:layout_height="0dp"
 
-        app:layout_constraintDimensionRatio="3:1"
+        app:layout_constraintDimensionRatio="5:1"
 
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
 
         app:layout_constraintStart_toStartOf="parent"
         />
+
+    <ImageView
+        android:id="@+id/sol_key"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:src="@drawable/sol_key"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.25"
+        app:layout_constraintTop_toTopOf="@id/staff"
+        app:layout_constraintBottom_toBottomOf="@id/staff"
+
+        android:adjustViewBounds="true"
+        />
+
+<!--    <ImageView-->
+<!--        android:id="@+id/current_note"-->
+<!--        android:src="@drawable/note_12"-->
+
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="0dp"-->
+
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+
+<!--        app:layout_constraintTop_toTopOf="@+id/staff"-->
+<!--        app:layout_constraintBottom_toBottomOf="@+id/staff"-->
+<!--        />-->
 
     <View
         android:id="@+id/line_separator"

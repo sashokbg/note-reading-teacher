@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.media.midi.MidiOutputPort;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.transition.TransitionManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -100,6 +101,8 @@ public class NotesActivity extends Activity implements MidiAware {
         if(currentNoteGuess >= MAX_NUMBER_OF_NOTES) {
             advanceToNextLine(view);
         } else {
+            TransitionManager.endTransitions(findViewById(R.id.notes_layout));
+            TransitionManager.beginDelayedTransition(findViewById(R.id.notes_layout));
             debug.setText(noteGuessList.get(currentNoteGuess).getNote().toString());
             printer.printNoteIndicator(currentNoteGuess);
         }
