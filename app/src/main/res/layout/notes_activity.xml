@@ -88,7 +88,7 @@
         android:src="@drawable/staff"
         app:layout_constraintBottom_toBottomOf="parent"
 
-        app:layout_constraintDimensionRatio="4:1"
+        app:layout_constraintDimensionRatio="@string/staff_ratio"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"

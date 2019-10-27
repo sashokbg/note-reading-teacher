@@ -7,5 +7,5 @@
     <dimen name="status_text_size">13dp</dimen>
     <dimen name="staff_height_vertical">256dp</dimen>
     <dimen name="staff_height_landscape">200dp</dimen>
-    <string name="staff_ratio">3:1</string>
+    <string name="staff_ratio">5:1</string>
 </resources>
