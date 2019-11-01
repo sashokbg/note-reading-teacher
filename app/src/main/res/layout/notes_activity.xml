@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
 
@@ -14,135 +13,63 @@
     tools:context=".NotesActivity">
 
     <TextView
-        android:id="@+id/note_debug"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-
-        android:textColor="@color/white"
-
-        app:layout_constraintBottom_toTopOf="@+id/staff"
-        app:layout_constraintTop_toTopOf="parent"
-
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-
-        tools:text="-" />
-
-    <TextView
         android:id="@+id/game_type"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
+        android:paddingLeft="5dp"
+
+        android:paddingRight="5dp"
         android:textColor="@color/white"
 
-        app:layout_constraintBottom_toTopOf="@+id/staff"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/staff_fragment"
 
         app:layout_constraintEnd_toEndOf="parent"
-
-        tools:text="Game type"
         app:layout_constraintHorizontal_bias="-0.05"
 
-        android:paddingLeft="5dp"
-        android:paddingRight="5dp"
-        />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Game type" />
 
     <Button
         android:id="@+id/next_note"
         android:layout_width="60dp"
         android:layout_height="40dp"
         android:background="@android:color/white"
+        android:onClick="advanceToNextNote"
         android:text="@string/next_note"
-        app:layout_constraintBottom_toTopOf="@+id/staff"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/staff_fragment"
 
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.05"
         app:layout_constraintStart_toStartOf="parent"
-        android:onClick="advanceToNextNote"
 
-        app:layout_constraintHorizontal_bias="0.05" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/next_line"
         android:layout_width="60dp"
         android:layout_height="40dp"
         android:background="@android:color/white"
-        android:text="@string/next_line"
-        app:layout_constraintBottom_toTopOf="@+id/staff"
-        app:layout_constraintTop_toTopOf="parent"
-
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/next_note"
         android:onClick="advanceToNextLine"
+        android:text="@string/next_line"
+        app:layout_constraintBottom_toTopOf="@+id/staff_fragment"
 
-        app:layout_constraintHorizontal_bias="0.05" />
-
-    <ImageView
-        android:id="@+id/staff"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:background="@color/white"
-
-        android:scaleType="fitXY"
-
-        android:src="@drawable/staff"
-        app:layout_constraintBottom_toBottomOf="parent"
-
-        app:layout_constraintDimensionRatio="@string/staff_ratio"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintHorizontal_bias="0.05"
+        app:layout_constraintStart_toEndOf="@id/next_note"
 
-        />
+        app:layout_constraintTop_toTopOf="parent" />
 
-<!--    <ImageView-->
-<!--        android:id="@+id/divider"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="0dp"-->
-
-<!--        app:layout_constraintTop_toTopOf="@id/staff"-->
-<!--        app:layout_constraintBottom_toBottomOf="@id/staff"-->
-<!--        app:layout_constraintEnd_toEndOf="@id/staff"-->
-<!--        app:layout_constraintStart_toEndOf="@id/key"-->
-<!--        android:src="@drawable/divider"-->
-
-<!--        />-->
-
-<!--    <ImageView-->
-<!--        android:id="@+id/current_note"-->
-<!--        android:layout_width="wrap_content"-->
-
-<!--        android:layout_height="0dp"-->
-
-<!--        android:src="@drawable/note_15"-->
-<!--        app:layout_constraintBottom_toBottomOf="@+id/staff"-->
-
-<!--        app:layout_constraintStart_toEndOf="@id/line_separator"-->
-<!--        app:layout_constraintTop_toTopOf="@+id/staff" />-->
-
-    <ImageView
-        android:id="@+id/key"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-
-        android:adjustViewBounds="true"
-        android:src="@drawable/sol_key"
-        app:layout_constraintBottom_toBottomOf="@id/staff"
-        app:layout_constraintTop_toTopOf="@id/staff"
-
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-
-        app:layout_constraintHorizontal_bias="0.02" />
-
-    <ImageView
-        android:id="@+id/indicator"
-        android:layout_width="wrap_content"
+    <fragment
+        android:id="@+id/staff_fragment"
+        android:name="bg.alex.notereadingteacher.StaffFragment"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/indicator_triangle_shape"
+
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/staff"
         />
 
     <fragment
@@ -155,8 +82,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
 
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        />
+        app:layout_constraintStart_toStartOf="parent" />
 
 
 </android.support.constraint.ConstraintLayout>

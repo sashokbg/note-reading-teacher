@@ -1,8 +1,6 @@
 package bg.alex.notereadingteacher.printer;
 
 import android.app.Activity;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.support.constraint.ConstraintLayout;
 import android.support.constraint.ConstraintSet;
 import android.transition.TransitionManager;
@@ -35,11 +33,11 @@ public class AdvancedNotesPrinter implements NotesPrinter {
     private ConstraintLayout constraintLayout;
     private List<ImageView> notesToGuess;
 
-    public AdvancedNotesPrinter(Clef clef, Activity activity) {
+    public AdvancedNotesPrinter(Clef clef, Activity activity, ConstraintLayout constraintLayout) {
         this.activity = activity;
         this.clef = clef;
         this.formatter = new DecimalFormat("00");
-        this.constraintLayout = activity.findViewById(R.id.notes_layout);
+        this.constraintLayout = constraintLayout;
         this.notesToGuess = new ArrayList<>();
     }
 

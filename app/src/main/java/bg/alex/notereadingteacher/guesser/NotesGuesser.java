@@ -9,6 +9,7 @@ import bg.alex.notereadingteacher.notes.Note;
 import bg.alex.notereadingteacher.notes.NotePitch;
 
 public class NotesGuesser {
+    public static final int MAX_NUMBER_OF_NOTES = 8;
     private static final String TAG = "NotesGuesser";
     private Random random;
     private Note minNote;

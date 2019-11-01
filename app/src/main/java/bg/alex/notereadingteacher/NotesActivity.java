@@ -1,11 +1,11 @@
 package bg.alex.notereadingteacher;
 
-import android.app.Activity;
+import android.app.Fragment;
 import android.content.Intent;
 import android.media.midi.MidiOutputPort;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.transition.TransitionManager;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -20,20 +20,18 @@ import bg.alex.notereadingteacher.midi.MidiAware;
 import bg.alex.notereadingteacher.midi.MidiNotesReceiver;
 import bg.alex.notereadingteacher.notes.Clef;
 import bg.alex.notereadingteacher.notes.Note;
-import bg.alex.notereadingteacher.printer.AdvancedNotesPrinter;
-import bg.alex.notereadingteacher.printer.NotesPrinter;
 
-public class NotesActivity extends Activity implements MidiAware {
+import static bg.alex.notereadingteacher.guesser.NotesGuesser.MAX_NUMBER_OF_NOTES;
+
+public class NotesActivity extends FragmentActivity implements MidiAware {
 
     private static final String TAG = "NotesActivity";
 
     private NotesGuesser notesGuesser;
-    private List<NoteGuess> noteGuessList;
-    private int currentNoteGuess = 0;
-    private NotesPrinter printer;
+
     private ImageView staff;
-    private TextView debug;
-    private static final int MAX_NUMBER_OF_NOTES = 8;
+
+    private StaffFragment staffFragment;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -41,15 +39,21 @@ public class NotesActivity extends Activity implements MidiAware {
 
         setContentView(R.layout.notes_activity);
 
-        this.debug = findViewById(R.id.note_debug);
-
         Log.i(TAG, "Starting application: ");
+    }
+
+    @Override
+    public void onAttachFragment(Fragment fragment) {
+        if (fragment instanceof StaffFragment) {
+            this.staffFragment = (StaffFragment) fragment;
+        }
+
+        super.onAttachFragment(fragment);
     }
 
     @Override
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-
 
         staff = findViewById(R.id.staff);
         Intent intent = getIntent();
@@ -63,32 +67,34 @@ public class NotesActivity extends Activity implements MidiAware {
         if(intentMessage.equals("Game in F")) {
             key.setImageResource(R.drawable.fa_key);
             notesGuesser = new NotesGuesser(Clef.F);
-            printer = new AdvancedNotesPrinter(Clef.F, this);
         } else {
             key.setImageResource(R.drawable.sol_key);
             notesGuesser = new NotesGuesser(Clef.G);
-            printer = new AdvancedNotesPrinter(Clef.G, this);
         }
 
         advanceToNextLine(null);
     }
 
-    public void stopGuessNote(Note note) {
-        if (!noteGuessList.get(currentNoteGuess).getNote().equals(note)) {
-            printer.removeMistakes();
+    public void advanceToNextNote(View view) {
+        staffFragment.advanceToNextNote();
+    }
+
+    public void advanceToNextLine(View view) {
+        List<NoteGuess> noteGuessList = new ArrayList<>();
+
+        for(int i = 0; i< MAX_NUMBER_OF_NOTES; i++) {
+            noteGuessList.add(notesGuesser.randomNote());
         }
+
+        staffFragment.advanceToNextLine(noteGuessList);
+    }
+
+    public void stopGuessNote(Note note) {
+        staffFragment.stopGuessNote(note);
     }
 
     public void guessNote(final Note note) {
-        runOnUiThread(() -> {
-            if(currentNoteGuess == noteGuessList.size() - 1) {
-                advanceToNextLine(null);
-            } else if (noteGuessList.get(currentNoteGuess).getNote().equals(note)) {
-                advanceToNextNote(null);
-            } else {
-                printer.printMistake(new NoteGuess(note, null), currentNoteGuess);
-            }
-        });
+        staffFragment.guessNote(note);
     }
 
     @Override
@@ -96,30 +102,5 @@ public class NotesActivity extends Activity implements MidiAware {
         Log.i(TAG, "Midi device has been connected");
 
         midiOutputPort.connect(new MidiNotesReceiver(this));
-    }
-
-    public void advanceToNextNote(View view) {
-        currentNoteGuess++;
-        if(currentNoteGuess >= MAX_NUMBER_OF_NOTES) {
-            advanceToNextLine(view);
-        } else {
-            TransitionManager.endTransitions(findViewById(R.id.notes_layout));
-            TransitionManager.beginDelayedTransition(findViewById(R.id.notes_layout));
-            debug.setText(noteGuessList.get(currentNoteGuess).getNote().toString());
-            printer.printNoteIndicator(currentNoteGuess);
-        }
-    }
-
-    public void advanceToNextLine(View view) {
-        noteGuessList = new ArrayList<>();
-        currentNoteGuess = 0;
-
-        for(int i = 0; i< MAX_NUMBER_OF_NOTES; i++) {
-            noteGuessList.add(notesGuesser.randomNote());
-        }
-
-        debug.setText(noteGuessList.get(currentNoteGuess).getNote().toString());
-        printer.printNoteGuesses(noteGuessList);
-        printer.printNoteIndicator(currentNoteGuess);
     }
 }
