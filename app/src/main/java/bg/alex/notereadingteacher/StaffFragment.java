@@ -1,13 +1,14 @@
 package bg.alex.notereadingteacher;
 
-import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
+import android.support.v4.app.Fragment;
 import android.transition.TransitionManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
@@ -26,10 +27,19 @@ public class StaffFragment extends Fragment {
     private List<NoteGuess> noteGuessList;
     private int currentNoteGuess = 0;
     private TextView debug;
+    private ViewGroup viewGroup;
+    private Clef clef;
+
+    @Override
+    public void setArguments(@Nullable Bundle args) {
+        super.setArguments(args);
+//        this.clef = clef;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        this.viewGroup = container;
         return inflater.inflate(R.layout.staff_fragment, container, false);
     }
 
@@ -37,6 +47,8 @@ public class StaffFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         printer = new AdvancedNotesPrinter(Clef.G, getActivity(), (ConstraintLayout) view);
         this.debug = view.findViewById(R.id.note_debug);
+        ImageView key = view.findViewById(R.id.key);
+        key.setImageResource(R.drawable.sol_key);
 
         super.onViewCreated(view, savedInstanceState);
     }
@@ -46,8 +58,8 @@ public class StaffFragment extends Fragment {
         if(currentNoteGuess >= MAX_NUMBER_OF_NOTES) {
 //            advanceToNextLine();
         } else {
-            TransitionManager.endTransitions(getActivity().findViewById(R.id.staff_fragment));
-            TransitionManager.beginDelayedTransition(getActivity().findViewById(R.id.staff_fragment));
+            TransitionManager.endTransitions(viewGroup);
+            TransitionManager.beginDelayedTransition(viewGroup);
             debug.setText(noteGuessList.get(currentNoteGuess).getNote().toString());
             printer.printNoteIndicator(currentNoteGuess);
         }

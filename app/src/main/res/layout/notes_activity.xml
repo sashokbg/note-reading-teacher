@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
 
-    android:id="@+id/notes_layout"
+    android:id="@+id/notes_activity_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background"
@@ -22,8 +22,6 @@
         android:paddingRight="5dp"
         android:textColor="@color/white"
 
-        app:layout_constraintBottom_toTopOf="@+id/staff_fragment"
-
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="-0.05"
 
@@ -34,10 +32,10 @@
         android:id="@+id/next_note"
         android:layout_width="60dp"
         android:layout_height="40dp"
+        android:layout_marginTop="10dp"
         android:background="@android:color/white"
         android:onClick="advanceToNextNote"
         android:text="@string/next_note"
-        app:layout_constraintBottom_toTopOf="@+id/staff_fragment"
 
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.05"
@@ -49,10 +47,10 @@
         android:id="@+id/next_line"
         android:layout_width="60dp"
         android:layout_height="40dp"
+        android:layout_marginTop="10dp"
         android:background="@android:color/white"
         android:onClick="advanceToNextLine"
         android:text="@string/next_line"
-        app:layout_constraintBottom_toTopOf="@+id/staff_fragment"
 
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.05"
@@ -60,9 +58,9 @@
 
         app:layout_constraintTop_toTopOf="parent" />
 
-    <fragment
-        android:id="@+id/staff_fragment"
-        android:name="bg.alex.notereadingteacher.StaffFragment"
+    <LinearLayout
+        android:orientation="vertical"
+        android:id="@+id/staff_fragment1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
 
@@ -71,6 +69,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         />
+
+<!--    <LinearLayout-->
+<!--        android:orientation="vertical"-->
+<!--        android:id="@+id/staff_fragment2"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+
+<!--        app:layout_constraintTop_toBottomOf="@id/staff_fragment1"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        />-->
 
     <fragment
         android:id="@+id/notes_midi_status_fragment"

@@ -1,11 +1,12 @@
 package bg.alex.notereadingteacher;
 
-import android.app.Fragment;
 import android.content.Intent;
 import android.media.midi.MidiOutputPort;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -31,52 +32,66 @@ public class NotesActivity extends FragmentActivity implements MidiAware {
 
     private ImageView staff;
 
-    private StaffFragment staffFragment;
+    private StaffFragment staffFragment1;
+    private StaffFragment staffFragment2;
+    private FragmentManager fragmentManager;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.fragmentManager = this.getSupportFragmentManager();
 
         setContentView(R.layout.notes_activity);
 
-        Log.i(TAG, "Starting application: ");
-    }
-
-    @Override
-    public void onAttachFragment(Fragment fragment) {
-        if (fragment instanceof StaffFragment) {
-            this.staffFragment = (StaffFragment) fragment;
-        }
-
-        super.onAttachFragment(fragment);
-    }
-
-    @Override
-    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-
-        staff = findViewById(R.id.staff);
+        //        staff = findViewById(R.id.staff);
         Intent intent = getIntent();
 
         TextView gameType = findViewById(R.id.game_type);
         String intentMessage = intent.getStringExtra(HomeActivity.GAME_TYPE);
         gameType.setText(intentMessage);
-        staff.setImageResource(R.drawable.staff);
-        ImageView key = findViewById(R.id.key);
+//        staff.setImageResource(R.drawable.staff);
 
         if(intentMessage.equals("Game in F")) {
-            key.setImageResource(R.drawable.fa_key);
+//            key.setImageResource(R.drawable.fa_key);
             notesGuesser = new NotesGuesser(Clef.F);
         } else {
-            key.setImageResource(R.drawable.sol_key);
             notesGuesser = new NotesGuesser(Clef.G);
+
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            staffFragment1 = new StaffFragment();
+//            staffFragment2 = new StaffFragment();
+            fragmentTransaction.add(R.id.staff_fragment1, staffFragment1);
+//            fragmentTransaction.add(R.id.staff_fragment2, staffFragment2);
+
+            fragmentTransaction.commit();
         }
+
+        Log.i(TAG, "Starting application: ");
+    }
+
+//    @Override
+//    public void onAttachFragment(Fragment fragment) {
+//        if (fragment instanceof StaffFragment) {
+//            this.staffFragment = (StaffFragment) fragment;
+//        }
+//
+//        super.onAttachFragment(fragment);
+//    }
+
+    @Override
+    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+
+
+
+
 
         advanceToNextLine(null);
     }
 
     public void advanceToNextNote(View view) {
-        staffFragment.advanceToNextNote();
+        staffFragment1.advanceToNextNote();
+//        staffFragment2.advanceToNextNote();
     }
 
     public void advanceToNextLine(View view) {
@@ -86,15 +101,18 @@ public class NotesActivity extends FragmentActivity implements MidiAware {
             noteGuessList.add(notesGuesser.randomNote());
         }
 
-        staffFragment.advanceToNextLine(noteGuessList);
+        staffFragment1.advanceToNextLine(noteGuessList);
+//        staffFragment2.advanceToNextLine(noteGuessList);
     }
 
     public void stopGuessNote(Note note) {
-        staffFragment.stopGuessNote(note);
+        staffFragment1.stopGuessNote(note);
+//        staffFragment2.stopGuessNote(note);
     }
 
     public void guessNote(final Note note) {
-        staffFragment.guessNote(note);
+        staffFragment1.guessNote(note);
+//        staffFragment2.guessNote(note);
     }
 
     @Override
