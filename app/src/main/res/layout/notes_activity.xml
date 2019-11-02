@@ -58,7 +58,7 @@
 
         app:layout_constraintTop_toTopOf="parent" />
 
-    <LinearLayout
+    <FrameLayout
         android:orientation="vertical"
         android:id="@+id/staff_fragment1"
         android:layout_width="match_parent"
@@ -71,7 +71,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         />
 
-    <LinearLayout
+    <FrameLayout
         android:orientation="vertical"
         android:id="@+id/staff_fragment2"
         android:layout_width="match_parent"

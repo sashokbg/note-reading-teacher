@@ -93,6 +93,7 @@ public class NotesActivity extends FragmentActivity implements MidiAware {
 
             Bundle bundle2 = new Bundle();
             bundle2.putSerializable("KEY", Clef.F);
+            bundle2.putBoolean(HIDE_NOTE_INDICATOR, false);
             staffFragment2.setArguments(bundle2);
 
             fragmentTransaction.commit();

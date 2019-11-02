@@ -36,7 +36,6 @@
             android:scaleType="fitXY"
 
             android:src="@drawable/staff"
-            app:layout_constraintBottom_toBottomOf="parent"
 
             app:layout_constraintDimensionRatio="@string/staff_ratio"
             app:layout_constraintEnd_toEndOf="parent"
@@ -91,7 +90,7 @@
             android:tag="indicator"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/indicator_triangle_shape"
+            android:background="@drawable/indicator_triangle_shape_red"
             android:visibility="@{properties.hideIndicator ? View.GONE : View.VISIBLE}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
