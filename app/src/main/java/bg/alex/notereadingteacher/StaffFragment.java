@@ -73,7 +73,7 @@ public class StaffFragment extends Fragment {
     public void advanceToNextNote() {
         currentNoteGuess++;
         if(currentNoteGuess >= MAX_NUMBER_OF_NOTES) {
-//            advanceToNextLine();
+            ((NotesActivity) getActivity()).advanceToNextLine(null);
         } else {
 //            debug.setText(noteGuessList.get(currentNoteGuess).getNote().toString());
             printer.printNoteIndicator(currentNoteGuess);
@@ -96,9 +96,7 @@ public class StaffFragment extends Fragment {
     }
 
     public void guessNote(final Note note) {
-        if(currentNoteGuess == noteGuessList.size() - 1) {
-//                advanceToNextLine(null);
-        } else if (noteGuessList.get(currentNoteGuess).getNote().equals(note)) {
+        if (noteGuessList.get(currentNoteGuess).getNote().equals(note)) {
             advanceToNextNote();
         } else {
             printer.printMistake(new NoteGuess(note, null), currentNoteGuess);

@@ -102,15 +102,6 @@ public class NotesActivity extends FragmentActivity implements MidiAware {
         Log.i(TAG, "Starting application: ");
     }
 
-//    @Override
-//    public void onAttachFragment(Fragment fragment) {
-//        if (fragment instanceof StaffFragment) {
-//            this.staffFragment = (StaffFragment) fragment;
-//        }
-//
-//        super.onAttachFragment(fragment);
-//    }
-
     @Override
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
