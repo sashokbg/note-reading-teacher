@@ -32,6 +32,7 @@ public class AdvancedNotesPrinter implements NotesPrinter {
     private View indicator;
     private ConstraintLayout constraintLayout;
     private List<ImageView> notesToGuess;
+    private List<ImageView> mistakes;
 
     public AdvancedNotesPrinter(Clef clef, Activity activity, ConstraintLayout constraintLayout) {
         this.activity = activity;
@@ -39,6 +40,7 @@ public class AdvancedNotesPrinter implements NotesPrinter {
         this.formatter = new DecimalFormat("00");
         this.constraintLayout = constraintLayout;
         this.notesToGuess = new ArrayList<>();
+        this.mistakes = new ArrayList<>();
     }
 
     public void setClef(Clef clef) {
@@ -102,47 +104,46 @@ public class AdvancedNotesPrinter implements NotesPrinter {
     @Override
     public void removeMistakes() {
         activity.runOnUiThread(() -> {
-            ImageView noteToRemove;
-
-            while ((noteToRemove = constraintLayout.findViewWithTag("note-mistake")) != null ){
-                TransitionManager.beginDelayedTransition(constraintLayout);
-                constraintLayout.removeView(noteToRemove);
+            for(ImageView mistakeNote : mistakes) {
+                constraintLayout.removeView(mistakeNote);
             }
         });
     }
 
     @Override
     public void printMistake(NoteGuess noteGuess, int currentNoteGuess) {
+        ImageView mistakeNote = new ImageView(activity);
+
+        mistakeNote.setImageAlpha(128);
+        ImageView currentNoteView = notesToGuess.get(currentNoteGuess);
+
+        mistakeNote.setId(View.generateViewId());
+        mistakeNote.setTag("note-mistake");
+
+        mistakeNote.setAdjustViewBounds(true);
+
+        ConstraintLayout.LayoutParams constraintLayoutParams = new ConstraintLayout.LayoutParams(
+                new ViewGroup.LayoutParams(
+                        ViewGroup.LayoutParams.WRAP_CONTENT,
+                        0));
+
+        mistakeNote.setLayoutParams(constraintLayoutParams);
+
+        ConstraintSet constraintSet = new ConstraintSet();
+        constraintSet.clone(constraintLayout);
+        mistakeNote.setPadding(4, 0, 0, 0);
+
+        constraintSet.connect(mistakeNote.getId(), ConstraintSet.TOP, R.id.staff, ConstraintSet.TOP);
+        constraintSet.connect(mistakeNote.getId(), ConstraintSet.BOTTOM, R.id.staff, ConstraintSet.BOTTOM);
+        constraintSet.connect(mistakeNote.getId(), ConstraintSet.LEFT, currentNoteView.getId(), ConstraintSet.LEFT);
+        constraintSet.connect(mistakeNote.getId(), ConstraintSet.RIGHT, currentNoteView.getId(), ConstraintSet.RIGHT);
+
+        mistakes.add(mistakeNote);
+        applyNoteImageTo(mistakeNote, noteGuess);
+
         activity.runOnUiThread(() -> {
-            ImageView mistakeNote = new ImageView(activity);
-            mistakeNote.setImageAlpha(128);
-            ImageView currentNoteView = notesToGuess.get(currentNoteGuess);
-
-            mistakeNote.setId(View.generateViewId());
-            mistakeNote.setTag("note-mistake");
-
             constraintLayout.addView(mistakeNote);
-
-            mistakeNote.setAdjustViewBounds(true);
-
-            ConstraintLayout.LayoutParams constraintLayoutParams = new ConstraintLayout.LayoutParams(
-                    new ViewGroup.LayoutParams(
-                            ViewGroup.LayoutParams.WRAP_CONTENT,
-                            0));
-
-            mistakeNote.setLayoutParams(constraintLayoutParams);
-
-            ConstraintSet constraintSet = new ConstraintSet();
-            constraintSet.clone(constraintLayout);
-            mistakeNote.setPadding(0, 0, 0, 4);
-
-            constraintSet.connect(mistakeNote.getId(), ConstraintSet.TOP, R.id.staff, ConstraintSet.TOP);
-            constraintSet.connect(mistakeNote.getId(), ConstraintSet.BOTTOM, R.id.staff, ConstraintSet.BOTTOM);
-            constraintSet.connect(mistakeNote.getId(), ConstraintSet.LEFT, currentNoteView.getId(), ConstraintSet.LEFT);
-            constraintSet.connect(mistakeNote.getId(), ConstraintSet.RIGHT, currentNoteView.getId(), ConstraintSet.RIGHT);
-
             constraintSet.applyTo(constraintLayout);
-            applyNoteImageTo(mistakeNote, noteGuess);
         });
     }
 

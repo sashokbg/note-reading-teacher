@@ -1,12 +1,10 @@
 package bg.alex.notereadingteacher;
 
-import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
-import android.transition.TransitionManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -77,8 +75,6 @@ public class StaffFragment extends Fragment {
         if(currentNoteGuess >= MAX_NUMBER_OF_NOTES) {
 //            advanceToNextLine();
         } else {
-            TransitionManager.endTransitions(viewGroup);
-            TransitionManager.beginDelayedTransition(viewGroup);
 //            debug.setText(noteGuessList.get(currentNoteGuess).getNote().toString());
             printer.printNoteIndicator(currentNoteGuess);
         }
@@ -100,15 +96,13 @@ public class StaffFragment extends Fragment {
     }
 
     public void guessNote(final Note note) {
-        getActivity().runOnUiThread(() -> {
-            if(currentNoteGuess == noteGuessList.size() - 1) {
+        if(currentNoteGuess == noteGuessList.size() - 1) {
 //                advanceToNextLine(null);
-            } else if (noteGuessList.get(currentNoteGuess).getNote().equals(note)) {
-                advanceToNextNote();
-            } else {
-                printer.printMistake(new NoteGuess(note, null), currentNoteGuess);
-            }
-        });
+        } else if (noteGuessList.get(currentNoteGuess).getNote().equals(note)) {
+            advanceToNextNote();
+        } else {
+            printer.printMistake(new NoteGuess(note, null), currentNoteGuess);
+        }
     }
 
 }
