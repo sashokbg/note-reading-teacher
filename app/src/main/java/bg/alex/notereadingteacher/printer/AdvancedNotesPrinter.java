@@ -3,8 +3,6 @@ package bg.alex.notereadingteacher.printer;
 import android.app.Activity;
 import android.support.constraint.ConstraintLayout;
 import android.support.constraint.ConstraintSet;
-import android.transition.TransitionManager;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -12,8 +10,6 @@ import android.widget.ImageView;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,14 +17,15 @@ import bg.alex.notereadingteacher.R;
 import bg.alex.notereadingteacher.guesser.NoteGuess;
 import bg.alex.notereadingteacher.notes.Clef;
 import bg.alex.notereadingteacher.notes.Note;
-import bg.alex.notereadingteacher.notes.NotePitch;
+
+import static bg.alex.notereadingteacher.printer.NoteImagesTable.getImageNameForNote;
 
 public class AdvancedNotesPrinter implements NotesPrinter {
     private static final String TAG = "AdvancedNotesPrinter";
 
     private Activity activity;
     private Clef clef;
-    private NumberFormat formatter;
+
     private View indicator;
     private ConstraintLayout constraintLayout;
     private List<ImageView> notesToGuess;
@@ -37,7 +34,6 @@ public class AdvancedNotesPrinter implements NotesPrinter {
     public AdvancedNotesPrinter(Clef clef, Activity activity, ConstraintLayout constraintLayout) {
         this.activity = activity;
         this.clef = clef;
-        this.formatter = new DecimalFormat("00");
         this.constraintLayout = constraintLayout;
         this.notesToGuess = new ArrayList<>();
         this.mistakes = new ArrayList<>();
@@ -45,43 +41,6 @@ public class AdvancedNotesPrinter implements NotesPrinter {
 
     public void setClef(Clef clef) {
         this.clef = clef;
-    }
-
-    private String getImageNameForNote(Note note, Clef clef) {
-        if(note.isSharp()) {
-            note = note.previousWholeNote();
-        }
-
-        Note baseNote;
-        Note maxNote;
-
-        if (clef == Clef.F) {
-            baseNote = new Note(NotePitch.A, 1);
-            maxNote = new Note(NotePitch.A, 4);
-        } else if (clef == Clef.G) {
-            baseNote = new Note(NotePitch.F, 3);
-            maxNote = new Note(NotePitch.F, 6);
-        } else {
-            throw new RuntimeException("Unsupported clef " + clef);
-        }
-
-        if(baseNote.isGreaterThan(note) || note.isGreaterThan(maxNote)) {
-            String noteImage = "note_empty";
-            Log.i(TAG, "Resolved note image : "+ noteImage + " for note " + note);
-            return noteImage;
-        }
-
-        int noteCounter = 1;
-
-        while (!note.equals(baseNote)) {
-            noteCounter++;
-            baseNote = baseNote.nextWholeNote();
-        }
-
-        String noteImage = "note_" + formatter.format(noteCounter);
-        Log.i(TAG, "Resolved note image : "+ noteImage + " for note " + note);
-
-        return noteImage;
     }
 
     public void applyNoteImageTo(ImageView noteView, NoteGuess noteGuess) {
