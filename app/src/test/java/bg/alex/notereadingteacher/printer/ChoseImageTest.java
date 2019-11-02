@@ -31,7 +31,7 @@ public class ChoseImageTest {
 
     @Before
     public void setup() {
-        printer = new AdvancedNotesPrinter(null, activity);
+        printer = new AdvancedNotesPrinter(null, activity, null);
     }
 
     @Test
@@ -128,5 +128,53 @@ public class ChoseImageTest {
 
         // then
         verify(currentNoteView, times(1)).setImageResource(R.drawable.note_22);
+    }
+
+    @Test
+    public void should_print_empty_note_when_above_range_in_G() {
+        Note noteAboveMax = new Note(NotePitch.G, 6);
+        printer.setClef(Clef.G);
+
+        // when
+        printer.applyNoteImageTo(currentNoteView, new NoteGuess(noteAboveMax, Clef.G));
+
+        // then
+        verify(currentNoteView, times(1)).setImageResource(R.drawable.note_empty);
+    }
+
+    @Test
+    public void should_print_empty_note_when_below_range_in_G() {
+        Note noteBelowMin = new Note(NotePitch.E, 3);
+        printer.setClef(Clef.G);
+
+        // when
+        printer.applyNoteImageTo(currentNoteView, new NoteGuess(noteBelowMin, Clef.G));
+
+        // then
+        verify(currentNoteView, times(1)).setImageResource(R.drawable.note_empty);
+    }
+
+    @Test
+    public void should_print_empty_note_when_above_range_in_F() {
+        Note noteAboveMax = new Note(NotePitch.B, 4);
+        printer.setClef(Clef.F);
+
+        // when
+        printer.applyNoteImageTo(currentNoteView, new NoteGuess(noteAboveMax, Clef.G));
+
+        // then
+        verify(currentNoteView, times(1)).setImageResource(R.drawable.note_empty);
+    }
+
+    @Test
+    public void should_print_empty_note_when_below_range_in_F() {
+        Note noteBelowMin = new Note(NotePitch.G, 1);
+        printer.setClef(Clef.F);
+
+        // when
+        printer.applyNoteImageTo(currentNoteView, new NoteGuess(noteBelowMin, Clef.G));
+
+        // then
+        verify(currentNoteView, times(1)).setImageResource(R.drawable.note_empty);
     }
 }

@@ -55,20 +55,18 @@ public class AdvancedNotesPrinter implements NotesPrinter {
 
         if (clef == Clef.F) {
             baseNote = new Note(NotePitch.A, 1);
-            maxNote = new Note(NotePitch.G, 4);
+            maxNote = new Note(NotePitch.A, 4);
         } else if (clef == Clef.G) {
             baseNote = new Note(NotePitch.F, 3);
-            maxNote = new Note(NotePitch.E, 6);
+            maxNote = new Note(NotePitch.F, 6);
         } else {
             throw new RuntimeException("Unsupported clef " + clef);
         }
 
-        if(baseNote.isGreaterThan(note)) {
-            note = baseNote;
-        }
-
-        if(note.isGreaterThan(maxNote)) {
-            note = maxNote;
+        if(baseNote.isGreaterThan(note) || note.isGreaterThan(maxNote)) {
+            String noteImage = "note_empty";
+            Log.i(TAG, "Resolved note image : "+ noteImage + " for note " + note);
+            return noteImage;
         }
 
         int noteCounter = 1;
@@ -185,9 +183,6 @@ public class AdvancedNotesPrinter implements NotesPrinter {
                 constraintLayout.removeView(noteToRemove);
                 constraintLayout.removeView(dividerToRemove);
             } while (noteToRemove != null);
-
-
-
 
             for (int i = 0; i < noteGuesses.size(); i++) {
 
