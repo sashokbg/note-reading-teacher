@@ -45,19 +45,7 @@ public class AdvancedNotesPrinter implements NotesPrinter {
 
     public void applyNoteImageTo(ImageView noteView, NoteGuess noteGuess) {
         Note note = noteGuess.getNote();
-
-        Class<R.drawable> clazz1 = R.drawable.class;
-        Class<ImageView> clazz2 = ImageView.class;
-
-        try {
-
-            Field field = clazz1.getDeclaredField(getImageNameForNote(note, clef));
-            Method method = clazz2.getDeclaredMethod("setImageResource", int.class);
-
-            method.invoke(noteView, field.get(noteView));
-        } catch (NoSuchFieldException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-            e.printStackTrace();
-        }
+        noteView.setImageResource(getImageNameForNote(note, clef));
     }
 
     @Override
