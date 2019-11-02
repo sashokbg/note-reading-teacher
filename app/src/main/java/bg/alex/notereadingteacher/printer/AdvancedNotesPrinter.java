@@ -150,7 +150,7 @@ public class AdvancedNotesPrinter implements NotesPrinter {
     public void printNoteIndicator(int noteGuess) {
         activity.runOnUiThread(() -> {
 
-            indicator = activity.findViewById(R.id.indicator);
+            indicator = constraintLayout.findViewWithTag("indicator");
             ImageView currentNoteView = notesToGuess.get(noteGuess);
 
             ConstraintLayout.LayoutParams constraintLayoutParams = new ConstraintLayout.LayoutParams(

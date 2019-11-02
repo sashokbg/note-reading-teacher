@@ -78,7 +78,7 @@ public class NotesActivity extends FragmentActivity implements MidiAware {
 
             fragmentTransaction.commit();
         } else { // BOTH
-            notesGuesser = new NotesGuesser(Clef.G);
+            notesGuesser = new NotesGuesser();
 
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             staffFragment1 = new StaffFragment();

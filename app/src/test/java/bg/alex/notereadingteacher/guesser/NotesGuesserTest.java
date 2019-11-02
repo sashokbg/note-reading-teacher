@@ -101,4 +101,16 @@ public class NotesGuesserTest {
         assertThat(noteGuess.getNote().getNotePitch()).isNotEqualTo(NotePitch.C_SHARP);
         assertThat(noteGuess.getNote().getNotePitch()).isEqualTo(NotePitch.D);
     }
+
+    @Test
+    public void should_generate_all_notes_when_no_key_specified() {
+        NotesGuesser notesGuesser = new NotesGuesser(mockRandom);
+        Note G4 = new Note(NotePitch.G, 4);
+
+        when(mockRandom.nextInt(anyInt())).thenReturn(G4.getAbsolutePitch());
+
+        notesGuesser.randomNote();
+
+        verify(mockRandom, times(1)).nextInt(NotesGuesser.MAX_NOTE_G.getAbsolutePitch());
+    }
 }
