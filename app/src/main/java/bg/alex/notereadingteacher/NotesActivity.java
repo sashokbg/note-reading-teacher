@@ -22,6 +22,7 @@ import bg.alex.notereadingteacher.midi.MidiNotesReceiver;
 import bg.alex.notereadingteacher.notes.Clef;
 import bg.alex.notereadingteacher.notes.Note;
 
+import static bg.alex.notereadingteacher.StaffFragment.HIDE_NOTE_INDICATOR;
 import static bg.alex.notereadingteacher.guesser.NotesGuesser.MAX_NUMBER_OF_NOTES;
 
 public class NotesActivity extends FragmentActivity implements MidiAware {
@@ -57,14 +58,11 @@ public class NotesActivity extends FragmentActivity implements MidiAware {
 
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             staffFragment1 = new StaffFragment();
-//            staffFragment2 = new StaffFragment();
             fragmentTransaction.add(R.id.staff_fragment1, staffFragment1);
 
             Bundle bundle = new Bundle();
             bundle.putSerializable("KEY", Clef.F);
             staffFragment1.setArguments(bundle);
-
-//            fragmentTransaction.add(R.id.staff_fragment2, staffFragment2);
 
             fragmentTransaction.commit();
         } else if (intentMessage.equals(KEY_G)) {
@@ -72,18 +70,32 @@ public class NotesActivity extends FragmentActivity implements MidiAware {
 
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             staffFragment1 = new StaffFragment();
-//            staffFragment2 = new StaffFragment();
             fragmentTransaction.add(R.id.staff_fragment1, staffFragment1);
 
             Bundle bundle = new Bundle();
             bundle.putSerializable("KEY", Clef.G);
             staffFragment1.setArguments(bundle);
 
-//            fragmentTransaction.add(R.id.staff_fragment2, staffFragment2);
-
             fragmentTransaction.commit();
         } else { // BOTH
+            notesGuesser = new NotesGuesser(Clef.G);
 
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            staffFragment1 = new StaffFragment();
+            staffFragment2 = new StaffFragment();
+            fragmentTransaction.add(R.id.staff_fragment1, staffFragment1);
+            fragmentTransaction.add(R.id.staff_fragment2, staffFragment2);
+
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("KEY", Clef.G);
+            bundle.putBoolean(HIDE_NOTE_INDICATOR, true);
+            staffFragment1.setArguments(bundle);
+
+            Bundle bundle2 = new Bundle();
+            bundle2.putSerializable("KEY", Clef.F);
+            staffFragment2.setArguments(bundle2);
+
+            fragmentTransaction.commit();
         }
 
         Log.i(TAG, "Starting application: ");
@@ -106,7 +118,9 @@ public class NotesActivity extends FragmentActivity implements MidiAware {
 
     public void advanceToNextNote(View view) {
         staffFragment1.advanceToNextNote();
-//        staffFragment2.advanceToNextNote();
+        if(staffFragment2 != null){
+            staffFragment2.advanceToNextNote();
+        }
     }
 
     public void advanceToNextLine(View view) {
@@ -117,17 +131,23 @@ public class NotesActivity extends FragmentActivity implements MidiAware {
         }
 
         staffFragment1.advanceToNextLine(noteGuessList);
-//        staffFragment2.advanceToNextLine(noteGuessList);
+        if(staffFragment2 != null){
+            staffFragment2.advanceToNextLine(noteGuessList);
+        }
     }
 
     public void stopGuessNote(Note note) {
         staffFragment1.stopGuessNote(note);
-//        staffFragment2.stopGuessNote(note);
+        if(staffFragment2 != null){
+            staffFragment2.stopGuessNote(note);
+        }
     }
 
     public void guessNote(final Note note) {
         staffFragment1.guessNote(note);
-//        staffFragment2.guessNote(note);
+        if(staffFragment2 != null){
+            staffFragment2.guessNote(note);
+        }
     }
 
     @Override

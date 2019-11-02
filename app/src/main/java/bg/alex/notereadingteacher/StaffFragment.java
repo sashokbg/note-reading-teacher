@@ -1,6 +1,8 @@
 package bg.alex.notereadingteacher;
 
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
@@ -13,6 +15,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import bg.alex.notereadingteacher.databinding.StaffFragmentBinding;
 import bg.alex.notereadingteacher.guesser.NoteGuess;
 import bg.alex.notereadingteacher.notes.Clef;
 import bg.alex.notereadingteacher.notes.Note;
@@ -23,30 +26,41 @@ import static bg.alex.notereadingteacher.guesser.NotesGuesser.MAX_NUMBER_OF_NOTE
 
 public class StaffFragment extends Fragment {
 
+    public static final String HIDE_NOTE_INDICATOR = "HIDE_NOTE_INDICATOR";
     private NotesPrinter printer;
     private List<NoteGuess> noteGuessList;
     private int currentNoteGuess = 0;
     private TextView debug;
     private ViewGroup viewGroup;
     private Clef clef;
+    private StaffFragmentProperties properties;
 
     @Override
     public void setArguments(@Nullable Bundle args) {
+        properties = new StaffFragmentProperties();
         this.clef = (Clef) args.getSerializable("KEY");
+        if(args.getBoolean(HIDE_NOTE_INDICATOR)) {
+            properties.hideIndicator = true;
+        }
         super.setArguments(args);
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         this.viewGroup = container;
-        return inflater.inflate(R.layout.staff_fragment, container, false);
+
+        StaffFragmentBinding binding = StaffFragmentBinding.inflate(inflater, container, false);
+        binding.setProperties(properties);
+        return binding.getRoot();
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
+
         printer = new AdvancedNotesPrinter(clef, getActivity(), (ConstraintLayout) view);
-        this.debug = view.findViewById(R.id.note_debug);
+//        this.debug = view.findViewById(R.id.note_debug);
+
         ImageView key = view.findViewById(R.id.key);
 
         if(clef == Clef.G) {
@@ -65,7 +79,7 @@ public class StaffFragment extends Fragment {
         } else {
             TransitionManager.endTransitions(viewGroup);
             TransitionManager.beginDelayedTransition(viewGroup);
-            debug.setText(noteGuessList.get(currentNoteGuess).getNote().toString());
+//            debug.setText(noteGuessList.get(currentNoteGuess).getNote().toString());
             printer.printNoteIndicator(currentNoteGuess);
         }
     }
@@ -74,7 +88,7 @@ public class StaffFragment extends Fragment {
         this.noteGuessList = noteGuessList;
         currentNoteGuess = 0;
 
-        debug.setText(noteGuessList.get(currentNoteGuess).getNote().toString());
+//        debug.setText(noteGuessList.get(currentNoteGuess).getNote().toString());
         printer.printNoteGuesses(noteGuessList);
         printer.printNoteIndicator(currentNoteGuess);
     }

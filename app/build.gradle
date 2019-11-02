@@ -3,6 +3,9 @@ apply plugin: 'kotlin-android'
 
 android {
     compileSdkVersion 28
+    dataBinding {
+        enabled = true
+    }
     defaultConfig {
         applicationId "bg.alex.notereadingteacher"
         minSdkVersion 24

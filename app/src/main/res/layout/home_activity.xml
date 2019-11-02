@@ -18,10 +18,24 @@
         android:onClick="startGameInF"
         android:text="Play Key of F"
         app:layout_constraintBottom_toTopOf="@+id/guideline_bottom"
-        app:layout_constraintEnd_toStartOf="@+id/guideline_center"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline_top"
-        app:layout_constraintVertical_bias="0.50" />
+        app:layout_constraintStart_toStartOf="parent"
+        />
+
+    <Button
+        android:id="@+id/button_main5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="startGameInBoth"
+        android:text="Play in Both Keys"
+        app:layout_constraintBottom_toTopOf="@+id/guideline_bottom"
+        app:layout_constraintTop_toTopOf="@+id/guideline_top"
+
+        app:layout_constraintEnd_toStartOf="@id/button_main4"
+        app:layout_constraintStart_toEndOf="@id/button_main3"
+        app:layout_constraintVertical_bias="0.501"
+
+        />
 
     <Button
         android:id="@+id/button_main4"
@@ -29,10 +43,11 @@
         android:layout_height="wrap_content"
         android:onClick="startGameInG"
         android:text="Play Key of G"
-        app:layout_constraintBottom_toTopOf="@+id/guideline_bottom"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/guideline_center"
         app:layout_constraintTop_toTopOf="@+id/guideline_top"
+        app:layout_constraintBottom_toTopOf="@+id/guideline_bottom"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/button_main5"
         app:layout_constraintVertical_bias="0.501"
 
         />
@@ -85,12 +100,12 @@
         app:layout_constraintGuide_percent="0.2" />
 
 
-    <android.support.constraint.Guideline
-        android:id="@+id/guideline_center"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.5" />
+<!--    <android.support.constraint.Guideline-->
+<!--        android:id="@+id/guideline_center"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:orientation="vertical"-->
+<!--        app:layout_constraintGuide_percent="0.5" />-->
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline_bottom"
