@@ -32,8 +32,8 @@ public class StaffFragment extends Fragment {
 
     @Override
     public void setArguments(@Nullable Bundle args) {
+        this.clef = (Clef) args.getSerializable("KEY");
         super.setArguments(args);
-//        this.clef = clef;
     }
 
     @Override
@@ -45,10 +45,15 @@ public class StaffFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        printer = new AdvancedNotesPrinter(Clef.G, getActivity(), (ConstraintLayout) view);
+        printer = new AdvancedNotesPrinter(clef, getActivity(), (ConstraintLayout) view);
         this.debug = view.findViewById(R.id.note_debug);
         ImageView key = view.findViewById(R.id.key);
-        key.setImageResource(R.drawable.sol_key);
+
+        if(clef == Clef.G) {
+            key.setImageResource(R.drawable.sol_key);
+        } else {
+            key.setImageResource(R.drawable.fa_key);
+        }
 
         super.onViewCreated(view, savedInstanceState);
     }

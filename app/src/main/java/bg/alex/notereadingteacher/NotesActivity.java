@@ -27,6 +27,9 @@ import static bg.alex.notereadingteacher.guesser.NotesGuesser.MAX_NUMBER_OF_NOTE
 public class NotesActivity extends FragmentActivity implements MidiAware {
 
     private static final String TAG = "NotesActivity";
+    public static final String KEY_G = "KEY_G";
+    public static final String KEY_F = "KEY_F";
+    public static final String KEY_BOTH = "KEY_BOTH";
 
     private NotesGuesser notesGuesser;
 
@@ -43,27 +46,44 @@ public class NotesActivity extends FragmentActivity implements MidiAware {
 
         setContentView(R.layout.notes_activity);
 
-        //        staff = findViewById(R.id.staff);
         Intent intent = getIntent();
 
         TextView gameType = findViewById(R.id.game_type);
         String intentMessage = intent.getStringExtra(HomeActivity.GAME_TYPE);
         gameType.setText(intentMessage);
-//        staff.setImageResource(R.drawable.staff);
 
-        if(intentMessage.equals("Game in F")) {
-//            key.setImageResource(R.drawable.fa_key);
+        if(intentMessage.equals(KEY_F)) {
             notesGuesser = new NotesGuesser(Clef.F);
-        } else {
+
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            staffFragment1 = new StaffFragment();
+//            staffFragment2 = new StaffFragment();
+            fragmentTransaction.add(R.id.staff_fragment1, staffFragment1);
+
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("KEY", Clef.F);
+            staffFragment1.setArguments(bundle);
+
+//            fragmentTransaction.add(R.id.staff_fragment2, staffFragment2);
+
+            fragmentTransaction.commit();
+        } else if (intentMessage.equals(KEY_G)) {
             notesGuesser = new NotesGuesser(Clef.G);
 
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             staffFragment1 = new StaffFragment();
 //            staffFragment2 = new StaffFragment();
             fragmentTransaction.add(R.id.staff_fragment1, staffFragment1);
+
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("KEY", Clef.G);
+            staffFragment1.setArguments(bundle);
+
 //            fragmentTransaction.add(R.id.staff_fragment2, staffFragment2);
 
             fragmentTransaction.commit();
+        } else { // BOTH
+
         }
 
         Log.i(TAG, "Starting application: ");
@@ -81,11 +101,6 @@ public class NotesActivity extends FragmentActivity implements MidiAware {
     @Override
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-
-
-
-
-
         advanceToNextLine(null);
     }
 
