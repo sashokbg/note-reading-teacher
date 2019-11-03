@@ -9,6 +9,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -34,8 +36,6 @@ public class NotesActivity extends FragmentActivity implements MidiAware {
 
     private NotesGuesser notesGuesser;
 
-    private ImageView staff;
-
     private StaffFragment staffFragment1;
     private StaffFragment staffFragment2;
     private FragmentManager fragmentManager;
@@ -44,6 +44,10 @@ public class NotesActivity extends FragmentActivity implements MidiAware {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.fragmentManager = this.getSupportFragmentManager();
+
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+        WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         setContentView(R.layout.notes_activity);
 
