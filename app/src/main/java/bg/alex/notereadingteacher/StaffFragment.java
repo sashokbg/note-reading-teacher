@@ -86,12 +86,14 @@ public class StaffFragment extends Fragment {
 
 //        debug.setText(noteGuessList.get(currentNoteGuess).getNote().toString());
         printer.printNoteGuesses(noteGuessList);
-        printer.printNoteIndicator(currentNoteGuess);
+        if(!properties.hideIndicator) {
+            printer.printNoteIndicator(currentNoteGuess);
+        }
     }
 
     public void stopGuessNote(Note note) {
         if (!noteGuessList.get(currentNoteGuess).getNote().equals(note)) {
-            printer.removeMistakes();
+            printer.removeMistake(new NoteGuess(note, null));
         }
     }
 
