@@ -8,9 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import bg.alex.notereadingteacher.R;
 import bg.alex.notereadingteacher.guesser.NoteGuess;
@@ -28,14 +26,12 @@ public class AdvancedNotesPrinter implements NotesPrinter {
     private View indicator;
     private ConstraintLayout constraintLayout;
     private List<ImageView> notesToGuess;
-    private Map<Note, ImageView> mistakes;
 
     public AdvancedNotesPrinter(Clef clef, Activity activity, ConstraintLayout constraintLayout) {
         this.activity = activity;
         this.clef = clef;
         this.constraintLayout = constraintLayout;
         this.notesToGuess = new ArrayList<>();
-        this.mistakes = new HashMap<>();
     }
 
     public void setClef(Clef clef) {
@@ -54,12 +50,13 @@ public class AdvancedNotesPrinter implements NotesPrinter {
     }
 
     @Override
-    public void removeMistake(NoteGuess mistakeNoteGuess) {
-        ImageView mistakeImageView = mistakes.get(mistakeNoteGuess.getNote());
-
+    public void removeMistakes() {
         activity.runOnUiThread(() -> {
-            constraintLayout.removeView(mistakeImageView);
-            mistakes.remove(mistakeNoteGuess.getNote());
+            ImageView noteToRemove;
+
+            while ((noteToRemove = constraintLayout.findViewWithTag("note-mistake")) != null ){
+                constraintLayout.removeView(noteToRemove);
+            }
         });
     }
 
@@ -91,7 +88,6 @@ public class AdvancedNotesPrinter implements NotesPrinter {
         constraintSet.connect(mistakeNote.getId(), ConstraintSet.LEFT, currentNoteView.getId(), ConstraintSet.LEFT);
         constraintSet.connect(mistakeNote.getId(), ConstraintSet.RIGHT, currentNoteView.getId(), ConstraintSet.RIGHT);
 
-        mistakes.put(noteGuess.getNote(), mistakeNote);
         applyNoteImageTo(mistakeNote, noteGuess);
 
         activity.runOnUiThread(() -> {

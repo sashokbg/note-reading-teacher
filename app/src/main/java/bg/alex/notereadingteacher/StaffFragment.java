@@ -93,7 +93,7 @@ public class StaffFragment extends Fragment {
 
     public void stopGuessNote(Note note) {
         if (!noteGuessList.get(currentNoteGuess).getNote().equals(note)) {
-            printer.removeMistake(new NoteGuess(note, null));
+            printer.removeMistakes();
         }
     }
 
