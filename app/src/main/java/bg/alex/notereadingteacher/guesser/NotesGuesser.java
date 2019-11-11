@@ -14,33 +14,39 @@ public class NotesGuesser {
     private Random random;
     private Note minNote;
     private Note maxNote;
-    private Clef clef = Clef.NONE;
+    private Clef initialClef;
+    private Clef clef = Clef.F;
     public static Note MIN_NOTE_F = new Note(NotePitch.E, 2);
     public static Note MAX_NOTE_F = new Note(NotePitch.E, 4);
     public static Note MIN_NOTE_G = new Note(NotePitch.A, 3);
     public static Note MAX_NOTE_G = new Note(NotePitch.C, 6);
 
-    NotesGuesser(Clef clef, Random random) {
+    NotesGuesser(Clef initialClef, Random random) {
         this.random = random;
-        this.clef = clef;
-        setNotesRange(clef);
+
+        if (this.random == null) {
+           this.random = new Random();
+        }
+
+        this.initialClef = initialClef;
+
+        if (this.initialClef == null) {
+            this.initialClef = Clef.NONE;
+        }
+
+        setNotesRange(initialClef);
     }
 
     NotesGuesser(Random random) {
-        this.random = random;
-        setNotesRange(clef);
+        this(Clef.NONE, random);
     }
 
-    public NotesGuesser(Clef clef){
-        this.clef = clef;
-
-        setNotesRange(clef);
-        random = new Random();
+    public NotesGuesser(Clef initialClef){
+        this(initialClef, null);
     }
 
     public NotesGuesser(){
-        setNotesRange(clef);
-        random = new Random();
+        this(Clef.NONE, null);
     }
 
     private void setNotesRange(Clef clef) {
@@ -58,6 +64,8 @@ public class NotesGuesser {
 
     public NoteGuess randomNote() {
         int pitchCode = 0;
+        Clef currentNoteClef = getClef();
+        setNotesRange(currentNoteClef);
 
         Note note = new Note(pitchCode);
 
@@ -75,6 +83,20 @@ public class NotesGuesser {
             note = new Note(NotePitch.fromCode(note.getNotePitch().getPitchCode()+1), note.getOctave());
         }
 
-        return new NoteGuess(note, this.clef);
+        return new NoteGuess(note, currentNoteClef);
+    }
+
+    private Clef getClef() {
+        if(this.initialClef.equals(Clef.NONE)) {
+            if(this.clef == Clef.F) {
+                this.clef = Clef.G;
+                return this.clef;
+            } else {
+                this.clef = Clef.F;
+                return this.clef;
+            }
+        } else {
+            return this.initialClef;
+        }
     }
 }

@@ -15,6 +15,7 @@ import bg.alex.notereadingteacher.notes.Clef;
 import bg.alex.notereadingteacher.notes.Note;
 import bg.alex.notereadingteacher.notes.NotePitch;
 
+import static bg.alex.notereadingteacher.notes.Clef.G;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -32,6 +33,18 @@ public class ChoseImageTest {
     @Before
     public void setup() {
         printer = new AdvancedNotesPrinter(null, activity, null);
+    }
+
+    @Test
+    public void should_print_empty_note_when_note_guess_is_not_in_current_key() {
+        // given NoteGuess is not in current key
+        NoteGuess noteGuess = new NoteGuess(new Note(NotePitch.A, 4), Clef.G);
+        printer.setClef(Clef.F);
+
+        printer.applyNoteImageTo(currentNoteView, noteGuess);
+
+        // then print an empty note
+        verify(currentNoteView, times(1)).setImageResource(R.drawable.note_empty);
     }
 
     @Test
@@ -97,10 +110,10 @@ public class ChoseImageTest {
     @Test
     public void should_print_note_1_when_F3_in_keyG() {
         Note note = new Note(NotePitch.F, 3);
-        printer.setClef(Clef.G);
+        printer.setClef(G);
 
         // when
-        printer.applyNoteImageTo(currentNoteView, new NoteGuess(note, Clef.G));
+        printer.applyNoteImageTo(currentNoteView, new NoteGuess(note, G));
 
         // then
         verify(currentNoteView, times(1)).setImageResource(R.drawable.note_01);
@@ -109,10 +122,10 @@ public class ChoseImageTest {
     @Test
     public void should_print_note_5_when_C4_in_keyG() {
         Note note = new Note(NotePitch.C, 4);
-        printer.setClef(Clef.G);
+        printer.setClef(G);
 
         // when
-        printer.applyNoteImageTo(currentNoteView, new NoteGuess(note, Clef.G));
+        printer.applyNoteImageTo(currentNoteView, new NoteGuess(note, G));
 
         // then
         verify(currentNoteView, times(1)).setImageResource(R.drawable.note_05);
@@ -121,10 +134,10 @@ public class ChoseImageTest {
     @Test
     public void should_print_note_22_when_F6_in_keyG() {
         Note note = new Note(NotePitch.F, 6);
-        printer.setClef(Clef.G);
+        printer.setClef(G);
 
         // when
-        printer.applyNoteImageTo(currentNoteView, new NoteGuess(note, Clef.G));
+        printer.applyNoteImageTo(currentNoteView, new NoteGuess(note, G));
 
         // then
         verify(currentNoteView, times(1)).setImageResource(R.drawable.note_22);
@@ -133,10 +146,10 @@ public class ChoseImageTest {
     @Test
     public void should_print_empty_note_when_above_range_in_G() {
         Note noteAboveMax = new Note(NotePitch.G, 6);
-        printer.setClef(Clef.G);
+        printer.setClef(G);
 
         // when
-        printer.applyNoteImageTo(currentNoteView, new NoteGuess(noteAboveMax, Clef.G));
+        printer.applyNoteImageTo(currentNoteView, new NoteGuess(noteAboveMax, G));
 
         // then
         verify(currentNoteView, times(1)).setImageResource(R.drawable.note_empty);
@@ -145,10 +158,10 @@ public class ChoseImageTest {
     @Test
     public void should_print_empty_note_when_below_range_in_G() {
         Note noteBelowMin = new Note(NotePitch.E, 3);
-        printer.setClef(Clef.G);
+        printer.setClef(G);
 
         // when
-        printer.applyNoteImageTo(currentNoteView, new NoteGuess(noteBelowMin, Clef.G));
+        printer.applyNoteImageTo(currentNoteView, new NoteGuess(noteBelowMin, G));
 
         // then
         verify(currentNoteView, times(1)).setImageResource(R.drawable.note_empty);
@@ -160,7 +173,7 @@ public class ChoseImageTest {
         printer.setClef(Clef.F);
 
         // when
-        printer.applyNoteImageTo(currentNoteView, new NoteGuess(noteAboveMax, Clef.G));
+        printer.applyNoteImageTo(currentNoteView, new NoteGuess(noteAboveMax, G));
 
         // then
         verify(currentNoteView, times(1)).setImageResource(R.drawable.note_empty);
@@ -172,7 +185,7 @@ public class ChoseImageTest {
         printer.setClef(Clef.F);
 
         // when
-        printer.applyNoteImageTo(currentNoteView, new NoteGuess(noteBelowMin, Clef.G));
+        printer.applyNoteImageTo(currentNoteView, new NoteGuess(noteBelowMin, G));
 
         // then
         verify(currentNoteView, times(1)).setImageResource(R.drawable.note_empty);

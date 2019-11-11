@@ -44,7 +44,13 @@ public class AdvancedNotesPrinter implements NotesPrinter {
 
     public void applyNoteImageTo(ImageView noteView, NoteGuess noteGuess) {
         Note note = noteGuess.getNote();
-        noteView.setImageResource(getImageNameForNote(note, clef));
+
+        if(!noteGuess.getClef().equals(this.clef)) {
+            noteView.setImageResource(R.drawable.note_empty);
+        } else {
+            noteView.setImageResource(getImageNameForNote(note, clef));
+        }
+
     }
 
     @Override
