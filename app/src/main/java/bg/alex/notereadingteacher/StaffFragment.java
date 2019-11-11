@@ -101,7 +101,9 @@ public class StaffFragment extends Fragment {
         if (noteGuessList.get(currentNoteGuess).getNote().equals(note)) {
             advanceToNextNote();
         } else {
-            printer.printMistake(new NoteGuess(note, null), currentNoteGuess);
+            NoteGuess noteGuess = new NoteGuess(note, null);
+            noteGuess.setMistake(true);
+            printer.printMistake(noteGuess, currentNoteGuess);
         }
     }
 

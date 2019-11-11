@@ -6,6 +6,7 @@ import bg.alex.notereadingteacher.notes.Note;
 public class NoteGuess {
     private Note note;
     private Clef clef;
+    private boolean isMistake;
 
     public NoteGuess(Note note, Clef clef) {
         this.note = note;
@@ -26,5 +27,13 @@ public class NoteGuess {
 
     public void setClef(Clef clef) {
         this.clef = clef;
+    }
+
+    public void setMistake(boolean isMistake) {
+        this.isMistake = isMistake;
+    }
+
+    public boolean isMistake() {
+        return isMistake;
     }
 }
