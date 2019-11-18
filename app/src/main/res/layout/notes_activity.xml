@@ -33,7 +33,7 @@
         android:layout_height="40dp"
         android:layout_marginTop="10dp"
         android:background="@android:color/white"
-        android:onClick="advanceToNextNote"
+        android:onClick="advanceToNextNoteHandler"
         android:text="@string/next_note"
 
         app:layout_constraintEnd_toEndOf="parent"
@@ -48,7 +48,7 @@
         android:layout_height="40dp"
         android:layout_marginTop="10dp"
         android:background="@android:color/white"
-        android:onClick="advanceToNextLine"
+        android:onClick="advanceToNextLineHandler"
         android:text="@string/next_line"
 
         app:layout_constraintEnd_toEndOf="parent"

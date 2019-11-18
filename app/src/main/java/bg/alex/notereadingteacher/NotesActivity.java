@@ -11,13 +11,13 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import bg.alex.notereadingteacher.guesser.NoteGuess;
+import bg.alex.notereadingteacher.guesser.NoteGuessResult;
 import bg.alex.notereadingteacher.guesser.NotesGuesser;
 import bg.alex.notereadingteacher.midi.MidiAware;
 import bg.alex.notereadingteacher.midi.MidiNotesReceiver;
@@ -62,7 +62,7 @@ public class NotesActivity extends FragmentActivity implements MidiAware {
 
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             staffFragment1 = new StaffFragment();
-            fragmentTransaction.add(R.id.staff_fragment1, staffFragment1);
+            fragmentTransaction.replace(R.id.staff_fragment1, staffFragment1);
 
             Bundle bundle = new Bundle();
             bundle.putSerializable("KEY", Clef.F);
@@ -74,7 +74,7 @@ public class NotesActivity extends FragmentActivity implements MidiAware {
 
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             staffFragment1 = new StaffFragment();
-            fragmentTransaction.add(R.id.staff_fragment1, staffFragment1);
+            fragmentTransaction.replace(R.id.staff_fragment1, staffFragment1);
 
             Bundle bundle = new Bundle();
             bundle.putSerializable("KEY", Clef.G);
@@ -87,8 +87,8 @@ public class NotesActivity extends FragmentActivity implements MidiAware {
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             staffFragment1 = new StaffFragment();
             staffFragment2 = new StaffFragment();
-            fragmentTransaction.add(R.id.staff_fragment1, staffFragment1);
-            fragmentTransaction.add(R.id.staff_fragment2, staffFragment2);
+            fragmentTransaction.replace(R.id.staff_fragment1, staffFragment1);
+            fragmentTransaction.replace(R.id.staff_fragment2, staffFragment2);
 
             Bundle bundle = new Bundle();
             bundle.putSerializable("KEY", Clef.G);
@@ -109,17 +109,21 @@ public class NotesActivity extends FragmentActivity implements MidiAware {
     @Override
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        advanceToNextLine(null);
+        advanceToNextLine();
     }
 
-    public void advanceToNextNote(View view) {
-        staffFragment1.advanceToNextNote();
-        if(staffFragment2 != null){
-            staffFragment2.advanceToNextNote();
-        }
+    public void advanceToNextNoteHandler(View view) {
+        advanceToNextNote();
     }
 
-    public void advanceToNextLine(View view) {
+    public void advanceToNextLineHandler(View view) {
+    }
+
+    public void advanceToNextNote() {
+        guessNote(new Note(1), true);
+    }
+
+    public void advanceToNextLine() {
         List<NoteGuess> noteGuessList = new ArrayList<>();
 
         for(int i = 0; i< MAX_NUMBER_OF_NOTES; i++) {
@@ -127,10 +131,11 @@ public class NotesActivity extends FragmentActivity implements MidiAware {
         }
 
         staffFragment1.advanceToNextLine(noteGuessList);
-        if(staffFragment2 != null){
+        if (staffFragment2 != null) {
             staffFragment2.advanceToNextLine(noteGuessList);
         }
     }
+
 
     public void stopGuessNote(Note note) {
         staffFragment1.stopGuessNote(note);
@@ -139,10 +144,15 @@ public class NotesActivity extends FragmentActivity implements MidiAware {
         }
     }
 
-    public void guessNote(final Note note) {
-        staffFragment1.guessNote(note);
+    public void guessNote(final Note note, boolean forceRightGuess) {
+        NoteGuessResult result1 = staffFragment1.guessNote(note, forceRightGuess);
+        NoteGuessResult result2 = null;
         if(staffFragment2 != null){
-            staffFragment2.guessNote(note);
+            result2 = staffFragment2.guessNote(note, forceRightGuess);
+        }
+
+        if(result1.isLastNote() || ( result2 != null && result2.isLastNote())){
+            advanceToNextLine();
         }
     }
 

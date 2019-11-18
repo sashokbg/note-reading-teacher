@@ -1,5 +1,7 @@
 package bg.alex.notereadingteacher.guesser;
 
+import android.support.annotation.NonNull;
+
 import bg.alex.notereadingteacher.notes.Clef;
 import bg.alex.notereadingteacher.notes.Note;
 
@@ -35,5 +37,10 @@ public class NoteGuess {
 
     public boolean isMistake() {
         return isMistake;
+    }
+
+    @Override
+    public String toString() {
+        return "Note guess: " + note + " clef: "+ clef;
     }
 }

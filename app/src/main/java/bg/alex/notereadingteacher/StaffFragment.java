@@ -15,6 +15,7 @@ import java.util.List;
 
 import bg.alex.notereadingteacher.databinding.StaffFragmentBinding;
 import bg.alex.notereadingteacher.guesser.NoteGuess;
+import bg.alex.notereadingteacher.guesser.NoteGuessResult;
 import bg.alex.notereadingteacher.notes.Clef;
 import bg.alex.notereadingteacher.notes.Note;
 import bg.alex.notereadingteacher.printer.AdvancedNotesPrinter;
@@ -70,16 +71,6 @@ public class StaffFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
     }
 
-    public void advanceToNextNote() {
-        currentNoteGuess++;
-        if(currentNoteGuess >= MAX_NUMBER_OF_NOTES) {
-            ((NotesActivity) getActivity()).advanceToNextLine(null);
-        } else {
-//            debug.setText(noteGuessList.get(currentNoteGuess).getNote().toString());
-            printer.printNoteIndicator(currentNoteGuess);
-        }
-    }
-
     public void advanceToNextLine(List<NoteGuess> noteGuessList) {
         this.noteGuessList = noteGuessList;
         currentNoteGuess = 0;
@@ -97,13 +88,25 @@ public class StaffFragment extends Fragment {
         }
     }
 
-    public void guessNote(final Note note) {
-        if (noteGuessList.get(currentNoteGuess).getNote().equals(note)) {
-            advanceToNextNote();
+    public NoteGuessResult guessNote(final Note note, boolean forceRightGuess) {
+
+        if (noteGuessList.get(currentNoteGuess).getNote().equals(note) || forceRightGuess) {
+            currentNoteGuess++;
+            boolean isLastNote = false;
+
+            if(currentNoteGuess >= MAX_NUMBER_OF_NOTES) {
+                isLastNote = true;
+            } else {
+                printer.printNoteIndicator(currentNoteGuess);
+            }
+
+            return new NoteGuessResult(true, isLastNote);
         } else {
             NoteGuess noteGuess = new NoteGuess(note, null);
             noteGuess.setMistake(true);
             printer.printMistake(noteGuess, currentNoteGuess);
+
+            return new NoteGuessResult(false, false);
         }
     }
 

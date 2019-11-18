@@ -3,12 +3,14 @@ package bg.alex.notereadingteacher.printer;
 import android.app.Activity;
 import android.support.constraint.ConstraintLayout;
 import android.support.constraint.ConstraintSet;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import bg.alex.notereadingteacher.R;
 import bg.alex.notereadingteacher.guesser.NoteGuess;
@@ -122,14 +124,16 @@ public class AdvancedNotesPrinter implements NotesPrinter {
     @Override
     public void printNoteGuesses(final List<NoteGuess> noteGuesses) {
         activity.runOnUiThread(() -> {
+            Log.i(TAG, "Starting printing note guesses");
             ImageView previousNoteView = null;
             ImageView divider = null;
             notesToGuess = new ArrayList<>();
 
             View noteToRemove, dividerToRemove;
             do {
-                noteToRemove = constraintLayout.findViewWithTag("note");
+                noteToRemove = constraintLayout.findViewWithTag("note" + this.clef);
                 dividerToRemove = constraintLayout.findViewWithTag("divider");
+                Log.i(TAG, "Removing note " + noteToRemove);
                 constraintLayout.removeView(noteToRemove);
                 constraintLayout.removeView(dividerToRemove);
             } while (noteToRemove != null);
@@ -155,7 +159,7 @@ public class AdvancedNotesPrinter implements NotesPrinter {
 
                 ImageView noteView = new ImageView(activity);
                 noteView.setId(View.generateViewId());
-                noteView.setTag("note");
+                noteView.setTag("note" + this.clef);
                 notesToGuess.add(noteView);
 
                 noteView.setAdjustViewBounds(true);
@@ -194,6 +198,8 @@ public class AdvancedNotesPrinter implements NotesPrinter {
                 applyNoteImageTo(noteView, noteGuess);
                 previousNoteView = noteView;
             }
+
+            Log.i(TAG, "End printing note guesses");
         });
     }
 }

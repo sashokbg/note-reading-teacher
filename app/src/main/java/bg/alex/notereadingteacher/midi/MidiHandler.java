@@ -59,10 +59,10 @@ public class MidiHandler {
     }
 
     public void removeDevice() {
-        Log.i(TAG, "Closing device: ");
+        Log.d(TAG, "Closing device: ");
         try {
             if (this.parentDevice != null) {
-                Log.i(TAG, "Device to close : " + parentDevice.getInfo().getId());
+                Log.d(TAG, "Device to close : " + parentDevice.getInfo().getId());
                 this.parentDevice.close();
             }
         } catch (IOException e) {
@@ -71,7 +71,7 @@ public class MidiHandler {
     }
 
     public void registerMidiHandler() {
-        Log.i(TAG, "On Start");
+        Log.d(TAG, "On Start");
         Handler handler = new Handler();
 
         midiManager.registerDeviceCallback(new MidiManager.DeviceCallback() {
@@ -106,12 +106,12 @@ public class MidiHandler {
         final TextView statusText = (TextView) view.findViewById(R.id.status);
         final TextView deviceInfos = (TextView) view.findViewById(R.id.device_infos);
 
-        Log.i(TAG, "Opening device: ");
+        Log.d(TAG, "Opening device: ");
 
         final int deviceId = deviceInfo.getId();
         final String deviceManufacturer = deviceInfo.getProperties().getString(MidiDeviceInfo.PROPERTY_MANUFACTURER);
 
-        Log.i(TAG, "Device: " + deviceId + " " + deviceManufacturer);
+        Log.d(TAG, "Device: " + deviceId + " " + deviceManufacturer);
 
         midiManager.openDevice(deviceInfo, new MidiManager.OnDeviceOpenedListener() {
 
@@ -127,9 +127,9 @@ public class MidiHandler {
 
 
                             for (MidiDeviceInfo.PortInfo portInfo : portInfos) {
-                                Log.i(TAG, "Cycling port " + portInfo.getPortNumber());
+                                Log.d(TAG, "Cycling port " + portInfo.getPortNumber());
                                 if (portInfo.getType() == MidiDeviceInfo.PortInfo.TYPE_OUTPUT) {
-                                    Log.i(TAG, "Found OUTPUT port");
+                                    Log.d(TAG, "Found OUTPUT port");
 
                                     deviceInfos.setText(view.getContext().getString(
                                             R.string.midi_device_infos,
