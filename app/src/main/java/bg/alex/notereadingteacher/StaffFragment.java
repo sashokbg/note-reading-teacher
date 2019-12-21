@@ -38,9 +38,8 @@ public class StaffFragment extends Fragment {
     public void setArguments(@Nullable Bundle args) {
         properties = new StaffFragmentProperties();
         this.clef = (Clef) args.getSerializable("KEY");
-        if(args.getBoolean(HIDE_NOTE_INDICATOR)) {
-            properties.hideIndicator = true;
-        }
+        properties.hideIndicator = args.getBoolean(HIDE_NOTE_INDICATOR);
+
         super.setArguments(args);
     }
 

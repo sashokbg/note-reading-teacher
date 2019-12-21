@@ -1,6 +1,8 @@
 package bg.alex.notereadingteacher;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.media.midi.MidiOutputPort;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -16,6 +18,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import bg.alex.notereadingteacher.databinding.NotesActivityBinding;
 import bg.alex.notereadingteacher.guesser.NoteGuess;
 import bg.alex.notereadingteacher.guesser.NoteGuessResult;
 import bg.alex.notereadingteacher.guesser.NotesGuesser;
@@ -39,6 +42,7 @@ public class NotesActivity extends FragmentActivity implements MidiAware {
     private StaffFragment staffFragment1;
     private StaffFragment staffFragment2;
     private FragmentManager fragmentManager;
+    private CorrectGuessesModel model;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -49,7 +53,9 @@ public class NotesActivity extends FragmentActivity implements MidiAware {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
         WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        setContentView(R.layout.notes_activity);
+        NotesActivityBinding binding = DataBindingUtil.setContentView(this, R.layout.notes_activity);
+        this.model = new CorrectGuessesModel();
+        binding.setModel(model);
 
         Intent intent = getIntent();
 
@@ -153,6 +159,10 @@ public class NotesActivity extends FragmentActivity implements MidiAware {
 
         if(result1.isLastNote() || ( result2 != null && result2.isLastNote())){
             advanceToNextLine();
+        }
+
+        if(result1.isCorrect() || forceRightGuess) {
+            this.model.correctGuess();
         }
     }
 
