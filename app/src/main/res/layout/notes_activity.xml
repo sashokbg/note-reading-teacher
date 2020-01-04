@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
     <data>
         <import type="android.view.View"/>
-        <variable name="model" type="bg.alex.notereadingteacher.CorrectGuessesModel"/>
+        <variable name="model" type="bg.alex.notereadingteacher.GuessesModel"/>
     </data>
 
     <android.support.constraint.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -63,14 +63,13 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/correct_guesses"
+            android:id="@+id/counter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{model.correctGuesses}"
+            android:text="@{model.correctGuesses + '/' + model.totalGuesses}"
             app:layout_constraintBottom_toTopOf="@id/staff_fragment1"
             app:layout_constraintEnd_toEndOf="parent"
             />
-
 
         <FrameLayout
             android:orientation="vertical"

@@ -1,10 +1,11 @@
 package bg.alex.notereadingteacher;
 
-import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.media.midi.MidiOutputPort;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -42,7 +43,7 @@ public class NotesActivity extends FragmentActivity implements MidiAware {
     private StaffFragment staffFragment1;
     private StaffFragment staffFragment2;
     private FragmentManager fragmentManager;
-    private CorrectGuessesModel model;
+    private GuessesModel model;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -54,7 +55,7 @@ public class NotesActivity extends FragmentActivity implements MidiAware {
         WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         NotesActivityBinding binding = DataBindingUtil.setContentView(this, R.layout.notes_activity);
-        this.model = new CorrectGuessesModel();
+        this.model = new GuessesModel();
         binding.setModel(model);
 
         Intent intent = getIntent();
@@ -163,6 +164,15 @@ public class NotesActivity extends FragmentActivity implements MidiAware {
 
         if(result1.isCorrect() || forceRightGuess) {
             this.model.correctGuess();
+        } else {
+            this.model.wrongGuess();
+            TextView textView = findViewById(R.id.counter);
+            textView.setTextColor(getResources().getColor(R.color.mistake_color, getTheme()));
+
+            Handler handler = new Handler(Looper.getMainLooper());
+            handler.postDelayed(() -> {
+                textView.setTextColor(getResources().getColor(R.color.white, getTheme()));
+            }, 1000);
         }
     }
 
